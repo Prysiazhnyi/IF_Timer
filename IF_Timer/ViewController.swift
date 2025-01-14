@@ -8,12 +8,38 @@
 import UIKit
 
 class ViewController: UIViewController {
+    
+    @IBOutlet weak var progressBar: UIView!
+
+    // Ссылка на круговой прогресс
+    var circularProgressView: CircularProgressView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        progressBar.backgroundColor = .clear
+        
+        setupCircularProgress()
     }
 
+    private func setupCircularProgress() {
+        // Создаем экземпляр CircularProgressView
+        circularProgressView = CircularProgressView(frame: progressBar.bounds)
+        
+        // Убедимся, что прогресс-бар существует
+        guard let circularProgressView = circularProgressView else { return }
+        
+        // Добавляем его в progressBar
+        progressBar.addSubview(circularProgressView)
+        
+        // Устанавливаем прогресс (например, 30%)
+        circularProgressView.progress = 0.3
+    }
+    
+    func updateProgress(value: CGFloat) {
+        circularProgressView?.progress = value
+    }
 
+    
 }
 

@@ -68,6 +68,9 @@
                             <constraint firstItem="QdK-pG-nnu" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="OeE-K1-7Wa"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="progressBar" destination="Cwh-tI-HMI" id="QTd-rt-CQv"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
