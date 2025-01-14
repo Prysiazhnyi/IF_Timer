@@ -37,7 +37,7 @@ class CircularProgressView: UIView {
         
         // Трек (фон круга)
         trackLayer.path = circlePath.cgPath
-        trackLayer.strokeColor = UIColor.lightGray.cgColor
+        trackLayer.strokeColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 0.6).cgColor
         trackLayer.fillColor = UIColor.clear.cgColor
         trackLayer.lineWidth = 20
         layer.addSublayer(trackLayer)

@@ -41,7 +41,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4I-Zf-ebf">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99%" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g4I-Zf-ebf">
                                                 <rect key="frame" x="51.333333333333343" y="66.666666666666686" width="36.333333333333343" height="20.333333333333329"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
@@ -69,7 +69,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="percentProgressLabel" destination="g4I-Zf-ebf" id="Vom-KA-NXv"/>
                         <outlet property="progressBar" destination="Cwh-tI-HMI" id="QTd-rt-CQv"/>
+                        <outlet property="timerProgressLabel" destination="CQH-l7-kk6" id="uD8-Pf-Jvl"/>
+                        <outlet property="titleProgressLabel" destination="j6O-oh-gpw" id="Na8-8A-Xmw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
