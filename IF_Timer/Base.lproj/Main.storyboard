@@ -84,6 +84,23 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </button>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-pencil" translatesAutoresizingMaskIntoConstraints="NO" id="ra8-mR-qs5">
+                                <rect key="frame" x="219.66666666666666" y="547.33333333333337" width="22" height="22"/>
+                                <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="Lix-Lj-bLX"/>
+                                    <constraint firstAttribute="width" constant="22" id="Wz9-kK-7aT"/>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="jYu-kd-oe5"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.maskedCorners">
+                                        <integer key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enn-dX-Nrs">
                                 <rect key="frame" x="273.66666666666669" y="479.33333333333326" width="89.333333333333314" height="90"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -106,21 +123,6 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-pencil" translatesAutoresizingMaskIntoConstraints="NO" id="ra8-mR-qs5">
-                                <rect key="frame" x="219.66666666666666" y="547.33333333333337" width="22" height="22"/>
-                                <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="22" id="Wz9-kK-7aT"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.maskedCorners">
-                                        <integer key="value" value="9"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-pencil" translatesAutoresizingMaskIntoConstraints="NO" id="xwz-bq-7cm">
                                 <rect key="frame" x="98" y="547.33333333333337" width="22.666666666666671" height="22"/>
                                 <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>

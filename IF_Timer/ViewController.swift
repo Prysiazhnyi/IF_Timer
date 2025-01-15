@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     
     
     
-
+    var imageView: UIImageView!
     // Ссылка на круговой прогресс
     var circularProgressView: CircularProgressView?
     var valueProgress: CGFloat = 0.0 {
@@ -48,9 +48,36 @@ class ViewController: UIViewController {
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         setupCircularProgress()
+        
+//        startLabel.isHidden = true
+//        startButton.isHidden = true
+        
+        
+        finishButton.backgroundColor = .blue
+                
+                // Создаем UIImageView для изображения
+                imageView = UIImageView(image: UIImage(named: "icon-pencil"))
+                imageView.backgroundColor = UIColor.lightGray
+        
+                imageView.layer.cornerRadius = 10
+                imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner] // Верхний левый и нижний правый углы
+                imageView.layer.masksToBounds = true
 
-    
+                
+                // Добавляем UIImageView в кнопку
+                finishButton.addSubview(imageView)
+                
+                // Настроим Auto Layout для изображения
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                NSLayoutConstraint.activate([
+                    imageView.bottomAnchor.constraint(equalTo: finishButton.bottomAnchor, constant: 0),
+                    imageView.trailingAnchor.constraint(equalTo: finishButton.trailingAnchor, constant: 0),
+                    imageView.widthAnchor.constraint(equalToConstant: 22),
+                    imageView.heightAnchor.constraint(equalToConstant: 22)
+                ])
     }
+
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
