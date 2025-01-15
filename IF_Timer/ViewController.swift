@@ -22,6 +22,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var startButton: UIButton!
     @IBOutlet weak var finishButton: UIButton!
     
+    @IBOutlet weak var planStackView: UIStackView!
+    @IBOutlet weak var startStackView: UIStackView!
+    @IBOutlet weak var finishStackView: UIStackView!
+    
     
     
     var imageView: UIImageView!
@@ -45,45 +49,60 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
+        view.backgroundColor = UIColor(red: 240/255, green: 245/255, blue: 255/255, alpha: 1)
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         setupCircularProgress()
+        setupButtons()
         
-//        startLabel.isHidden = true
-//        startButton.isHidden = true
-        
-        
-        finishButton.backgroundColor = .blue
-                
-                // Создаем UIImageView для изображения
-                imageView = UIImageView(image: UIImage(named: "icon-pencil"))
-                imageView.backgroundColor = UIColor.lightGray
-        
-                imageView.layer.cornerRadius = 10
-                imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner] // Верхний левый и нижний правый углы
-                imageView.layer.masksToBounds = true
-
-                
-                // Добавляем UIImageView в кнопку
-                finishButton.addSubview(imageView)
-                
-                // Настроим Auto Layout для изображения
-                imageView.translatesAutoresizingMaskIntoConstraints = false
-                NSLayoutConstraint.activate([
-                    imageView.bottomAnchor.constraint(equalTo: finishButton.bottomAnchor, constant: 0),
-                    imageView.trailingAnchor.constraint(equalTo: finishButton.trailingAnchor, constant: 0),
-                    imageView.widthAnchor.constraint(equalToConstant: 22),
-                    imageView.heightAnchor.constraint(equalToConstant: 22)
-                ])
     }
-
-
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateProgress(valueProgress)
         startTimer()
     }
+    
+    //MARK: Created buttons
+    
+    func setupButtons() {
+        
+        startButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 0.8)  // Светло-голубой
+        planButton.backgroundColor = UIColor(red: 174/255, green: 238/255, blue: 238/255, alpha: 0.8)  // Светло-зелено-голубой
+        finishButton.backgroundColor = UIColor(red: 255/255, green: 220/255, blue: 130/255, alpha: 0.8)  // Светло-желтый с оранжевым оттенком
+        
+        let buttons: [UIButton] = [startButton, planButton, finishButton]
+        
+        for button in buttons {
+            button.layer.cornerRadius = 10
+            button.layer.masksToBounds = true
+            button.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            
+            if button !== finishButton {
+                imageView = UIImageView(image: UIImage(named: "icon-pencil"))
+                imageView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
+                
+                imageView.layer.cornerRadius = 10
+                imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner] // Верхний левый и нижний правый углы
+                imageView.layer.masksToBounds = true
+                imageView.translatesAutoresizingMaskIntoConstraints = false
+                
+                // Добавляем UIImageView в кнопку
+                button.addSubview(imageView)
+                
+                // Настроим Auto Layout для изображения
+                NSLayoutConstraint.activate([
+                    imageView.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: 0),
+                    imageView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: 0),
+                    imageView.widthAnchor.constraint(equalToConstant: 25),
+                    imageView.heightAnchor.constraint(equalToConstant: 25)
+                ])
+            }
+        }
+    }
+    
+    
 
     //MARK: Progress Bar
     
@@ -149,4 +168,6 @@ class ViewController: UIViewController {
     
     
 }
+
+
 
