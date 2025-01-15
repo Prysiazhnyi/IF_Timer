@@ -106,6 +106,9 @@
                                                         <integer key="value" value="10"/>
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
+                                                <connections>
+                                                    <action selector="startButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Krm-t0-XTI"/>
+                                                </connections>
                                             </button>
                                         </subviews>
                                     </stackView>

@@ -9,6 +9,9 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    private var datePickerManager: DatePickerManager!
+
+    
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
     @IBOutlet weak var timerProgressLabel: UILabel!
@@ -48,6 +51,8 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        datePickerManager = DatePickerManager(parentViewController: self)
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = UIColor(red: 240/255, green: 245/255, blue: 255/255, alpha: 1)
@@ -101,8 +106,6 @@ class ViewController: UIViewController {
             }
         }
     }
-    
-    
 
     //MARK: Progress Bar
     
@@ -163,8 +166,15 @@ class ViewController: UIViewController {
             timerProgressLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
         }
 
-    // MARK:
+    // MARK: Button Start
     
+    @IBAction func startButtonTapped(_ sender: UIButton) {
+        datePickerManager.showDatePicker(mode: .dateAndTime) { selectedDate in
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd MMM yyyy HH:mm"
+                sender.setTitle(formatter.string(from: selectedDate), for: .normal)
+            }
+    }
     
     
 }
