@@ -59,8 +59,11 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hkl-bz-AeL">
-                                <rect key="frame" x="151" y="480" width="90" height="90"/>
+                                <rect key="frame" x="151.66666666666666" y="479.33333333333326" width="90" height="90"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="KAP-11-man"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -69,8 +72,11 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RWj-L9-nTt">
-                                <rect key="frame" x="30" y="480" width="90" height="90"/>
+                                <rect key="frame" x="30.000000000000007" y="479.33333333333326" width="90.666666666666686" height="90"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="90" id="l3j-s2-KiS"/>
+                                </constraints>
                                 <state key="normal" title="Button"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -79,7 +85,7 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="enn-dX-Nrs">
-                                <rect key="frame" x="273" y="480" width="90" height="90"/>
+                                <rect key="frame" x="273.66666666666669" y="479.33333333333326" width="89.333333333333314" height="90"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <userDefinedRuntimeAttributes>
@@ -89,19 +95,19 @@
                                 </userDefinedRuntimeAttributes>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Початок:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NyD-Cw-hFY">
-                                <rect key="frame" x="161" y="451" width="71.333333333333314" height="21"/>
+                                <rect key="frame" x="161" y="451" width="71.333333333333314" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="План:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JHA-ry-Ofs">
-                                <rect key="frame" x="53" y="451" width="46" height="21"/>
+                                <rect key="frame" x="53" y="451" width="46" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-pencil" translatesAutoresizingMaskIntoConstraints="NO" id="ra8-mR-qs5">
-                                <rect key="frame" x="219" y="548" width="22" height="22"/>
+                                <rect key="frame" x="219.66666666666666" y="547.33333333333337" width="22" height="22"/>
                                 <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="22" id="Wz9-kK-7aT"/>
@@ -116,7 +122,7 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon-pencil" translatesAutoresizingMaskIntoConstraints="NO" id="xwz-bq-7cm">
-                                <rect key="frame" x="98" y="548" width="22" height="22"/>
+                                <rect key="frame" x="98" y="547.33333333333337" width="22.666666666666671" height="22"/>
                                 <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="22" id="T9v-4h-yzv"/>
@@ -131,7 +137,7 @@
                                 </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Кінець:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZAd-EG-XUi">
-                                <rect key="frame" x="291" y="451" width="57" height="21"/>
+                                <rect key="frame" x="291" y="451" width="57" height="20.333333333333314"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -174,8 +180,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="finishButton" destination="enn-dX-Nrs" id="icD-wa-VDr"/>
+                        <outlet property="finishLabel" destination="ZAd-EG-XUi" id="LVA-7N-BsJ"/>
                         <outlet property="percentProgressLabel" destination="g4I-Zf-ebf" id="Vom-KA-NXv"/>
+                        <outlet property="planButton" destination="RWj-L9-nTt" id="f1p-Bj-GYl"/>
+                        <outlet property="planLabel" destination="JHA-ry-Ofs" id="mDu-Qm-MZj"/>
                         <outlet property="progressBar" destination="Cwh-tI-HMI" id="QTd-rt-CQv"/>
+                        <outlet property="startButton" destination="hkl-bz-AeL" id="8Q7-hw-o08"/>
+                        <outlet property="startLabel" destination="NyD-Cw-hFY" id="iHp-EL-1b3"/>
                         <outlet property="timerProgressLabel" destination="CQH-l7-kk6" id="uD8-Pf-Jvl"/>
                         <outlet property="titleProgressLabel" destination="j6O-oh-gpw" id="Na8-8A-Xmw"/>
                     </connections>
@@ -191,7 +203,7 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

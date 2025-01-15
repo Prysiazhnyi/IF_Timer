@@ -14,6 +14,14 @@ class ViewController: UIViewController {
     @IBOutlet weak var timerProgressLabel: UILabel!
     @IBOutlet weak var percentProgressLabel: UILabel!
     
+    @IBOutlet weak var planLabel: UILabel!
+    @IBOutlet weak var startLabel: UILabel!
+    @IBOutlet weak var finishLabel: UILabel!
+    
+    @IBOutlet weak var planButton: UIButton!
+    @IBOutlet weak var startButton: UIButton!
+    @IBOutlet weak var finishButton: UIButton!
+    
     
     
 
