@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     private var datePickerManager: DatePickerManager!
-
+    
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -42,13 +42,13 @@ class ViewController: UIViewController {
     }
     
     // Таймер
-       private var countdownTimer: Timer?
-       private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
+    private var countdownTimer: Timer?
+    private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
     
     var timeResting = 8 * 3600 // время голодания
     var timeFasting = 16 * 3600 // время приёма пищи
     var timeWait = 16 * 3600 // стартовое время таймера
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -100,13 +100,13 @@ class ViewController: UIViewController {
                 NSLayoutConstraint.activate([
                     imageView.bottomAnchor.constraint(equalTo: button.bottomAnchor, constant: 0),
                     imageView.trailingAnchor.constraint(equalTo: button.trailingAnchor, constant: 0),
-                    imageView.widthAnchor.constraint(equalToConstant: 25),
-                    imageView.heightAnchor.constraint(equalToConstant: 25)
+                    imageView.widthAnchor.constraint(equalToConstant: 24),
+                    imageView.heightAnchor.constraint(equalToConstant: 24)
                 ])
             }
         }
     }
-
+    
     //MARK: Progress Bar
     
     private func setupCircularProgress() {
@@ -119,62 +119,107 @@ class ViewController: UIViewController {
         // Добавляем его в progressBar
         progressBar.addSubview(circularProgressView)
         
-        // Устанавливаем прогресс (например, 30%)
-        //circularProgressView.progress = 0.3
     }
     
     func updateProgress(_ value: CGFloat) {
         circularProgressView?.progress = value
     }
     
-//    func setupProgress() {
-//        titleProgressLabel.text = "Залишилось часу"
-//        
-//    }
-    
     //MARK: Timer
     
     private func startTimer() {
-            // Останавливаем предыдущий таймер, если он существует
-            countdownTimer?.invalidate()
-            
-            // Создаем новый таймер
-            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                self?.updateCountdown()
-            }
+        // Останавливаем предыдущий таймер, если он существует
+        countdownTimer?.invalidate()
+        
+        // Создаем новый таймер
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.updateCountdown()
         }
+    }
     private func updateCountdown() {
-            // Уменьшаем оставшееся время
-            if remainingTime > 0 {
-                remainingTime -= 1
-                updateTimerLabel()
-                
-                // Обновляем прогресс (например, по пропорции)
-                valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeWait))
-            } else {
-                // Останавливаем таймер, если время истекло
-                countdownTimer?.invalidate()
-                countdownTimer = nil
-                timerProgressLabel.text = "00:00:00"
-            }
+        // Уменьшаем оставшееся время
+        if remainingTime > 0 {
+            remainingTime -= 1
+            updateTimerLabel()
+            
+            // Обновляем прогресс (например, по пропорции)
+            valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeWait))
+        } else {
+            // Останавливаем таймер, если время истекло
+            countdownTimer?.invalidate()
+            countdownTimer = nil
+            timerProgressLabel.text = "00:00:00"
         }
+    }
     private func updateTimerLabel() {
-            // Форматируем оставшееся время в HH:MM:SS
-            let hours = Int(remainingTime) / 3600
-            let minutes = (Int(remainingTime) % 3600) / 60
-            let seconds = Int(remainingTime) % 60
-            timerProgressLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        }
-
+        // Форматируем оставшееся время в HH:MM:SS
+        let hours = Int(remainingTime) / 3600
+        let minutes = (Int(remainingTime) % 3600) / 60
+        let seconds = Int(remainingTime) % 60
+        timerProgressLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+    }
+    
     // MARK: Button Start
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
         datePickerManager.showDatePicker(mode: .dateAndTime) { selectedDate in
-                let formatter = DateFormatter()
-                formatter.dateFormat = "dd MMM yyyy HH:mm"
-                sender.setTitle(formatter.string(from: selectedDate), for: .normal)
-            }
+            self.setButtonTitle(for: sender, date: selectedDate)
+        }
     }
+    
+    func setButtonTitle(for button: UIButton, date: Date) {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
+        let selectedDate = calendar.startOfDay(for: date)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.locale = Locale(identifier: "uk_UA") // Украинская локализация
+        
+        // Форматируем дату и время
+        var dateString: String
+        
+        if selectedDate == today {
+            dateString = "Сьогодні"
+        } else if selectedDate == tomorrow {
+            dateString = "Завтра"
+        } else {
+            dateFormatter.dateFormat = "dd MMM"
+            dateString = dateFormatter.string(from: date)
+        }
+        
+        // Форматируем время
+        
+        dateFormatter.dateFormat = "HH:mm"
+        let timeString = dateFormatter.string(from: date)
+        
+        // Создаем атрибутированный текст
+        let title = NSMutableAttributedString(
+            string: "\(dateString)\n",
+            attributes: [
+                .font: UIFont.boldSystemFont(ofSize: 16), // Жирный шрифт для первой строки
+                .foregroundColor: UIColor.black // Черный цвет текста
+            ]
+        )
+        
+        let time = NSAttributedString(
+            string: timeString,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
+                .foregroundColor: UIColor.black // Черный цвет текста
+            ]
+        )
+        
+        title.append(time)
+        
+        // Устанавливаем атрибутированный текст для кнопки
+        button.setAttributedTitle(title, for: .normal)
+        
+        // Включаем многострочный текст
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center // Выравниваем по центру
+    }
+    
     
     
 }
