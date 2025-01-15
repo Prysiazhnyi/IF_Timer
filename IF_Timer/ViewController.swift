@@ -49,6 +49,9 @@ class ViewController: UIViewController {
     var timeFasting = 16 * 3600 // время приёма пищи
     var timeWait = 16 * 3600 // стартовое время таймера
     
+    var startDate: Date?
+    var finishDate: Date?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -61,17 +64,34 @@ class ViewController: UIViewController {
         setupCircularProgress()
         setupButtons()
         
+        // Загрузка сохраненной даты и отображение на кнопке
+        if let savedDate = UserDefaults.standard.loadStartDate() {
+            setButtonTitle(for: startButton, date: savedDate)
+            startDate = savedDate
+        }
+        
+        
+        // Загрузка сохраненного времени ожидания
+           if let savedTimeWait = UserDefaults.standard.loadTimeWait(), let savedStartDate = UserDefaults.standard.loadStartDate() {
+               finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
+               updateFinishDateButton()  // Обновляем кнопку сразу
+           }
+
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateProgress(valueProgress)
         startTimer()
+        updateFinishDateButton()
     }
     
     //MARK: Created buttons
     
     func setupButtons() {
+        
+        finishButton.isUserInteractionEnabled = false
         
         startButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 0.8)  // Светло-голубой
         planButton.backgroundColor = UIColor(red: 174/255, green: 238/255, blue: 238/255, alpha: 0.8)  // Светло-зелено-голубой
@@ -162,10 +182,25 @@ class ViewController: UIViewController {
     // MARK: Button Start
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        datePickerManager.showDatePicker(mode: .dateAndTime) { selectedDate in
+        datePickerManager.showDatePicker(mode: .dateAndTime) { [self] selectedDate in
             self.setButtonTitle(for: sender, date: selectedDate)
+            
+            // Сохраняем выбранную дату
+            UserDefaults.standard.saveStartDate(selectedDate)
+            UserDefaults.standard.saveTimeWait(TimeInterval(timeWait))
+           // updateTimeWait(timeWait)
+            updateFinishDateButton()
+            finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
         }
     }
+    
+    func updateFinishDateButton() {
+        if let finishDate = finishDate {
+            print("Finish date: \(finishDate)")
+            self.setButtonTitle(for: finishButton, date: finishDate)
+        }
+    }
+
     
     func setButtonTitle(for button: UIButton, date: Date) {
         let calendar = Calendar.current
@@ -220,8 +255,32 @@ class ViewController: UIViewController {
         button.titleLabel?.textAlignment = .center // Выравниваем по центру
     }
     
+//    func updateTimeWait(_ newTimeWait: Int) {
+//        timeWait = newTimeWait
+//        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
+//    }
+}
+
+extension UserDefaults {
+    private enum Keys {
+        static let startDate = "startDate"
+        static let timeWait = "timeWait"
+    }
     
+    func saveStartDate(_ date: Date) {
+        set(date, forKey: Keys.startDate)
+    }
     
+    func loadStartDate() -> Date? {
+        object(forKey: Keys.startDate) as? Date
+    }
+    func saveTimeWait(_ time: TimeInterval) {
+        set(time, forKey: Keys.timeWait)
+    }
+    
+    func loadTimeWait() -> TimeInterval? {
+        object(forKey: Keys.timeWait) as? TimeInterval
+    }
 }
 
 
