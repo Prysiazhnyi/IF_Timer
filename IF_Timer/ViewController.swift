@@ -55,10 +55,23 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Создаем UILabel
+        let titleLabel = UILabel()
+        titleLabel.textAlignment = .center // Выравнивание по центру
+        titleLabel.textColor = .black // Цвет текста (можно изменить)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20) // Увеличиваем шрифт и делаем его жирным
+        titleLabel.text = "Вікно голодування"
+        // Устанавливаем UILabel как titleView
+        navigationItem.titleView = titleLabel
+        
+       //title = "Вікно голодування"
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .gray
+        
         datePickerManager = DatePickerManager(parentViewController: self)
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
-        view.backgroundColor = UIColor(red: 240/255, green: 245/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         setupCircularProgress()
@@ -259,6 +272,11 @@ class ViewController: UIViewController {
 //        timeWait = newTimeWait
 //        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
 //    }
+    
+//    @IBAction func planButton(_ sender: UIButton) {
+//        performSegue(withIdentifier: "selectPlanSegue", sender: nil)
+//    }
+    
 }
 
 extension UserDefaults {
