@@ -343,6 +343,9 @@
                     </view>
                     <navigationItem key="navigationItem" id="Xdn-9V-pBb"/>
                     <size key="freeformSize" width="393" height="1280"/>
+                    <connections>
+                        <outlet property="viewTab" destination="0iL-R5-CwQ" id="hdm-Sz-1kf"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TNX-Vs-JAR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
