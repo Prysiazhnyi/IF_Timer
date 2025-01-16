@@ -25,6 +25,7 @@ class SelectPlanView: UIViewController {
     @IBOutlet weak var strongButton: UIButton!
     @IBOutlet weak var strongPlusButton: UIButton!
     
+    var selectsButtons: [UIButton] = []
     let backgroundColor: UIColor = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     // Переменная для отслеживания состояния выбора
     var isSelectedMode: Bool = false
@@ -60,20 +61,20 @@ class SelectPlanView: UIViewController {
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
         
+        selectsButtons = [myPlanButton, basicButton, startButton, startPlusButton, strongButton, strongPlusButton]
+        
         setupButton()
-        setupButton2()
     }
     
     private func setupButton() {
-        myPlanButton.layer.cornerRadius = 25
-        myPlanButton.layer.borderWidth = 2
-        myPlanButton.layer.borderColor = UIColor.clear.cgColor // Без обводки по умолчанию
-        myPlanButton.setTitle("16-8\n⚡⚡⚡", for: .normal)
-        myPlanButton.titleLabel?.numberOfLines = 2
-        myPlanButton.titleLabel?.textAlignment = .left // Текст слева
-        myPlanButton.backgroundColor = UIColor.systemGray6
         
-        
+        for button in selectsButtons {
+            button.layer.cornerRadius = 25
+            button.layer.borderWidth = 2
+            button.layer.borderColor = UIColor.clear.cgColor // Без обводки по умолчанию
+            button.titleLabel?.numberOfLines = 2
+            button.backgroundColor = UIColor.white
+        }
     }
     
     private func setupButton2() {
