@@ -64,7 +64,7 @@ class ViewController: UIViewController {
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
         
-       //title = "Вікно голодування"
+        //title = "Вікно голодування"
         navigationItem.backButtonTitle = ""
         navigationController?.navigationBar.tintColor = .gray
         
@@ -81,15 +81,29 @@ class ViewController: UIViewController {
         if let savedDate = UserDefaults.standard.loadStartDate() {
             setButtonTitle(for: startButton, date: savedDate)
             startDate = savedDate
+        } else {
+            // Если нет сохраненной даты, устанавливаем текущую дату
+            startDate = Date()
+            setButtonTitle(for: startButton, date: Date())
         }
         
-        
         // Загрузка сохраненного времени ожидания
-           if let savedTimeWait = UserDefaults.standard.loadTimeWait(), let savedStartDate = UserDefaults.standard.loadStartDate() {
-               finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
-               updateFinishDateButton()  // Обновляем кнопку сразу
-           }
-
+        if let savedTimeWait = UserDefaults.standard.loadTimeWait(), let savedStartDate = UserDefaults.standard.loadStartDate() {
+            finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
+            updateFinishDateButton()  // Обновляем кнопку сразу
+        } else {
+            // Если нет сохраненной даты завершения, устанавливаем "Скоро"
+            finishButton.setTitle("Скоро", for: .normal)
+            
+            // Устанавливаем цвет текста и размер шрифта
+            finishButton.titleLabel?.font = UIFont.systemFont(ofSize: 17) // Увеличиваем шрифт
+            finishButton.setTitleColor(.black, for: .normal) // Черный цвет
+        }
+        
+        planButton.setTitleColor(.black, for: .normal)
+        planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20) 
+        planButton.setTitle("16-8", for: .normal)
+        
         
     }
     
@@ -201,7 +215,7 @@ class ViewController: UIViewController {
             // Сохраняем выбранную дату
             UserDefaults.standard.saveStartDate(selectedDate)
             UserDefaults.standard.saveTimeWait(TimeInterval(timeWait))
-           // updateTimeWait(timeWait)
+            // updateTimeWait(timeWait)
             updateFinishDateButton()
             finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
         }
@@ -213,7 +227,7 @@ class ViewController: UIViewController {
             self.setButtonTitle(for: finishButton, date: finishDate)
         }
     }
-
+    
     
     func setButtonTitle(for button: UIButton, date: Date) {
         let calendar = Calendar.current
@@ -268,14 +282,14 @@ class ViewController: UIViewController {
         button.titleLabel?.textAlignment = .center // Выравниваем по центру
     }
     
-//    func updateTimeWait(_ newTimeWait: Int) {
-//        timeWait = newTimeWait
-//        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
-//    }
+    //    func updateTimeWait(_ newTimeWait: Int) {
+    //        timeWait = newTimeWait
+    //        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
+    //    }
     
-//    @IBAction func planButton(_ sender: UIButton) {
-//        performSegue(withIdentifier: "selectPlanSegue", sender: nil)
-//    }
+    //    @IBAction func planButton(_ sender: UIButton) {
+    //        performSegue(withIdentifier: "selectPlanSegue", sender: nil)
+    //    }
     
 }
 
