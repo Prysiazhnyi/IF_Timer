@@ -202,6 +202,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="myPlanButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="TAP-2L-IQC"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -223,6 +226,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="basicButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="VrB-nS-tyl"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -244,6 +250,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="startButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="MOt-Gl-98e"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -265,6 +274,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="startPlusButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="r2v-NO-2Zo"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -286,6 +298,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="strongButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="NL8-9Z-uCh"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -307,6 +322,9 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
+                                                                <connections>
+                                                                    <action selector="strongPlusButtonTapped:" destination="KEf-e8-v5F" eventType="touchUpInside" id="5ZN-hm-hiJ"/>
+                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -344,6 +362,18 @@
                     <navigationItem key="navigationItem" id="Xdn-9V-pBb"/>
                     <size key="freeformSize" width="393" height="1280"/>
                     <connections>
+                        <outlet property="basicButton" destination="pLu-O0-nDI" id="tg6-b7-pgz"/>
+                        <outlet property="basicLabel" destination="wSW-i6-f8h" id="Opx-oj-vdx"/>
+                        <outlet property="myPlanButton" destination="vf3-Iw-8qL" id="5eX-FM-yeP"/>
+                        <outlet property="myPlanLabel" destination="ReO-7a-tKe" id="qS3-wd-PEi"/>
+                        <outlet property="startButton" destination="j8w-Be-W0j" id="Vsa-Fl-0V8"/>
+                        <outlet property="startLabel" destination="lEi-iZ-J3O" id="5Zc-lK-nI7"/>
+                        <outlet property="startPlusButton" destination="VFp-eP-pPQ" id="pVl-H1-SEt"/>
+                        <outlet property="startPlusLabel" destination="7hB-CZ-hee" id="pXB-EE-juu"/>
+                        <outlet property="strongButton" destination="A9J-aB-YdI" id="VgX-Ai-zFS"/>
+                        <outlet property="strongLabel" destination="WM5-Az-TI2" id="xSL-MG-9TU"/>
+                        <outlet property="strongPlusButton" destination="5Oy-5s-XEY" id="gHI-gK-upr"/>
+                        <outlet property="strongPlusLabel" destination="C8u-fp-3hP" id="HM7-iJ-Mpp"/>
                         <outlet property="viewTab" destination="0iL-R5-CwQ" id="hdm-Sz-1kf"/>
                     </connections>
                 </viewController>
