@@ -28,13 +28,13 @@ class SelectPlanView: UIViewController {
     var selectsButtons: [UIButton] = []
     let backgroundColor: UIColor = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     // Переменная для отслеживания состояния выбора
-    var isSelectedMode: Bool = false
+    var selectedButtonTag = 2 // дефолтный план 16-8
     let labelLayer = UILabel()
     var buttonSelectTempButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundColor
         viewTab.backgroundColor = backgroundColor
@@ -66,17 +66,18 @@ class SelectPlanView: UIViewController {
         setupButton()
         
         // Восстанавливаем выбранную кнопку по tag
-            if let selectedButtonTag = UserDefaults.standard.value(forKey: "selectedButtonTag") as? Int {
-                for button in selectsButtons {
-                    if button.tag == selectedButtonTag {
-                        buttonSelectTempButton = button
-                        selectPlanView(button)
-                        print("загрузка button.tag")
-                        break
-                    }
-                }
+        if let selectedButtonTempTag = UserDefaults.standard.value(forKey: "selectedButtonTag") as? Int {
+            selectedButtonTag = selectedButtonTempTag
+        }
+        for button in selectsButtons {
+            if button.tag == selectedButtonTag {
+                buttonSelectTempButton = button
+                selectPlanView(button)
+                print("загрузка button.tag")
+                
             }
-
+        }
+        
     }
     
     private func setupButton() {
@@ -90,7 +91,7 @@ class SelectPlanView: UIViewController {
             button.clipsToBounds = true
             button.imageView?.contentMode = .scaleToFill // Изображение масштабируется
         }
-
+        
         // Устанавливаем изображение
         if let image = UIImage(named: "myPlans") {
             let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
@@ -126,10 +127,18 @@ class SelectPlanView: UIViewController {
         
         startPlusLabel.isHidden = true
         strongPlusLabel.isHidden = true
-
+        
+        myPlanButton.isHidden = true
+        myPlanLabel.isHidden = true
     }
     
     @IBAction func myPlanButtonTapped(_ sender: UIButton) {
+        //        if buttonSelectTempButton == sender {
+        //            deleteSelectPlanView()
+        //        } else {
+        //            deleteSelectPlanView()
+        //            selectPlanView(sender)
+        //        }
         deleteSelectPlanView()
         selectPlanView(sender)
     }
@@ -164,10 +173,10 @@ class SelectPlanView: UIViewController {
         
         // Сохранение тега выбранной кнопки
         UserDefaults.standard.set(button.tag, forKey: "selectedButtonTag")
-
+        
         buttonSelectTempButton = button
-        button.layer.borderColor = UIColor.systemGreen.cgColor // Зелёная обводка
-
+        button.layer.borderColor = UIColor.green.cgColor // Зелёная обводка
+        button.layer.borderWidth = 6
         // Создание метки
         
         labelLayer.text = "Вибраний"
@@ -192,8 +201,8 @@ class SelectPlanView: UIViewController {
     }
     
     func deleteSelectPlanView() {
-        if let buttonselect = buttonSelectTempButton {
-            buttonselect.layer.borderColor = UIColor.clear.cgColor
+        if let buttonSelect = buttonSelectTempButton {
+            buttonSelect.layer.borderColor = UIColor.clear.cgColor
             labelLayer.removeFromSuperview()
         }
     }
