@@ -7,6 +7,10 @@
 
 import UIKit
 
+//protocol SelectPlanDelegate: AnyObject {
+//    func didUpdatePlan(timeResting: Int, timeFasting: Int)
+//}
+
 class ViewController: UIViewController {
     
     private var datePickerManager: DatePickerManager!
@@ -45,8 +49,8 @@ class ViewController: UIViewController {
     private var countdownTimer: Timer?
     private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
     
-    var timeResting = 8 * 3600 // время голодания
-    var timeFasting = 16 * 3600 // время приёма пищи
+    var timeResting = 16 * 3600 // время голодания
+    var timeFasting = 8 * 3600 // время приёма пищи
     var timeWait = 16 * 3600 // стартовое время таймера
     
     var startDate: Date?
@@ -104,7 +108,13 @@ class ViewController: UIViewController {
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20) 
         planButton.setTitle("16-8", for: .normal)
         
-        
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
+    }
+    
+    func updatePlan(timeResting: Int, timeFasting: Int) {
+        self.timeResting = timeResting
+        self.timeFasting = timeFasting
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -287,9 +297,19 @@ class ViewController: UIViewController {
     //        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
     //    }
     
-    //    @IBAction func planButton(_ sender: UIButton) {
-    //        performSegue(withIdentifier: "selectPlanSegue", sender: nil)
-    //    }
+    //        @IBAction func planButton(_ sender: UIButton) {
+    //            performSegue(withIdentifier: "selectPlanSegue", sender: nil)
+    //        }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "selectPlanSegue" {
+            if let selectPlanVC = segue.destination as? SelectPlanView {
+                // Передаем ссылку на текущий контроллер
+                selectPlanVC.parentVC = self
+            }
+        }
+    }
+    
     
 }
 

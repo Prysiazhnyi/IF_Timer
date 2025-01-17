@@ -9,6 +9,8 @@ import UIKit
 
 class SelectPlanView: UIViewController {
     
+    var parentVC: ViewController? // Ссылка на первый контроллер
+    
     @IBOutlet weak var viewTab: UIView!
     
     @IBOutlet weak var myPlanLabel: UILabel!
@@ -141,31 +143,48 @@ class SelectPlanView: UIViewController {
         //        }
         deleteSelectPlanView()
         selectPlanView(sender)
+        //parentVC?.updatePlan(timeResting: 16 * 3600, timeFasting: 8 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func basicButtonTapped(_ sender: UIButton) {
         deleteSelectPlanView()
         selectPlanView(sender)
+        
+        parentVC?.updatePlan(timeResting: 16 * 3600, timeFasting: 8 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
         deleteSelectPlanView()
         selectPlanView(sender)
+        
+        parentVC?.updatePlan(timeResting: 12 * 3600, timeFasting: 12 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func startPlusButtonTapped(_ sender: UIButton) {
         deleteSelectPlanView()
         selectPlanView(sender)
+        
+        parentVC?.updatePlan(timeResting: 14 * 3600, timeFasting: 10 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func strongButtonTapped(_ sender: UIButton) {
         deleteSelectPlanView()
         selectPlanView(sender)
+        
+        parentVC?.updatePlan(timeResting: 18 * 3600, timeFasting: 6 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     @IBAction func strongPlusButtonTapped(_ sender: UIButton) {
         deleteSelectPlanView()
         selectPlanView(sender)
+        
+        parentVC?.updatePlan(timeResting: 20 * 3600, timeFasting: 4 * 3600)
+        navigationController?.popViewController(animated: true)
     }
     
     

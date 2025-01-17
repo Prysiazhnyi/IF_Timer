@@ -77,7 +77,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <segue destination="KEf-e8-v5F" kind="show" id="lah-A1-XZs"/>
+                                                    <segue destination="KEf-e8-v5F" kind="show" identifier="selectPlanSegue" id="lah-A1-XZs"/>
                                                 </connections>
                                             </button>
                                         </subviews>
