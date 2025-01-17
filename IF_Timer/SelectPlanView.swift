@@ -35,6 +35,9 @@ class SelectPlanView: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        basicButton.setBackgroundImage(UIImage(named: "16-8.jpg"), for: .normal)
+
+        
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundColor
         viewTab.backgroundColor = backgroundColor
@@ -67,27 +70,46 @@ class SelectPlanView: UIViewController {
     }
     
     private func setupButton() {
-        
         for button in selectsButtons {
             button.layer.cornerRadius = 25
             button.layer.borderWidth = 2
-            button.layer.borderColor = UIColor.clear.cgColor // Без обводки по умолчанию
+            button.layer.borderColor = UIColor.clear.cgColor
             button.titleLabel?.numberOfLines = 2
-            button.backgroundColor = UIColor.white
+            button.backgroundColor = .clear // Убедитесь, что фон прозрачный
+            button.setTitle("", for: .normal)
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleToFill // Изображение масштабируется
         }
+
+        // Устанавливаем изображение
+        if let image = UIImage(named: "myPlans") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            myPlanButton.setImage(resizedImage, for: .normal)
+        }
+        if let image = UIImage(named: "16-8") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            basicButton.setImage(resizedImage, for: .normal)
+        }
+        if let image = UIImage(named: "12-12") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            startButton.setImage(resizedImage, for: .normal)
+        }
+        if let image = UIImage(named: "14-10") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            startPlusButton.setImage(resizedImage, for: .normal)
+        }
+        if let image = UIImage(named: "18-6") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            strongButton.setImage(resizedImage, for: .normal)
+        }
+        if let image = UIImage(named: "20-4") {
+            let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
+            strongPlusButton.setImage(resizedImage, for: .normal)
+        }
+
     }
-    
-    private func setupButton2() {
-        basicButton.layer.cornerRadius = 25
-        basicButton.layer.borderWidth = 2
-        basicButton.layer.borderColor = UIColor.clear.cgColor // Без обводки по умолчанию
-        basicButton.setTitle("16-8\n⚡⚡⚡", for: .normal)
-        basicButton.titleLabel?.numberOfLines = 2
-        basicButton.titleLabel?.textAlignment = .left // Текст слева
-        basicButton.backgroundColor = UIColor.white
-        
-        
-    }
+
+
     
     @IBAction func myPlanButtonTapped(_ sender: UIButton) {
         
@@ -161,4 +183,14 @@ class SelectPlanView: UIViewController {
         }
     }
     
+}
+
+extension UIImage {
+    func resized(to size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0.0)
+        self.draw(in: CGRect(origin: .zero, size: size))
+        let resizedImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return resizedImage
+    }
 }
