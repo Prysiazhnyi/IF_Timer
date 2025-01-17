@@ -34,10 +34,7 @@ class SelectPlanView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        basicButton.setBackgroundImage(UIImage(named: "16-8.jpg"), for: .normal)
 
-        
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundColor
         viewTab.backgroundColor = backgroundColor
@@ -67,6 +64,19 @@ class SelectPlanView: UIViewController {
         selectsButtons = [myPlanButton, basicButton, startButton, startPlusButton, strongButton, strongPlusButton]
         
         setupButton()
+        
+        // Восстанавливаем выбранную кнопку по tag
+            if let selectedButtonTag = UserDefaults.standard.value(forKey: "selectedButtonTag") as? Int {
+                for button in selectsButtons {
+                    if button.tag == selectedButtonTag {
+                        buttonSelectTempButton = button
+                        selectPlanView(button)
+                        print("загрузка button.tag")
+                        break
+                    }
+                }
+            }
+
     }
     
     private func setupButton() {
@@ -106,43 +116,45 @@ class SelectPlanView: UIViewController {
             let resizedImage = image.resized(to: CGSize(width: 340, height: 140))
             strongPlusButton.setImage(resizedImage, for: .normal)
         }
+        
+        myPlanButton.tag = 1
+        basicButton.tag = 2
+        startButton.tag = 3
+        startPlusButton.tag = 4
+        strongButton.tag = 5
+        strongPlusButton.tag = 6
+        
+        startPlusLabel.isHidden = true
+        strongPlusLabel.isHidden = true
 
     }
-
-
     
     @IBAction func myPlanButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
     
     @IBAction func basicButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
     
     @IBAction func startPlusButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
     
     @IBAction func strongButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
     
     @IBAction func strongPlusButtonTapped(_ sender: UIButton) {
-        
         deleteSelectPlanView()
         selectPlanView(sender)
     }
@@ -150,9 +162,12 @@ class SelectPlanView: UIViewController {
     
     func selectPlanView(_ button: UIButton) {
         
+        // Сохранение тега выбранной кнопки
+        UserDefaults.standard.set(button.tag, forKey: "selectedButtonTag")
+
         buttonSelectTempButton = button
         button.layer.borderColor = UIColor.systemGreen.cgColor // Зелёная обводка
-        
+
         // Создание метки
         
         labelLayer.text = "Вибраний"
@@ -170,9 +185,9 @@ class SelectPlanView: UIViewController {
         // Настройка Auto Layout для метки
         NSLayoutConstraint.activate([
             labelLayer.centerXAnchor.constraint(equalTo: button.centerXAnchor), // Центрировать по горизонтали относительно кнопки
-            labelLayer.bottomAnchor.constraint(equalTo: button.topAnchor, constant: 15), // Привязка к верхней границе кнопки с небольшим смещением
+            labelLayer.bottomAnchor.constraint(equalTo: button.topAnchor, constant: 12), // Привязка к верхней границе кнопки с небольшим смещением
             labelLayer.widthAnchor.constraint(greaterThanOrEqualToConstant: 100), // Минимальная ширина метки
-            labelLayer.heightAnchor.constraint(equalToConstant: 30) // Высота метки
+            labelLayer.heightAnchor.constraint(equalToConstant: 24) // Высота метки
         ])
     }
     
@@ -181,6 +196,11 @@ class SelectPlanView: UIViewController {
             buttonselect.layer.borderColor = UIColor.clear.cgColor
             labelLayer.removeFromSuperview()
         }
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UserDefaults.standard.set(buttonSelectTempButton.tag, forKey: "selectedButtonTag")
+        print("сохранение при выходе с экрана - \(buttonSelectTempButton.tag)")
     }
     
 }
