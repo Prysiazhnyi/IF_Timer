@@ -111,11 +111,29 @@ class ViewController: UIViewController {
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
     
-    func updatePlan(timeResting: Int, timeFasting: Int) {
+    enum Plan: String {
+        case myPlan = "Мой план"
+        case basic = "16-8"
+        case start = "12-12"
+        case startPlus = "14-10"
+        case strong = "18-6"
+        case strongPlus = "20-4"
+        
+        var description: String {
+            return self.rawValue
+        }
+    }
+
+    func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
+        
+        // Обновляем текст метки
+        planButton.setTitle(selectedPlan.description, for: .normal)
+        
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
