@@ -56,7 +56,7 @@ class ViewController: UIViewController {
     var timeFasting = 8 * 3600 // время приёма пищи
     var timeWait = 16 * 3600 // стартовое время таймера
     
-    var startDate: Date?
+    var startDate = Date()
     var finishDate: Date?
     
     enum Plan: String {
@@ -89,6 +89,7 @@ class ViewController: UIViewController {
         setupButtonsStart()
         startTimer()
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
+        print("startDate начало  - \(startDate)) ")
 
     }
     
@@ -108,10 +109,8 @@ class ViewController: UIViewController {
             if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
                 savedStartDate = savedDate
                 print("загрузка savedDate - \(savedDate)")
-            } else {
-                savedStartDate = Date()  // Если нет сохраненной даты, используем текущую
-                print("ошибка загрузки savedDate - (savedDate) = Data")
-            }
+            } 
+            self.startDate = savedStartDate ?? Date()
             
             // Загружаем сохраненное время ожидания
             var savedTimeWait: TimeInterval?
@@ -293,53 +292,56 @@ class ViewController: UIViewController {
     //MARK: Timer
     
     private func startTimer() {
+        // Останавливаем предыдущий таймер, если он существует
+        countdownTimer?.invalidate()
         
         // Если таймер запущен (не голодание)
-        if !isStarvation, let startDate = self.startDate {
+        if isStarvation {
             
             // Вычисляем оставшееся время
             remainingTime = Double(timeWait) - currentTime.timeIntervalSince(startDate)
-            
-            // Запускаем таймер
-            // Останавливаем предыдущий таймер, если он существует
-            countdownTimer?.invalidate()
             
             // Создаем новый таймер
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
             }
-            print("старт таймера голодания, остаток - \(remainingTime)")
+            titleProgressLabel.text = "Залишилось часу"
+            print("старт таймера голодания, остаток - \(remainingTime / 3600)")
             
         } else {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm:ss"
-            let formattedTime = dateFormatter.string(from: currentTime)
+            countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
 
-            timerProgressLabel.text = formattedTime
+            percentProgressLabel.text = ""
+            titleProgressLabel.text = "Поточний час"
             print("голодание не запущено - \(isStarvation)" )
         }
     }
+    
+    @objc private func updateCurrentTime() {
+        // Получаем текущее время
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
+
+        // Обновляем метку с текущим временем
+        timerProgressLabel.text = formattedTime
+    }
+    
     private func updateCountdown() {
-        // Уменьшаем оставшееся время
-        if remainingTime > 0 {
             remainingTime -= 1
             updateTimerLabel()
             
             // Обновляем прогресс (например, по пропорции)
             valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeWait))
-        } else {
-            // Останавливаем таймер, если время истекло
-            countdownTimer?.invalidate()
-            countdownTimer = nil
-            timerProgressLabel.text = "00:00:00"
-        }
     }
+    
     private func updateTimerLabel() {
         // Форматируем оставшееся время в HH:MM:SS
         let hours = Int(remainingTime) / 3600
         let minutes = (Int(remainingTime) % 3600) / 60
         let seconds = Int(remainingTime) % 60
-        timerProgressLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        let sign = (hours > 0 || minutes > 0 || seconds > 0) ? "" : "+"
+        timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
     }
     
     // MARK: Button Start Info
@@ -347,13 +349,16 @@ class ViewController: UIViewController {
     @IBAction func startButtonTapped(_ sender: UIButton) {
         datePickerManager.showDatePicker(mode: .dateAndTime) { [self] selectedDate in
             self.setButtonTitle(for: sender, date: selectedDate)
-            
+            startDate = selectedDate
             // Сохраняем выбранную дату
             UserDefaults.standard.set(selectedDate, forKey: "startDate")
             UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
             updateFinishDateButton()
             finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
+            startTimer()
         }
+        print("startDate начало  - \(startDate)) ")
+        //startTimer()
     }
     
     func updateFinishDateButton() {
@@ -443,8 +448,6 @@ class ViewController: UIViewController {
                 }
             print("тут должен вызваться алерт окончания голодания")
         }
-        
-        
         UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
     }
     
