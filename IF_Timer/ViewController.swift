@@ -74,7 +74,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadSaveDate() // загрузка данных
         setupTitle()
         
         datePickerManager = DatePickerManager(parentViewController: self)
@@ -87,14 +87,14 @@ class ViewController: UIViewController {
         setupCircularProgress()
         setupButtonsInfo()
         setupButtonsStart()
-        loadSaveDate() // загрузка данных
-       
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
+        
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
 
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         updateProgress(valueProgress)
         startTimer()
         updateFinishDateButton()
@@ -121,8 +121,14 @@ class ViewController: UIViewController {
                 print("ошибка загрузки timeWait")
             }
             
+            if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
+                self.isStarvation = tempIsStarvation
+                print("isStarvation - \(self.isStarvation)")
+            }
+           
             // Обновляем UI на главном потоке
             DispatchQueue.main.async {
+                
                 if let savedStartDate = savedStartDate {
                     self.setButtonTitle(for: self.startButton, date: savedStartDate)
                     self.startDate = savedStartDate
@@ -158,6 +164,8 @@ class ViewController: UIViewController {
                 } else {
                     print("ошибка загрузки timeFasting")
                 }
+                
+              
             }
         }
     }
@@ -168,11 +176,7 @@ class ViewController: UIViewController {
         titleLabel.textAlignment = .center // Выравнивание по центру
         titleLabel.textColor = .black // Цвет текста (можно изменить)
         titleLabel.font = UIFont.boldSystemFont(ofSize: 20) // Увеличиваем шрифт и делаем его жирным
-        if isStarvation {
-            titleLabel.text = "Вікно голодування"
-        } else {
-            titleLabel.text = "Почніть вікно голодування"
-        }
+        isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
         
@@ -247,7 +251,13 @@ class ViewController: UIViewController {
             button.layer.cornerRadius = 25
             button.layer.masksToBounds = true
             if button == startOrFinishButton {
-                button.backgroundColor = UIColor.systemGreen
+                if isStarvation {
+                    startOrFinishButton.backgroundColor = .systemRed
+                    startOrFinishButton.setTitle("Закінчити голодування", for: .normal)
+                } else {
+                    button.backgroundColor = UIColor.systemGreen
+                    startOrFinishButton.setTitle("Почати голодування", for: .normal)
+                }
             }
             if button == remindeButton {
                 button.backgroundColor = .clear
@@ -402,6 +412,8 @@ class ViewController: UIViewController {
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
         isStarvation.toggle()
         setupButtonsStart()
+        setupTitle()
+        UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -410,6 +422,7 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
         UserDefaults.standard.set(timeResting, forKey: "timeResting")
         UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
+        UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
     }
     
     deinit {
