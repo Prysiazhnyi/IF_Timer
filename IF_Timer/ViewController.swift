@@ -48,6 +48,7 @@ class ViewController: UIViewController {
     // Таймер
     private var countdownTimer: Timer?
     private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
+    let currentTime = Date()
     
     var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
@@ -86,7 +87,7 @@ class ViewController: UIViewController {
         setupCircularProgress()
         setupButtonsInfo()
         setupButtonsStart()
-        
+        startTimer()
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
 
     }
@@ -95,8 +96,9 @@ class ViewController: UIViewController {
         super.viewWillAppear(animated)
         
         updateProgress(valueProgress)
-        startTimer()
         updateFinishDateButton()
+        startTimer()
+        
     }
     
     func loadSaveDate() {
@@ -291,12 +293,30 @@ class ViewController: UIViewController {
     //MARK: Timer
     
     private func startTimer() {
-        // Останавливаем предыдущий таймер, если он существует
-        countdownTimer?.invalidate()
         
-        // Создаем новый таймер
-        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            self?.updateCountdown()
+        // Если таймер запущен (не голодание)
+        if !isStarvation, let startDate = self.startDate {
+            
+            // Вычисляем оставшееся время
+            remainingTime = Double(timeWait) - currentTime.timeIntervalSince(startDate)
+            
+            // Запускаем таймер
+            // Останавливаем предыдущий таймер, если он существует
+            countdownTimer?.invalidate()
+            
+            // Создаем новый таймер
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.updateCountdown()
+            }
+            print("старт таймера голодания, остаток - \(remainingTime)")
+            
+        } else {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss"
+            let formattedTime = dateFormatter.string(from: currentTime)
+
+            timerProgressLabel.text = formattedTime
+            print("голодание не запущено - \(isStarvation)" )
         }
     }
     private func updateCountdown() {
@@ -410,8 +430,11 @@ class ViewController: UIViewController {
     
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
         isStarvation.toggle()
+        print(" Тут нажал на запуск голодания - \(isStarvation)")
+        
         setupButtonsStart()
         setupTitle()
+        startTimer()
         
         if !isStarvation {
             let alertVC = CustomAlertViewController()
@@ -437,36 +460,6 @@ class ViewController: UIViewController {
     deinit {
         countdownTimer?.invalidate()
     }
-    
-//    func showFinishStarvationAlert() {
-//        let alertController = UIAlertController(title: "Перервати інтервал голоду?",
-//                                                message: "Ви дійсно хочете перервати інтервал голоду?",
-//                                                preferredStyle: .alert)
-//        
-//        // Создание кнопки "ТАК"
-//        let yesAction = UIAlertAction(title: "ТАК", style: .default) { _ in
-//            print("Нажата кнопка ТАК")
-//        }
-//        yesAction.setValue(UIColor.systemGray4, forKey: "backgroundColor")
-//        yesAction.setValue(UIColor.black, forKey: "titleTextColor")
-//        
-//        // Создание кнопки "НІ"
-//        let noAction = UIAlertAction(title: "НІ", style: .default) { _ in
-//            print("Нажата кнопка НІ")
-//        }
-//        noAction.setValue(UIColor.systemGreen, forKey: "backgroundColor")
-//        noAction.setValue(UIColor.white, forKey: "titleTextColor")
-//        
-//        // Добавление кнопок в алерт
-//        alertController.addAction(yesAction)
-//        alertController.addAction(noAction)
-//        
-//        // Настройка скругления углов алерта
-//        alertController.view.layer.cornerRadius = 15
-//        
-//        // Отображение алерта
-//        self.present(alertController, animated: true, completion: nil)
-//    }
 }
 
 
