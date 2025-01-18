@@ -45,6 +45,7 @@ class ViewController: UIViewController {
     private var countdownTimer: Timer?
     private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
     
+    
     var timeResting = 16 * 3600 // время голодания
     var timeFasting = 8 * 3600 // время приёма пищи
     var timeWait = 16 * 3600 // стартовое время таймера
@@ -89,52 +90,96 @@ class ViewController: UIViewController {
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         setupCircularProgress()
         setupButtons()
-        
-        // Загрузка сохраненной даты и отображение на кнопке
-        if let savedDate = UserDefaults.standard.loadStartDate() {
-            setButtonTitle(for: startButton, date: savedDate)
-            startDate = savedDate
-        } else {
-            // Если нет сохраненной даты, устанавливаем текущую дату
-            startDate = Date()
-            setButtonTitle(for: startButton, date: Date())
-        }
-        
-        // Загрузка сохраненного времени ожидания
-        if let savedTimeWait = UserDefaults.standard.loadTimeWait(), let savedStartDate = UserDefaults.standard.loadStartDate() {
-            finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
-            updateFinishDateButton()  // Обновляем кнопку сразу
-        } else {
-            // Если нет сохраненной даты завершения, устанавливаем "Скоро"
-            finishButton.setTitle("Скоро", for: .normal)
-            
-            // Устанавливаем цвет текста и размер шрифта
-            finishButton.titleLabel?.font = UIFont.systemFont(ofSize: 17) // Увеличиваем шрифт
-            finishButton.setTitleColor(.black, for: .normal) // Черный цвет
-        }
-        
+        loadSaveDate() // загрузка данных
         planButton.setTitleColor(.black, for: .normal)
-        planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20) 
+        planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planButton.setTitle("16-8", for: .normal)
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
         
-        if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
-            planButton.setTitle(rawValue, for: .normal)
-            }
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
+    }
+    
+    func loadSaveDate() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            var savedStartDate: Date?
+            // Загрузка сохраненной даты и отображение на кнопке
+            if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
+                savedStartDate = savedDate
+                print("загрузка savedDate - \(savedDate)")
+            } else {
+                savedStartDate = Date()  // Если нет сохраненной даты, используем текущую
+                print("ошибка загрузки savedDate - (savedDate) = Data")
+            }
+            
+            // Загружаем сохраненное время ожидания
+            var savedTimeWait: TimeInterval?
+            if let timeWait = UserDefaults.standard.object(forKey: "timeWait") as? TimeInterval {
+                savedTimeWait = timeWait
+                print("загрузка timeWait - \(timeWait / 3600)")
+            } else {
+                print("ошибка загрузки timeWait")
+            }
+            
+            // Обновляем UI на главном потоке
+            DispatchQueue.main.async {
+                if let savedStartDate = savedStartDate {
+                    self.setButtonTitle(for: self.startButton, date: savedStartDate)
+                    self.startDate = savedStartDate
+                }
+                
+                // Загружаем время завершения
+                if let savedTimeWait = savedTimeWait, let savedStartDate = savedStartDate {
+                    self.finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
+                    self.updateFinishDateButton()  // Обновляем кнопку сразу
+                } else {
+                    // Если нет сохраненной даты завершения, устанавливаем "Скоро"
+                    self.finishButton.setTitle("Скоро", for: .normal)
+                    self.finishButton.titleLabel?.font = UIFont.systemFont(ofSize: 17) // Увеличиваем шрифт
+                    self.finishButton.setTitleColor(.black, for: .normal) // Черный цвет
+                }
+                
+                if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
+                    self.planButton.setTitle(rawValue, for: .normal)
+                    print("загрузка selectedMyPlan - \(rawValue)")
+                } else {
+                    print("ошибка загрузки selectedMyPlan")
+                }
+                
+                if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
+                    self.timeResting = saveTimeResting
+                    print("загрузка timeResting - \(self.timeResting / 3600)")
+                } else {
+                    print("ошибка загрузки timeResting")
+                }
+                if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
+                    self.timeFasting = saveTimeFasting
+                    print("загрузка timeFasting - \(self.timeFasting / 3600)")
+                } else {
+                    print("ошибка загрузки timeFasting")
+                }
+            }
+        }
+    }
+    
     func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
         
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
+        
+        UserDefaults.standard.set(timeResting, forKey: "timeResting")
+        UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
-
+    
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -242,9 +287,8 @@ class ViewController: UIViewController {
             self.setButtonTitle(for: sender, date: selectedDate)
             
             // Сохраняем выбранную дату
-            UserDefaults.standard.saveStartDate(selectedDate)
-            UserDefaults.standard.saveTimeWait(TimeInterval(timeWait))
-            // updateTimeWait(timeWait)
+            UserDefaults.standard.set(selectedDate, forKey: "startDate")
+            UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
             updateFinishDateButton()
             finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
         }
@@ -311,15 +355,6 @@ class ViewController: UIViewController {
         button.titleLabel?.textAlignment = .center // Выравниваем по центру
     }
     
-    //    func updateTimeWait(_ newTimeWait: Int) {
-    //        timeWait = newTimeWait
-    //        UserDefaults.standard.saveTimeWait(TimeInterval(newTimeWait))
-    //    }
-    
-    //        @IBAction func planButton(_ sender: UIButton) {
-    //            performSegue(withIdentifier: "selectPlanSegue", sender: nil)
-    //        }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectPlanSegue" {
             if let selectPlanVC = segue.destination as? SelectPlanView {
@@ -328,34 +363,21 @@ class ViewController: UIViewController {
             }
         }
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        UserDefaults.standard.set(startDate, forKey: "startDate")
+        UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
+        UserDefaults.standard.set(timeResting, forKey: "timeResting")
+        UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
+    }
+
+    
     deinit {
         countdownTimer?.invalidate()
     }
-
     
-}
-
-extension UserDefaults {
-    private enum Keys {
-        static let startDate = "startDate"
-        static let timeWait = "timeWait"
-        //static let timeWait = "timeWait"
-    }
     
-    func saveStartDate(_ date: Date) {
-        set(date, forKey: Keys.startDate)
-    }
-    
-    func loadStartDate() -> Date? {
-        object(forKey: Keys.startDate) as? Date
-    }
-    func saveTimeWait(_ time: TimeInterval) {
-        set(time, forKey: Keys.timeWait)
-    }
-    
-    func loadTimeWait() -> TimeInterval? {
-        object(forKey: Keys.timeWait) as? TimeInterval
-    }
 }
 
 
