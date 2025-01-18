@@ -7,10 +7,6 @@
 
 import UIKit
 
-//protocol SelectPlanDelegate: AnyObject {
-//    func didUpdatePlan(timeResting: Int, timeFasting: Int)
-//}
-
 class ViewController: UIViewController {
     
     private var datePickerManager: DatePickerManager!
@@ -55,6 +51,19 @@ class ViewController: UIViewController {
     
     var startDate: Date?
     var finishDate: Date?
+    
+    enum Plan: String {
+        case myPlan = "Мой план"
+        case basic = "16-8"
+        case start = "12-12"
+        case startPlus = "14-10"
+        case strong = "18-6"
+        case strongPlus = "20-4"
+        
+        var selectedMyPlan: String {
+            return self.rawValue
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,19 +118,10 @@ class ViewController: UIViewController {
         planButton.setTitle("16-8", for: .normal)
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
-    }
-    
-    enum Plan: String {
-        case myPlan = "Мой план"
-        case basic = "16-8"
-        case start = "12-12"
-        case startPlus = "14-10"
-        case strong = "18-6"
-        case strongPlus = "20-4"
         
-        var description: String {
-            return self.rawValue
-        }
+        if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
+            planButton.setTitle(rawValue, for: .normal)
+            }
     }
 
     func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
@@ -129,7 +129,8 @@ class ViewController: UIViewController {
         self.timeFasting = timeFasting
         
         // Обновляем текст метки
-        planButton.setTitle(selectedPlan.description, for: .normal)
+        planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
+        UserDefaults.standard.set(selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
@@ -327,7 +328,10 @@ class ViewController: UIViewController {
             }
         }
     }
-    
+    deinit {
+        countdownTimer?.invalidate()
+    }
+
     
 }
 
@@ -335,6 +339,7 @@ extension UserDefaults {
     private enum Keys {
         static let startDate = "startDate"
         static let timeWait = "timeWait"
+        //static let timeWait = "timeWait"
     }
     
     func saveStartDate(_ date: Date) {
