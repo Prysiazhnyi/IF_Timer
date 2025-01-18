@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-    
+class ViewController: UIViewController, CustomAlertDelegate {
+   
     private var datePickerManager: DatePickerManager!
     
     @IBOutlet weak var progressBar: UIView!
@@ -109,7 +109,7 @@ class ViewController: UIViewController {
             if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
                 savedStartDate = savedDate
                 print("загрузка savedDate - \(savedDate)")
-            } 
+            }
             self.startDate = savedStartDate ?? Date()
             
             // Загружаем сохраненное время ожидания
@@ -291,7 +291,7 @@ class ViewController: UIViewController {
     
     //MARK: Timer
     
-    private func startTimer() {
+        func startTimer() {
         // Останавливаем предыдущий таймер, если он существует
         countdownTimer?.invalidate()
         
@@ -437,19 +437,30 @@ class ViewController: UIViewController {
         isStarvation.toggle()
         print(" Тут нажал на запуск голодания - \(isStarvation)")
         
-        setupButtonsStart()
-        setupTitle()
-        startTimer()
+//        setupButtonsStart()
+//        setupTitle()
+//        startTimer()
         
         if !isStarvation {
             let alertVC = CustomAlertViewController()
+            // Устанавливаем делегат перед презентацией
+                    alertVC.delegate = self
+
                 self.present(alertVC, animated: true) {
                     alertVC.showCustomAlert()
                 }
             print("тут должен вызваться алерт окончания голодания")
+        } else {
+            didTapYesButton()
         }
         UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
     }
+    
+    func didTapYesButton() {
+            setupButtonsStart()
+            setupTitle()
+            startTimer()
+        }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)

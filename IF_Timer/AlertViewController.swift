@@ -7,10 +7,18 @@
 
 import UIKit
 
+protocol CustomAlertDelegate: AnyObject {
+    func didTapYesButton()
+   // func didTapNoButton()
+}
+
 class CustomAlertViewController: UIViewController {
+    
+    weak var delegate: CustomAlertDelegate?
     
     // Функция для отображения кастомного алерта
     func showCustomAlert() {
+        
         // Создаем затемнение для фона
         let overlayView = UIView(frame: self.view.bounds)
         overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
@@ -92,9 +100,11 @@ class CustomAlertViewController: UIViewController {
     
     @objc private func yesButtonTapped() {
         print("Нажата кнопка ТАК")
+        delegate?.didTapYesButton()
         dismissAlert()
             // Если нужно просто закрыть алерт, то достаточно его убрать
             self.dismiss(animated: true, completion: nil)
+      
     }
     
     @objc private func noButtonTapped() {

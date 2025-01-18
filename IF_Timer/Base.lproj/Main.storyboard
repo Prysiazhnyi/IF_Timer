@@ -98,7 +98,7 @@
                                                     <constraint firstAttribute="height" constant="90" id="q3Z-Gh-Jil"/>
                                                 </constraints>
                                                 <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="15"/>
-                                                <state key="normal" title="Button"/>
+                                                <state key="normal" title="Вибери"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                         <integer key="value" value="10"/>
