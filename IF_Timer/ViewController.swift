@@ -29,7 +29,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var startStackView: UIStackView!
     @IBOutlet weak var finishStackView: UIStackView!
     
+    @IBOutlet weak var startOrFinishButton: UIButton!
+    @IBOutlet weak var remindeButton: UIButton!
+    @IBOutlet weak var myProfilButton: UIButton!
     
+    
+    var isStarvation: Bool = false
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
@@ -45,6 +50,7 @@ class ViewController: UIViewController {
     private var countdownTimer: Timer?
     private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
     
+    var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     var timeResting = 16 * 3600 // время голодания
     var timeFasting = 8 * 3600 // время приёма пищи
@@ -69,39 +75,29 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Создаем UILabel
-        let titleLabel = UILabel()
-        titleLabel.textAlignment = .center // Выравнивание по центру
-        titleLabel.textColor = .black // Цвет текста (можно изменить)
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 20) // Увеличиваем шрифт и делаем его жирным
-        titleLabel.text = "Вікно голодування"
-        // Устанавливаем UILabel как titleView
-        navigationItem.titleView = titleLabel
-        
-        //title = "Вікно голодування"
-        navigationItem.backButtonTitle = ""
-        navigationController?.navigationBar.tintColor = .gray
+        setupTitle()
         
         datePickerManager = DatePickerManager(parentViewController: self)
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
-        view.backgroundColor = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
+        view.backgroundColor = backgroundTab
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
+        
         setupCircularProgress()
-        setupButtons()
+        setupButtonsInfo()
+        setupButtonsStart()
         loadSaveDate() // загрузка данных
-        planButton.setTitleColor(.black, for: .normal)
-        planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        planButton.setTitle("16-8", for: .normal)
-        
+       
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
-        
+
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateProgress(valueProgress)
+        startTimer()
+        updateFinishDateButton()
     }
     
     func loadSaveDate() {
@@ -166,6 +162,25 @@ class ViewController: UIViewController {
         }
     }
     
+    func setupTitle() {
+        // Создаем UILabel
+        let titleLabel = UILabel()
+        titleLabel.textAlignment = .center // Выравнивание по центру
+        titleLabel.textColor = .black // Цвет текста (можно изменить)
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 20) // Увеличиваем шрифт и делаем его жирным
+        if isStarvation {
+            titleLabel.text = "Вікно голодування"
+        } else {
+            titleLabel.text = "Почніть вікно голодування"
+        }
+        // Устанавливаем UILabel как titleView
+        navigationItem.titleView = titleLabel
+        
+        //title = "Вікно голодування"
+        navigationItem.backButtonTitle = ""
+        navigationController?.navigationBar.tintColor = .gray
+    }
+    
     func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
@@ -181,16 +196,9 @@ class ViewController: UIViewController {
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateProgress(valueProgress)
-        startTimer()
-        updateFinishDateButton()
-    }
-    
     //MARK: Created buttons
     
-    func setupButtons() {
+    func setupButtonsInfo() {
         
         finishButton.isUserInteractionEnabled = false
         
@@ -198,9 +206,9 @@ class ViewController: UIViewController {
         planButton.backgroundColor = UIColor(red: 174/255, green: 238/255, blue: 238/255, alpha: 0.8)  // Светло-зелено-голубой
         finishButton.backgroundColor = UIColor(red: 255/255, green: 220/255, blue: 130/255, alpha: 0.8)  // Светло-желтый с оранжевым оттенком
         
-        let buttons: [UIButton] = [startButton, planButton, finishButton]
+        let buttonsInfo: [UIButton] = [startButton, planButton, finishButton]
         
-        for button in buttons {
+        for button in buttonsInfo {
             button.layer.cornerRadius = 10
             button.layer.masksToBounds = true
             button.widthAnchor.constraint(equalToConstant: 90).isActive = true
@@ -224,6 +232,31 @@ class ViewController: UIViewController {
                     imageView.widthAnchor.constraint(equalToConstant: 24),
                     imageView.heightAnchor.constraint(equalToConstant: 24)
                 ])
+            }
+        }
+        planButton.setTitleColor(.black, for: .normal)
+        planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        planButton.setTitle("16-8", for: .normal)
+        
+    }
+    
+    func setupButtonsStart() {
+        let buttonsStart: [UIButton] = [startOrFinishButton, remindeButton, myProfilButton]
+        
+        for button in buttonsStart {
+            button.layer.cornerRadius = 25
+            button.layer.masksToBounds = true
+            if button == startOrFinishButton {
+                button.backgroundColor = UIColor.systemGreen
+            }
+            if button == remindeButton {
+                button.backgroundColor = .clear
+                button.layer.borderWidth = 2
+                button.layer.borderColor = UIColor.systemGreen.cgColor
+                isStarvation ? (button.isHidden = true) : (button.isHidden = false)
+            }
+            if button == myProfilButton {
+                button.layer.borderColor = UIColor.systemBlue.cgColor
             }
         }
     }
@@ -280,7 +313,7 @@ class ViewController: UIViewController {
         timerProgressLabel.text = String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
     
-    // MARK: Button Start
+    // MARK: Button Start Info
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
         datePickerManager.showDatePicker(mode: .dateAndTime) { [self] selectedDate in
@@ -364,6 +397,13 @@ class ViewController: UIViewController {
         }
     }
     
+    // MARK: Button Start Starvation
+    
+    @IBAction func startStarvationButtonPressed(_ sender: Any) {
+        isStarvation.toggle()
+        setupButtonsStart()
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UserDefaults.standard.set(startDate, forKey: "startDate")
@@ -371,7 +411,6 @@ class ViewController: UIViewController {
         UserDefaults.standard.set(timeResting, forKey: "timeResting")
         UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
     }
-
     
     deinit {
         countdownTimer?.invalidate()

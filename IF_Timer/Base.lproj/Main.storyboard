@@ -136,12 +136,61 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="RzF-kT-sag">
+                                <rect key="frame" x="46.666666666666657" y="609" width="300" height="170"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bhq-g5-Ngv">
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="50"/>
+                                        <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Oen-I8-bPi"/>
+                                            <constraint firstAttribute="width" constant="300" id="wPq-sd-5jN"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Почати голодування">
+                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="startStarvationButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gLm-EG-e6X"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PWz-6M-PJO">
+                                        <rect key="frame" x="0.0" y="60" width="300" height="50"/>
+                                        <color key="backgroundColor" red="0.94835660980000003" green="0.99755531549999998" blue="0.1358966352" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="300" id="Azl-PC-omR"/>
+                                            <constraint firstAttribute="height" constant="50" id="Lqn-JE-Uqh"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Нагадати пізніше">
+                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rkj-eq-LiL">
+                                        <rect key="frame" x="0.0" y="120" width="300" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemCyanColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="699-aV-Odu"/>
+                                            <constraint firstAttribute="width" constant="300" id="vnu-sP-FFj"/>
+                                        </constraints>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Мій профіль">
+                                            <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
+                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </buttonConfiguration>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="LZG-YE-LJq" firstAttribute="top" secondItem="Cwh-tI-HMI" secondAttribute="bottom" constant="30" id="8Ea-Rz-Czm"/>
+                            <constraint firstItem="RzF-kT-sag" firstAttribute="centerX" secondItem="Hhh-4m-fb6" secondAttribute="centerX" id="KKN-d8-l8Y"/>
                             <constraint firstItem="Cwh-tI-HMI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="L2c-aE-IbC"/>
+                            <constraint firstItem="RzF-kT-sag" firstAttribute="top" secondItem="LZG-YE-LJq" secondAttribute="bottom" constant="30" id="XtZ-d6-y0n"/>
                             <constraint firstItem="LZG-YE-LJq" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="q5w-NX-sDZ"/>
                             <constraint firstItem="Cwh-tI-HMI" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="x6Y-BG-EEc"/>
                         </constraints>
@@ -151,13 +200,16 @@
                         <outlet property="finishButton" destination="enn-dX-Nrs" id="icD-wa-VDr"/>
                         <outlet property="finishLabel" destination="ZAd-EG-XUi" id="LVA-7N-BsJ"/>
                         <outlet property="finishStackView" destination="0dE-bk-eie" id="Pca-KN-wui"/>
+                        <outlet property="myProfilButton" destination="rkj-eq-LiL" id="bC4-Re-ax7"/>
                         <outlet property="percentProgressLabel" destination="g4I-Zf-ebf" id="Vom-KA-NXv"/>
                         <outlet property="planButton" destination="RWj-L9-nTt" id="f1p-Bj-GYl"/>
                         <outlet property="planLabel" destination="JHA-ry-Ofs" id="mDu-Qm-MZj"/>
                         <outlet property="planStackView" destination="21e-05-Hwh" id="ybc-q5-L7S"/>
                         <outlet property="progressBar" destination="Cwh-tI-HMI" id="QTd-rt-CQv"/>
+                        <outlet property="remindeButton" destination="PWz-6M-PJO" id="sxs-qf-5JV"/>
                         <outlet property="startButton" destination="hkl-bz-AeL" id="8Q7-hw-o08"/>
                         <outlet property="startLabel" destination="NyD-Cw-hFY" id="iHp-EL-1b3"/>
+                        <outlet property="startOrFinishButton" destination="Bhq-g5-Ngv" id="66I-y7-E6Z"/>
                         <outlet property="startStackView" destination="Hhh-4m-fb6" id="hw0-te-akV"/>
                         <outlet property="timerProgressLabel" destination="CQH-l7-kk6" id="uD8-Pf-Jvl"/>
                         <outlet property="titleProgressLabel" destination="j6O-oh-gpw" id="Na8-8A-Xmw"/>
@@ -403,6 +455,9 @@
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemCyanColor">
+            <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
             <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
