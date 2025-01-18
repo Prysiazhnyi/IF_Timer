@@ -11,7 +11,6 @@ class ViewController: UIViewController {
     
     private var datePickerManager: DatePickerManager!
     
-    
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
     @IBOutlet weak var timerProgressLabel: UILabel!
@@ -413,6 +412,16 @@ class ViewController: UIViewController {
         isStarvation.toggle()
         setupButtonsStart()
         setupTitle()
+        
+        if !isStarvation {
+            let alertVC = CustomAlertViewController()
+                self.present(alertVC, animated: true) {
+                    alertVC.showCustomAlert()
+                }
+            print("тут должен вызваться алерт окончания голодания")
+        }
+        
+        
         UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
     }
     
@@ -429,7 +438,35 @@ class ViewController: UIViewController {
         countdownTimer?.invalidate()
     }
     
-    
+//    func showFinishStarvationAlert() {
+//        let alertController = UIAlertController(title: "Перервати інтервал голоду?",
+//                                                message: "Ви дійсно хочете перервати інтервал голоду?",
+//                                                preferredStyle: .alert)
+//        
+//        // Создание кнопки "ТАК"
+//        let yesAction = UIAlertAction(title: "ТАК", style: .default) { _ in
+//            print("Нажата кнопка ТАК")
+//        }
+//        yesAction.setValue(UIColor.systemGray4, forKey: "backgroundColor")
+//        yesAction.setValue(UIColor.black, forKey: "titleTextColor")
+//        
+//        // Создание кнопки "НІ"
+//        let noAction = UIAlertAction(title: "НІ", style: .default) { _ in
+//            print("Нажата кнопка НІ")
+//        }
+//        noAction.setValue(UIColor.systemGreen, forKey: "backgroundColor")
+//        noAction.setValue(UIColor.white, forKey: "titleTextColor")
+//        
+//        // Добавление кнопок в алерт
+//        alertController.addAction(yesAction)
+//        alertController.addAction(noAction)
+//        
+//        // Настройка скругления углов алерта
+//        alertController.view.layer.cornerRadius = 15
+//        
+//        // Отображение алерта
+//        self.present(alertController, animated: true, completion: nil)
+//    }
 }
 
 
