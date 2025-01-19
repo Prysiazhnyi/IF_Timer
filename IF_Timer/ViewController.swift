@@ -192,9 +192,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         
-        UserDefaults.standard.set(timeResting, forKey: "timeResting")
-        UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
-        UserDefaults.standard.set(selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
+        saveDateUserDefaults()
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
     }
@@ -241,7 +239,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         planButton.setTitleColor(.black, for: .normal)
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planButton.setTitle("16-8", for: .normal)
-        
     }
     
     func setupButtonsStart() {
@@ -351,8 +348,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
             self.setButtonTitle(for: sender, date: selectedDate)
             startDate = selectedDate
             // Сохраняем выбранную дату
-            UserDefaults.standard.set(selectedDate, forKey: "startDate")
-            UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
+            saveDateUserDefaults()
+            
             updateFinishDateButton()
             finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
             startTimer()
@@ -437,10 +434,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         isStarvation.toggle()
         print(" Тут нажал на запуск голодания - \(isStarvation)")
         
-//        setupButtonsStart()
-//        setupTitle()
-//        startTimer()
-        
         if !isStarvation {
             let alertVC = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
@@ -453,22 +446,31 @@ class ViewController: UIViewController, CustomAlertDelegate {
         } else {
             didTapYesButton()
         }
-        UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
+        saveDateUserDefaults()
     }
     
     func didTapYesButton() {
-            setupButtonsStart()
-            setupTitle()
-            startTimer()
+        startDate = Date()
+        setupButtonsStart()
+        setupTitle()
+        startTimer()
+        valueProgress = 0
+        setButtonTitle(for: self.startButton, date: startDate)
+        saveDateUserDefaults()
+        print("тут закончили голодание - \(startDate)")
         }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    func saveDateUserDefaults() {
         UserDefaults.standard.set(startDate, forKey: "startDate")
         UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
         UserDefaults.standard.set(timeResting, forKey: "timeResting")
         UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveDateUserDefaults()
     }
     
     deinit {
