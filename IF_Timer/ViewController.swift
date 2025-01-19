@@ -338,6 +338,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         finishDate = startDate.addingTimeInterval(TimeInterval(timeResting))
         guard let finishDate = finishDate else { return }
         setButtonTitle(for: finishButton, date: finishDate)
+        setButtonTitle(for: startButton, date: startDate)
     }
     
     
