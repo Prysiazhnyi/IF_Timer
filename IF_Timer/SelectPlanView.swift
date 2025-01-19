@@ -189,7 +189,6 @@ class SelectPlanView: UIViewController {
     
     
     func selectPlanView(_ button: UIButton) {
-        
         // Сохранение тега выбранной кнопки
         UserDefaults.standard.set(button.tag, forKey: "selectedButtonTag")
         
@@ -228,7 +227,6 @@ class SelectPlanView: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         UserDefaults.standard.set(buttonSelectTempButton.tag, forKey: "selectedButtonTag")
-        print("сохранение при выходе с экрана - \(buttonSelectTempButton.tag)")
     }
     
 }

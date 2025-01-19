@@ -8,8 +8,7 @@
 import UIKit
 
 protocol CustomAlertDelegate: AnyObject {
-    func didTapYesButton()
-   // func didTapNoButton()
+    func didTapYesButton()   // func didTapNoButton()
 }
 
 class CustomAlertViewController: UIViewController {
@@ -95,23 +94,23 @@ class CustomAlertViewController: UIViewController {
             noButton.heightAnchor.constraint(equalToConstant: 40),
             noButton.bottomAnchor.constraint(equalTo: alertView.bottomAnchor, constant: -20)
         ])
-       
+        
     }
     
     @objc private func yesButtonTapped() {
         print("Нажата кнопка ТАК")
         delegate?.didTapYesButton()
         dismissAlert()
-            // Если нужно просто закрыть алерт, то достаточно его убрать
-            self.dismiss(animated: true, completion: nil)
-      
+        // Если нужно просто закрыть алерт, то достаточно его убрать
+        self.dismiss(animated: true, completion: nil)
+        
     }
     
     @objc private func noButtonTapped() {
         print("Нажата кнопка НІ")
         dismissAlert()
-            // Если нужно просто закрыть алерт, то достаточно его убрать
-            self.dismiss(animated: true, completion: nil)
+        // Если нужно просто закрыть алерт, то достаточно его убрать
+        self.dismiss(animated: true, completion: nil)
     }
     
     private func dismissAlert() {

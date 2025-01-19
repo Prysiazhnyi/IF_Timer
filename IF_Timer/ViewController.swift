@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController, CustomAlertDelegate {
-   
+    
     private var datePickerManager: DatePickerManager!
     
     @IBOutlet weak var progressBar: UIView!
@@ -54,7 +54,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     var timeResting = 16 * 3600 // время голодания
     var timeFasting = 8 * 3600 // время приёма пищи
-    var timeWait = 16 * 3600 // стартовое время таймера
+    var selectedPlan: Plan = .basic // Установите дефолтный план
     
     var startDate = Date()
     var finishDate: Date?
@@ -83,23 +83,21 @@ class ViewController: UIViewController, CustomAlertDelegate {
         view.backgroundColor = backgroundTab
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
-        
+        updateFinishDateButton()
         setupCircularProgress()
         setupButtonsInfo()
         setupButtonsStart()
         startTimer()
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), isStarvation - \(isStarvation) ")
         print("startDate начало  - \(startDate)) ")
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         updateProgress(valueProgress)
         updateFinishDateButton()
         startTimer()
-        
     }
     
     func loadSaveDate() {
@@ -112,20 +110,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
             }
             self.startDate = savedStartDate ?? Date()
             
-            // Загружаем сохраненное время ожидания
-            var savedTimeWait: TimeInterval?
-            if let timeWait = UserDefaults.standard.object(forKey: "timeWait") as? TimeInterval {
-                savedTimeWait = timeWait
-                print("загрузка timeWait - \(timeWait / 3600)")
-            } else {
-                print("ошибка загрузки timeWait")
-            }
-            
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 self.isStarvation = tempIsStarvation
                 print("isStarvation - \(self.isStarvation)")
             }
-           
+            
             // Обновляем UI на главном потоке
             DispatchQueue.main.async {
                 
@@ -134,9 +123,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
                     self.startDate = savedStartDate
                 }
                 
-                // Загружаем время завершения
-                if let savedTimeWait = savedTimeWait, let savedStartDate = savedStartDate {
-                    self.finishDate = savedStartDate.addingTimeInterval(savedTimeWait)
+                if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
+                    self.selectedPlan = Plan(rawValue: rawValue)!
+                    self.planButton.setTitle(rawValue, for: .normal)
+                }
+                
+                if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
+                    self.timeResting = saveTimeResting
+                    self.finishDate = self.startDate.addingTimeInterval(TimeInterval(self.timeResting))
                     self.updateFinishDateButton()  // Обновляем кнопку сразу
                 } else {
                     // Если нет сохраненной даты завершения, устанавливаем "Скоро"
@@ -145,27 +139,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
                     self.finishButton.setTitleColor(.black, for: .normal) // Черный цвет
                 }
                 
-                if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
-                    self.planButton.setTitle(rawValue, for: .normal)
-                    print("загрузка selectedMyPlan - \(rawValue)")
-                } else {
-                    print("ошибка загрузки selectedMyPlan")
-                }
-                
-                if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
-                    self.timeResting = saveTimeResting
-                    print("загрузка timeResting - \(self.timeResting / 3600)")
-                } else {
-                    print("ошибка загрузки timeResting")
-                }
                 if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
                     self.timeFasting = saveTimeFasting
                     print("загрузка timeFasting - \(self.timeFasting / 3600)")
-                } else {
-                    print("ошибка загрузки timeFasting")
                 }
-                
-              
             }
         }
     }
@@ -188,13 +165,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
     func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
+        self.selectedPlan = selectedPlan // Обновляем выбранный план
         
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
-        
+        updateFinishDateButton()
         saveDateUserDefaults()
         
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600) ")
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -288,7 +266,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     //MARK: Timer
     
-        func startTimer() {
+    func startTimer() {
         // Останавливаем предыдущий таймер, если он существует
         countdownTimer?.invalidate()
         
@@ -296,21 +274,17 @@ class ViewController: UIViewController, CustomAlertDelegate {
         if isStarvation {
             
             // Вычисляем оставшееся время
-            remainingTime = Double(timeWait) - currentTime.timeIntervalSince(startDate)
+            remainingTime = Double(timeResting) - currentTime.timeIntervalSince(startDate)
             
             // Создаем новый таймер
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
             }
             titleProgressLabel.text = "Залишилось часу"
-            print("старт таймера голодания, остаток - \(remainingTime / 3600)")
-            
         } else {
             countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
-
             percentProgressLabel.text = ""
             titleProgressLabel.text = "Поточний час"
-            print("голодание не запущено - \(isStarvation)" )
         }
     }
     
@@ -319,25 +293,30 @@ class ViewController: UIViewController, CustomAlertDelegate {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
         let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
-
+        
         // Обновляем метку с текущим временем
         timerProgressLabel.text = formattedTime
     }
     
     private func updateCountdown() {
-            remainingTime -= 1
-            updateTimerLabel()
-            
-            // Обновляем прогресс (например, по пропорции)
-            valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeWait))
+        remainingTime -= 1
+        updateTimerLabel()
+        
+        // Обновляем прогресс (например, по пропорции)
+        valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeResting))
     }
     
     private func updateTimerLabel() {
+        let validRemainingTime = abs(remainingTime)
         // Форматируем оставшееся время в HH:MM:SS
-        let hours = Int(remainingTime) / 3600
-        let minutes = (Int(remainingTime) % 3600) / 60
-        let seconds = Int(remainingTime) % 60
-        let sign = (hours > 0 || minutes > 0 || seconds > 0) ? "" : "+"
+        let hours = Int(validRemainingTime) / 3600
+        let minutes = (Int(validRemainingTime) % 3600) / 60
+        let seconds = Int(validRemainingTime) % 60
+        
+        var  sign = ""
+        if  Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 {
+            sign = "+"
+        }
         timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
     }
     
@@ -347,22 +326,18 @@ class ViewController: UIViewController, CustomAlertDelegate {
         datePickerManager.showDatePicker(mode: .dateAndTime) { [self] selectedDate in
             self.setButtonTitle(for: sender, date: selectedDate)
             startDate = selectedDate
-            // Сохраняем выбранную дату
-            saveDateUserDefaults()
-            
             updateFinishDateButton()
-            finishDate = selectedDate.addingTimeInterval(TimeInterval(timeWait))
             startTimer()
+            saveDateUserDefaults()
         }
         print("startDate начало  - \(startDate)) ")
         //startTimer()
     }
     
     func updateFinishDateButton() {
-        if let finishDate = finishDate {
-            print("Finish date: \(finishDate)")
-            self.setButtonTitle(for: finishButton, date: finishDate)
-        }
+        finishDate = startDate.addingTimeInterval(TimeInterval(timeResting))
+        guard let finishDate = finishDate else { return }
+        setButtonTitle(for: finishButton, date: finishDate)
     }
     
     
@@ -431,38 +406,42 @@ class ViewController: UIViewController, CustomAlertDelegate {
     // MARK: Button Start Starvation
     
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
-        isStarvation.toggle()
-        print(" Тут нажал на запуск голодания - \(isStarvation)")
         
-        if !isStarvation {
+        if isStarvation {
             let alertVC = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
-                    alertVC.delegate = self
-
-                self.present(alertVC, animated: true) {
-                    alertVC.showCustomAlert()
-                }
-            print("тут должен вызваться алерт окончания голодания")
+            alertVC.delegate = self
+            
+            self.present(alertVC, animated: true) {
+                alertVC.showCustomAlert()
+            }
         } else {
-            didTapYesButton()
+            //didTapYesButton()
+            isStarvation.toggle()
+            setupTitle()
+            setupButtonsStart()
+            setButtonTitle(for: self.startButton, date: startDate)
+            updateFinishDateButton()
+            startTimer()
         }
         saveDateUserDefaults()
     }
     
     func didTapYesButton() {
+        isStarvation.toggle()
         startDate = Date()
         setupButtonsStart()
         setupTitle()
         startTimer()
         valueProgress = 0
         setButtonTitle(for: self.startButton, date: startDate)
+        updateFinishDateButton()
         saveDateUserDefaults()
-        print("тут закончили голодание - \(startDate)")
-        }
+    }
     
     func saveDateUserDefaults() {
         UserDefaults.standard.set(startDate, forKey: "startDate")
-        UserDefaults.standard.set(TimeInterval(timeWait), forKey: "timeWait")
+        UserDefaults.standard.set(selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
         UserDefaults.standard.set(timeResting, forKey: "timeResting")
         UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
