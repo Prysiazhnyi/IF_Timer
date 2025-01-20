@@ -27,6 +27,7 @@ class SaveData {
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 vc.isStarvation = tempIsStarvation
+                print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
@@ -36,6 +37,15 @@ class SaveData {
             if let tempTimeWait = UserDefaults.standard.object(forKey: "timeWait") as? Int {
                 vc.timeWait = tempTimeWait
             }
+            
+            if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan"),
+               let plan = ViewController.Plan(rawValue: rawValue) {
+                vc.selectedPlan = plan
+                print("Загруженный план: \(plan)")
+            } else {
+                print("Ошибка: не удалось загрузить план из UserDefaults")
+            }
+
 
             DispatchQueue.main.async { [weak self] in
                 guard let self = self, let vc = self.vc else {
@@ -46,13 +56,7 @@ class SaveData {
                 if let savedStartDate = savedStartDate {
                     vc.setButtonTitle(for: vc.startButton, date: savedStartDate)
                 }
-
-                if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan"),
-                   let plan = ViewController.Plan(rawValue: rawValue) {
-                    vc.selectedPlan = plan
-                    vc.planButton.setTitle(rawValue, for: .normal)
-                }
-
+                
                 if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
                     vc.timeResting = saveTimeResting
                     vc.finishDate = vc.startDate.addingTimeInterval(TimeInterval(vc.timeResting))
@@ -70,11 +74,15 @@ class SaveData {
             return
         }
         UserDefaults.standard.set(vc.startDate, forKey: "startDate")
-        UserDefaults.standard.set(vc.selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
+        UserDefaults.standard.set(vc.selectedPlan.rawValue, forKey: "selectedMyPlan")
+
+       // UserDefaults.standard.set(vc.selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
         UserDefaults.standard.set(vc.timeResting, forKey: "timeResting")
         UserDefaults.standard.set(vc.timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(vc.isStarvation, forKey: "isStarvation")
         UserDefaults.standard.set(vc.timeWait, forKey: "timeWait")
+        
+        print("сохранение данных в UserDefaults, isStarvation - \(vc.isStarvation), timeResting - \(vc.timeResting / 3600), timeFasting - \(vc.timeFasting / 3600), timeWait - \(vc.timeWait / 3600), selectedMyPlan - \(vc.selectedPlan.selectedMyPlan), startDate - \(vc.startDate) ")
     }
 }
 

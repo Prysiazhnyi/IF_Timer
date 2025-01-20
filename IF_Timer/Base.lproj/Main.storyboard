@@ -190,7 +190,7 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="LZG-YE-LJq" firstAttribute="top" secondItem="Cwh-tI-HMI" secondAttribute="bottom" constant="30" id="8Ea-Rz-Czm"/>
-                            <constraint firstItem="RzF-kT-sag" firstAttribute="centerX" secondItem="Hhh-4m-fb6" secondAttribute="centerX" id="KKN-d8-l8Y"/>
+                            <constraint firstItem="RzF-kT-sag" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="KKN-d8-l8Y"/>
                             <constraint firstItem="Cwh-tI-HMI" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="L2c-aE-IbC"/>
                             <constraint firstItem="RzF-kT-sag" firstAttribute="top" secondItem="LZG-YE-LJq" secondAttribute="bottom" constant="30" id="XtZ-d6-y0n"/>
                             <constraint firstItem="LZG-YE-LJq" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="q5w-NX-sDZ"/>
@@ -459,10 +459,10 @@
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemCyanColor">
-            <color red="0.1960784314" green="0.67843137249999996" blue="0.90196078430000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.19607843137254902" green="0.67843137254901964" blue="0.90196078431372551" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

@@ -87,10 +87,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         updateFinishDateButton()
         setupCircularProgress()
-        setupButtonsInfo()
+        setupButtonsInfo(90)
         setupButtonsStart()
-        setupButtonsFinish()
         setupTimer.startTimer()
+        
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         print("startDate начало  - \(startDate)) ")
         
@@ -122,11 +122,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
         self.selectedPlan = selectedPlan // Обновляем выбранный план
-        
-        setupButtonsFinish()
+        updateFinishDateButton()
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
-        updateFinishDateButton()
+        
         sd.saveDateUserDefaults()
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
@@ -135,7 +134,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     //MARK: Created buttons
     
-    func setupButtonsInfo() {
+    func setupButtonsInfo(_ equalToConstant: Int) {
         
         finishButton.isUserInteractionEnabled = false
         
@@ -148,7 +147,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         for button in buttonsInfo {
             button.layer.cornerRadius = 10
             button.layer.masksToBounds = true
-            button.widthAnchor.constraint(equalToConstant: 90).isActive = true
+            // Задаем ширину кнопок
+            button.constraints.filter { $0.firstAttribute == .width }.forEach { $0.isActive = false }
+            button.widthAnchor.constraint(equalToConstant: CGFloat(equalToConstant)).isActive = true
             
             if button !== finishButton {
                 imageView = UIImageView(image: UIImage(named: "icon-pencil"))
@@ -173,7 +174,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
         planButton.setTitleColor(.black, for: .normal)
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        planButton.setTitle("16-8", for: .normal)
+        planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
     }
     
     func setupButtonsStart() {
@@ -202,20 +203,22 @@ class ViewController: UIViewController, CustomAlertDelegate {
             }
         }
     }
-    
-    func setupButtonsFinish() {
-        
-        if !isStarvation {
-            timeWait = timeResting
-        } else {
+    func updateFinishDateButton() {
+       
+        if isStarvation {
             timeWait = timeFasting
-//            finishButton.isHidden = true
-//            finishLabel.isHidden = true
-//            planButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
-//            startButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+            finishStackView.isHidden = false
+            setupButtonsInfo(90)
+        } else {
+            timeWait = timeResting
+            finishStackView.isHidden = true
+            setupButtonsInfo(140)
         }
         
-        
+        finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
+        guard let finishDate = finishDate else { return }
+        setButtonTitle(for: finishButton, date: finishDate)
+        setButtonTitle(for: startButton, date: startDate)
         
     }
     
@@ -247,18 +250,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupTimer.startTimer()
             sd.saveDateUserDefaults()
         }
-        print("startDate начало  - \(startDate)) ")
+        //print("startDate начало  - \(startDate)) ")
         //startTimer()
     }
     
-    func updateFinishDateButton() {
-        setupButtonsFinish()
-        finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
-        guard let finishDate = finishDate else { return }
-        setButtonTitle(for: finishButton, date: finishDate)
-        setButtonTitle(for: startButton, date: startDate)
-        
-    }
+
     
     
     func setButtonTitle(for button: UIButton, date: Date) {
