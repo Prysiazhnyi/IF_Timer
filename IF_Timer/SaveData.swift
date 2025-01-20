@@ -28,6 +28,14 @@ class SaveData {
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 vc.isStarvation = tempIsStarvation
             }
+            
+            if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
+                vc.timeFasting = saveTimeFasting
+            }
+            
+            if let tempTimeWait = UserDefaults.standard.object(forKey: "timeWait") as? Int {
+                vc.timeWait = tempTimeWait
+            }
 
             DispatchQueue.main.async { [weak self] in
                 guard let self = self, let vc = self.vc else {
@@ -52,10 +60,6 @@ class SaveData {
                 } else {
                     vc.finishButton.setTitle("Скоро", for: .normal)
                 }
-
-                if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
-                    vc.timeFasting = saveTimeFasting
-                }
             }
         }
     }
@@ -70,6 +74,7 @@ class SaveData {
         UserDefaults.standard.set(vc.timeResting, forKey: "timeResting")
         UserDefaults.standard.set(vc.timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(vc.isStarvation, forKey: "isStarvation")
+        UserDefaults.standard.set(vc.timeWait, forKey: "timeWait")
     }
 }
 

@@ -51,8 +51,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
-    var timeResting = 16 * 3600 // время голодания
-    var timeFasting = 8 * 3600 // время приёма пищи
+    var timeResting = 8 * 3600 // время голодания
+    var timeFasting = 16 * 3600 // время приёма пищи
+    var timeWait = 16 * 3600
     var selectedPlan: Plan = .basic // Установите дефолтный план
     
     var startDate = Date()
@@ -88,8 +89,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupCircularProgress()
         setupButtonsInfo()
         setupButtonsStart()
+        setupButtonsFinish()
         setupTimer.startTimer()
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), isStarvation - \(isStarvation) ")
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         print("startDate начало  - \(startDate)) ")
         
     }
@@ -121,12 +123,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
         self.timeFasting = timeFasting
         self.selectedPlan = selectedPlan // Обновляем выбранный план
         
+        setupButtonsFinish()
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         updateFinishDateButton()
         sd.saveDateUserDefaults()
         
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), selectedPlan - \(selectedPlan) ")
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -200,6 +203,22 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     
+    func setupButtonsFinish() {
+        
+        if !isStarvation {
+            timeWait = timeResting
+        } else {
+            timeWait = timeFasting
+//            finishButton.isHidden = true
+//            finishLabel.isHidden = true
+//            planButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+//            startButton.widthAnchor.constraint(equalToConstant: 120).isActive = true
+        }
+        
+        
+        
+    }
+    
     //MARK: Progress Bar
     
     private func setupCircularProgress() {
@@ -218,10 +237,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         circularProgressView?.progress = value
     }
     
-    //MARK: Timer
-    
-   
-    
     // MARK: Button Start Info
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
@@ -237,10 +252,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func updateFinishDateButton() {
-        finishDate = startDate.addingTimeInterval(TimeInterval(timeResting))
+        setupButtonsFinish()
+        finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
         guard let finishDate = finishDate else { return }
         setButtonTitle(for: finishButton, date: finishDate)
         setButtonTitle(for: startButton, date: startDate)
+        
     }
     
     

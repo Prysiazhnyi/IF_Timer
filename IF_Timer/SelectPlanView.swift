@@ -143,7 +143,7 @@ class SelectPlanView: UIViewController {
         //        }
         deleteSelectPlanView()
         selectPlanView(sender)
-        //parentVC?.updatePlan(timeResting: 16 * 3600, timeFasting: 8 * 3600, selectedPlan: .myPlan)
+        //parentVC?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .myPlan)
         navigationController?.popViewController(animated: true)
     }
     
@@ -151,7 +151,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 16 * 3600, timeFasting: 8 * 3600, selectedPlan: .basic)
+        parentVC?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .basic)
         navigationController?.popViewController(animated: true)
     }
     
@@ -167,7 +167,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 14 * 3600, timeFasting: 10 * 3600, selectedPlan: .startPlus)
+        parentVC?.updatePlan(timeResting: 10 * 3600, timeFasting: 14 * 3600, selectedPlan: .startPlus)
         navigationController?.popViewController(animated: true)
     }
     
@@ -175,7 +175,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 18 * 3600, timeFasting: 6 * 3600, selectedPlan: .strong)
+        parentVC?.updatePlan(timeResting: 6 * 3600, timeFasting: 18 * 3600, selectedPlan: .strong)
         navigationController?.popViewController(animated: true)
     }
     
@@ -183,7 +183,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 20 * 3600, timeFasting: 4 * 3600, selectedPlan: .strongPlus)
+        parentVC?.updatePlan(timeResting: 4 * 3600, timeFasting: 20 * 3600, selectedPlan: .strongPlus)
         navigationController?.popViewController(animated: true)
     }
     
