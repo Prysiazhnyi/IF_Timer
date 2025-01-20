@@ -43,12 +43,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var valueProgress: CGFloat = 0.0 {
         didSet {
             updateProgress(valueProgress)
-            percentProgressLabel.text = "━━━━\n\(Int(valueProgress * 100))%"
+            if isStarvation {
+                percentProgressLabel.text = "━━━━\n\(Int(valueProgress * 100))%"
+            } else {
+                percentProgressLabel.text = ""
+            }
         }
     }
-    
-    
-    
+
     var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     var timeResting = 8 * 3600 // время голодания
@@ -253,9 +255,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         //print("startDate начало  - \(startDate)) ")
         //startTimer()
     }
-    
-
-    
     
     func setButtonTitle(for button: UIButton, date: Date) {
         let calendar = Calendar.current
