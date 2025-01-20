@@ -11,6 +11,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
     let sd = SaveData()
+    let setupTimer = SetupTimer()
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -46,10 +47,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     
-    // Таймер
-    private var countdownTimer: Timer?
-    private var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
-    let currentTime = Date()
+    
     
     var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
@@ -76,6 +74,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         sd.vc = self
+        setupTimer.vc = self
         sd.loadSaveDate() // загрузка данных
         setupTitle()
         
@@ -89,7 +88,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupCircularProgress()
         setupButtonsInfo()
         setupButtonsStart()
-        startTimer()
+        setupTimer.startTimer()
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), isStarvation - \(isStarvation) ")
         print("startDate начало  - \(startDate)) ")
         
@@ -99,7 +98,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillAppear(animated)
         updateProgress(valueProgress)
         updateFinishDateButton()
-        startTimer()
+        setupTimer.startTimer()
     }
     
     func setupTitle() {
@@ -221,59 +220,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     //MARK: Timer
     
-    func startTimer() {
-        // Останавливаем предыдущий таймер, если он существует
-        countdownTimer?.invalidate()
-        
-        // Если таймер запущен (не голодание)
-        if isStarvation {
-            
-            // Вычисляем оставшееся время
-            remainingTime = Double(timeResting) - currentTime.timeIntervalSince(startDate)
-            
-            // Создаем новый таймер
-            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                self?.updateCountdown()
-            }
-            titleProgressLabel.text = "Залишилось часу"
-        } else {
-            countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
-            percentProgressLabel.text = ""
-            titleProgressLabel.text = "Поточний час"
-        }
-    }
-    
-    @objc private func updateCurrentTime() {
-        // Получаем текущее время
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
-        let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
-        
-        // Обновляем метку с текущим временем
-        timerProgressLabel.text = formattedTime
-    }
-    
-    private func updateCountdown() {
-        remainingTime -= 1
-        updateTimerLabel()
-        
-        // Обновляем прогресс (например, по пропорции)
-        valueProgress = CGFloat(1 - remainingTime / TimeInterval(timeResting))
-    }
-    
-    private func updateTimerLabel() {
-        let validRemainingTime = abs(remainingTime)
-        // Форматируем оставшееся время в HH:MM:SS
-        let hours = Int(validRemainingTime) / 3600
-        let minutes = (Int(validRemainingTime) % 3600) / 60
-        let seconds = Int(validRemainingTime) % 60
-        
-        var  sign = ""
-        if  Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 {
-            sign = "+"
-        }
-        timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
-    }
+   
     
     // MARK: Button Start Info
     
@@ -282,7 +229,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             self.setButtonTitle(for: sender, date: selectedDate)
             startDate = selectedDate
             updateFinishDateButton()
-            startTimer()
+            setupTimer.startTimer()
             sd.saveDateUserDefaults()
         }
         print("startDate начало  - \(startDate)) ")
@@ -378,7 +325,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupButtonsStart()
             setButtonTitle(for: self.startButton, date: startDate)
             updateFinishDateButton()
-            startTimer()
+            setupTimer.startTimer()
         }
         sd.saveDateUserDefaults()
     }
@@ -388,14 +335,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
         startDate = Date()
         setupButtonsStart()
         setupTitle()
-        startTimer()
+        setupTimer.startTimer()
         valueProgress = 0
         setButtonTitle(for: self.startButton, date: startDate)
         updateFinishDateButton()
         sd.saveDateUserDefaults()
     }
-    
- 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -403,7 +348,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     deinit {
-        countdownTimer?.invalidate()
+        setupTimer.countdownTimer?.invalidate()
     }
 }
 
