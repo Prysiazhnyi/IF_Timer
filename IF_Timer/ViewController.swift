@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
+    let sd = SaveData()
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -74,7 +75,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSaveDate() // загрузка данных
+        sd.vc = self
+        sd.loadSaveDate() // загрузка данных
         setupTitle()
         
         datePickerManager = DatePickerManager(parentViewController: self)
@@ -100,53 +102,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         startTimer()
     }
     
-    func loadSaveDate() {
-        DispatchQueue.global(qos: .userInitiated).async {
-            var savedStartDate: Date?
-            // Загрузка сохраненной даты и отображение на кнопке
-            if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
-                savedStartDate = savedDate
-                print("загрузка savedDate - \(savedDate)")
-            }
-            self.startDate = savedStartDate ?? Date()
-            
-            if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
-                self.isStarvation = tempIsStarvation
-                print("isStarvation - \(self.isStarvation)")
-            }
-            
-            // Обновляем UI на главном потоке
-            DispatchQueue.main.async {
-                
-                if let savedStartDate = savedStartDate {
-                    self.setButtonTitle(for: self.startButton, date: savedStartDate)
-                    self.startDate = savedStartDate
-                }
-                
-                if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
-                    self.selectedPlan = Plan(rawValue: rawValue)!
-                    self.planButton.setTitle(rawValue, for: .normal)
-                }
-                
-                if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
-                    self.timeResting = saveTimeResting
-                    self.finishDate = self.startDate.addingTimeInterval(TimeInterval(self.timeResting))
-                    self.updateFinishDateButton()  // Обновляем кнопку сразу
-                } else {
-                    // Если нет сохраненной даты завершения, устанавливаем "Скоро"
-                    self.finishButton.setTitle("Скоро", for: .normal)
-                    self.finishButton.titleLabel?.font = UIFont.systemFont(ofSize: 17) // Увеличиваем шрифт
-                    self.finishButton.setTitleColor(.black, for: .normal) // Черный цвет
-                }
-                
-                if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
-                    self.timeFasting = saveTimeFasting
-                    print("загрузка timeFasting - \(self.timeFasting / 3600)")
-                }
-            }
-        }
-    }
-    
     func setupTitle() {
         // Создаем UILabel
         let titleLabel = UILabel()
@@ -170,7 +125,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         updateFinishDateButton()
-        saveDateUserDefaults()
+        sd.saveDateUserDefaults()
         
         print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), selectedPlan - \(selectedPlan) ")
     }
@@ -328,7 +283,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             startDate = selectedDate
             updateFinishDateButton()
             startTimer()
-            saveDateUserDefaults()
+            sd.saveDateUserDefaults()
         }
         print("startDate начало  - \(startDate)) ")
         //startTimer()
@@ -425,7 +380,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             updateFinishDateButton()
             startTimer()
         }
-        saveDateUserDefaults()
+        sd.saveDateUserDefaults()
     }
     
     func didTapYesButton() {
@@ -437,20 +392,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
         valueProgress = 0
         setButtonTitle(for: self.startButton, date: startDate)
         updateFinishDateButton()
-        saveDateUserDefaults()
+        sd.saveDateUserDefaults()
     }
     
-    func saveDateUserDefaults() {
-        UserDefaults.standard.set(startDate, forKey: "startDate")
-        UserDefaults.standard.set(selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
-        UserDefaults.standard.set(timeResting, forKey: "timeResting")
-        UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
-        UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
-    }
+ 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        saveDateUserDefaults()
+        sd.saveDateUserDefaults()
     }
     
     deinit {
