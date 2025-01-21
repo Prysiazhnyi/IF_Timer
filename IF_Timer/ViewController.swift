@@ -83,6 +83,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         datePickerManager = DatePickerManager(parentViewController: self)
         
+        if !isStarvation {startDate = Date()}
+        
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundTab
         progressBar.backgroundColor = .clear

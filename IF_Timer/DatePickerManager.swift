@@ -46,10 +46,12 @@ class DatePickerManager: NSObject {
 
         let cancelButton = UIButton(type: .system)
         cancelButton.setTitle("Скасувати", for: .normal)
+        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
         cancelButton.addTarget(self, action: #selector(dismissPicker), for: .touchUpInside)
 
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Готово", for: .normal)
+        doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
         doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
 
         toolbar.addSubview(cancelButton)
@@ -87,7 +89,8 @@ class DatePickerManager: NSObject {
     }
 
     func showDatePicker(mode: UIDatePicker.Mode, completion: @escaping (Date) -> Void) {
-        datePicker.datePickerMode = mode
+        datePicker.date = Date() // всегда старты с текущей даты
+        //datePicker.datePickerMode = mode // последняя сохраненная
         self.completion = completion
 
         setupPickerContainerView()
