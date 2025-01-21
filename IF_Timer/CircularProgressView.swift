@@ -44,10 +44,21 @@ class CircularProgressView: UIView {
         
         // Прогресс
         progressLayer.path = circlePath.cgPath
-        progressLayer.strokeColor = UIColor.green.cgColor
+        changeColorProgressView(true)
+        //progressLayer.strokeColor = UIColor.green.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineWidth = 20
         progressLayer.strokeEnd = 0 // Изначально 0% прогресса
         layer.addSublayer(progressLayer)
+    }
+    
+    func changeColorProgressView(_ controlProgress: Bool) {
+        var controlProgress = controlProgress
+        if !controlProgress {
+            progressLayer.strokeColor = UIColor.systemPink.cgColor
+            
+        } else {
+            progressLayer.strokeColor = UIColor.green.cgColor
+        }
     }
 }

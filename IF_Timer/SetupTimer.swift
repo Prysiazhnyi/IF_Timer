@@ -11,7 +11,8 @@ import UIKit
 class SetupTimer: UIViewController {
     
     weak var vc: ViewController?
-    
+    var circularProgressView: CircularProgressView?
+
     // Таймер
     var countdownTimer: Timer?
     var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
@@ -85,8 +86,14 @@ class SetupTimer: UIViewController {
         var  sign = ""
         if  Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 {
             sign = "+"
+            callChangeColorFunction(isColorChanged: false)
+        } else {
+            callChangeColorFunction(isColorChanged: true)
         }
         vc.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
     }
     
+    func callChangeColorFunction(isColorChanged: Bool) {
+            vc?.circularProgressView?.changeColorProgressView(isColorChanged)
+        }
 }
