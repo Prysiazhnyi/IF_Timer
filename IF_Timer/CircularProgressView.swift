@@ -8,8 +8,12 @@
 import UIKit
 
 class CircularProgressView: UIView {
+    
+    var viewController: ViewController?
+    
     private var progressLayer = CAShapeLayer()
     private var trackLayer = CAShapeLayer()
+    private var colorStep = UIColor.green.cgColor
     
     // Настройка прогресса (от 0 до 1)
     var progress: CGFloat = 0 {
@@ -44,7 +48,10 @@ class CircularProgressView: UIView {
         
         // Прогресс
         progressLayer.path = circlePath.cgPath
+        
+        colorFromIsStarvation()
         changeColorProgressView(true)
+        
         //progressLayer.strokeColor = UIColor.green.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
         progressLayer.lineWidth = 20
@@ -53,12 +60,17 @@ class CircularProgressView: UIView {
     }
     
     func changeColorProgressView(_ controlProgress: Bool) {
-        var controlProgress = controlProgress
+        colorFromIsStarvation()
         if !controlProgress {
             progressLayer.strokeColor = UIColor.systemPink.cgColor
-            
         } else {
-            progressLayer.strokeColor = UIColor.green.cgColor
+            progressLayer.strokeColor = colorStep
+        }
+    }
+    
+    func colorFromIsStarvation() {
+        if let viewController = viewController {
+            colorStep = !viewController.isStarvation ? UIColor.systemBrown.cgColor : UIColor.green.cgColor
         }
     }
 }

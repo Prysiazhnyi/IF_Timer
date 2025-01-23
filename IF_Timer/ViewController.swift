@@ -12,6 +12,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     private var datePickerManager: DatePickerManager!
     let sd = SaveData()
     let setupTimer = SetupTimer()
+    var circularProgressView: CircularProgressView?
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -39,7 +40,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
-    var circularProgressView: CircularProgressView?
+   
     var valueProgress: CGFloat = 0.0 {
         didSet {
             updateProgress(valueProgress)
@@ -235,9 +236,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
         // Убедимся, что прогресс-бар существует
         guard let circularProgressView = circularProgressView else { return }
         
+        // Передаем viewController после инициализации
+        circularProgressView.viewController = self
+        
         // Добавляем его в progressBar
         progressBar.addSubview(circularProgressView)
-        
     }
     
     func updateProgress(_ value: CGFloat) {
@@ -333,27 +336,28 @@ class ViewController: UIViewController, CustomAlertDelegate {
                 alertviewController.showCustomAlert()
             }
         } else {
-            //didTapYesButton()
-            isStarvation.toggle()
-            setupTitle()
-            setupButtonsStart()
-            setButtonTitle(for: self.startButton, date: startDate)
-            updateFinishDateButton()
-            setupTimer.startTimer()
+            didTapYesButton()
         }
-        sd.saveDateUserDefaults()
     }
     
     func didTapYesButton() {
         isStarvation.toggle()
         startDate = Date()
+        valueProgress = 0
         setupButtonsStart()
         setupTitle()
         setupTimer.startTimer()
-        valueProgress = 0
-        setButtonTitle(for: self.startButton, date: startDate)
-        updateFinishDateButton()
         sd.saveDateUserDefaults()
+        updateFinishDateButton()
+        //updateProgress(valueProgress)
+        
+        if isStarvation {
+            setButtonTitle(for: self.startButton, date: startDate)
+        } else {
+            let endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
+            print("endDate \(endDate), timeResting \(timeResting / 3600), valueProgress \(valueProgress)")
+            setButtonTitle(for: self.startButton, date: endDate)
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -37,7 +37,6 @@ class SetupTimer: UIViewController {
         } else {
             
             remainingTime = Double(viewController.timeResting) - currentTime.timeIntervalSince(viewController.startDate)
-            print("remainingTime - \(remainingTime)")
             // Создаем новый таймер
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
@@ -68,7 +67,11 @@ class SetupTimer: UIViewController {
         updateTimerLabel()
         
         // Обновляем прогресс (например, по пропорции)
-        viewController.valueProgress = CGFloat(1 - remainingTime / TimeInterval(viewController.timeFasting))
+        if viewController.isStarvation {
+            viewController.valueProgress = CGFloat(1 - remainingTime / TimeInterval(viewController.timeFasting))
+        } else {
+            viewController.valueProgress = CGFloat(1 - remainingTime / TimeInterval(viewController.timeResting))
+        }
     }
     
     private func updateTimerLabel() {
