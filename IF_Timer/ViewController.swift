@@ -294,32 +294,41 @@ class ViewController: UIViewController, CustomAlertDelegate {
         dateFormatter.dateFormat = "HH:mm"
         let timeString = dateFormatter.string(from: date)
         
-        // Создаем атрибутированный текст
-        let title = NSMutableAttributedString(
-            string: "\(dateString)\n",
-            attributes: [
-                .font: UIFont.boldSystemFont(ofSize: 16), // Жирный шрифт для первой строки
-                .foregroundColor: UIColor.black // Черный цвет текста
-            ]
-        )
-        
-        let time = NSAttributedString(
-            string: timeString,
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
-                .foregroundColor: UIColor.black // Черный цвет текста
-            ]
-        )
-        
-        title.append(time)
-        
-        // Устанавливаем атрибутированный текст для кнопки
-        button.setAttributedTitle(title, for: .normal)
-        
-        // Включаем многострочный текст
-        button.titleLabel?.numberOfLines = 2
-        button.titleLabel?.textAlignment = .center // Выравниваем по центру
-    }
+        // Настроим отступ между строками
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.lineSpacing = 6 // Увеличиваем межстрочный интервал (в точках)
+            paragraphStyle.alignment = .center // Центрируем текст
+
+            // Создаем атрибутированный текст для первой строки (жирный шрифт)
+            let dateAttributedString = NSMutableAttributedString(
+                string: "\(dateString)\n",
+                attributes: [
+                    .font: UIFont.boldSystemFont(ofSize: 17), // Жирный шрифт для первой строки
+                    .foregroundColor: UIColor.black, // Черный цвет текста
+                    .paragraphStyle: paragraphStyle // Применяем межстрочный стиль
+                ]
+            )
+            
+            // Создаем атрибутированный текст для второй строки (обычный шрифт)
+            let timeAttributedString = NSAttributedString(
+                string: timeString,
+                attributes: [
+                    .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
+                    .foregroundColor: UIColor.black, // Черный цвет текста
+                    .paragraphStyle: paragraphStyle // Применяем тот же межстрочный стиль для выравнивания
+                ]
+            )
+            
+            // Добавляем вторую строку к первой
+            dateAttributedString.append(timeAttributedString)
+            
+            // Устанавливаем атрибутированный текст для кнопки
+            button.setAttributedTitle(dateAttributedString, for: .normal)
+            
+            // Включаем многострочный текст и выравнивание
+            button.titleLabel?.numberOfLines = 2
+            button.titleLabel?.textAlignment = .center // Выравниваем по центру
+        }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectPlanSegue" {
