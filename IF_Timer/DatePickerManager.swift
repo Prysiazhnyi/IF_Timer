@@ -88,10 +88,10 @@ class DatePickerManager: NSObject {
         ])
     }
 
-    func showDatePicker(mode: UIDatePicker.Mode, startDate: Date, completion: @escaping (Date) -> Void) {
+    func showDatePicker(mode: UIDatePicker.Mode, startFromDate: Date, completion: @escaping (Date) -> Void) {
         //datePicker.date = Date() // всегда старты с текущей даты
         datePicker.datePickerMode = mode // последняя сохраненная
-        datePicker.date = startDate // Устанавливаем стартовую дату
+        datePicker.date = startFromDate // Устанавливаем стартовую дату
         self.completion = completion
 
         setupPickerContainerView()

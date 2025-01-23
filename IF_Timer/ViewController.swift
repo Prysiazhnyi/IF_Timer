@@ -253,14 +253,19 @@ class ViewController: UIViewController, CustomAlertDelegate {
     // MARK: Button Start Info
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
-        datePickerManager.showDatePicker(mode: .dateAndTime, startDate: isStarvation ? startDate : Date()) { [self] selectedDate in
+        datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: isStarvation ? startDate : endDate) { [self] selectedDate in
             self.setButtonTitle(for: sender, date: selectedDate)
-            startDate = selectedDate
+            
+            if isStarvation {startDate = selectedDate
+            } else {
+                endDate = selectedDate
+                startDate =  endDate - TimeInterval(timeResting)
+            }
+            
             updateFinishDateButton()
             setupTimer.startTimer()
             sd.saveDateUserDefaults()
         }
-    
     }
     
     func setButtonTitle(for button: UIButton, date: Date) {
