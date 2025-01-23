@@ -61,6 +61,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     var startDate = Date()
     var finishDate: Date?
+    var endDate = Date()
     
     enum Plan: String {
         case myPlan = "Мой план"
@@ -84,7 +85,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         datePickerManager = DatePickerManager(parentViewController: self)
         
-        if !isStarvation {startDate = Date()}
+        //if !isStarvation {startDate = Date()}
+        //endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundTab
@@ -180,6 +182,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         planButton.setTitleColor(.black, for: .normal)
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
+      
     }
     
     func setupButtonsStart() {
@@ -223,8 +226,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
         guard let finishDate = finishDate else { return }
         setButtonTitle(for: finishButton, date: finishDate)
-        setButtonTitle(for: startButton, date: startDate)
-        
+        //setButtonTitle(for: startButton, date: startDate)
+        isStarvation ? setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle(for: self.startButton, date: endDate)
     }
     
     //MARK: Progress Bar
@@ -257,8 +260,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupTimer.startTimer()
             sd.saveDateUserDefaults()
         }
-        //print("startDate начало  - \(startDate)) ")
-        //startTimer()
+    
     }
     
     func setButtonTitle(for button: UIButton, date: Date) {
@@ -354,7 +356,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         if isStarvation {
             setButtonTitle(for: self.startButton, date: startDate)
         } else {
-            let endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
+            endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
             print("endDate \(endDate), timeResting \(timeResting / 3600), valueProgress \(valueProgress)")
             setButtonTitle(for: self.startButton, date: endDate)
         }

@@ -70,7 +70,7 @@ class CircularProgressView: UIView {
     
     func colorFromIsStarvation() {
         if let viewController = viewController {
-            colorStep = !viewController.isStarvation ? UIColor.systemBrown.cgColor : UIColor.green.cgColor
+            colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
         }
     }
 }

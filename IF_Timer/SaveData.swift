@@ -45,6 +45,11 @@ class SaveData {
             } else {
                 print("Ошибка: не удалось загрузить план из UserDefaults")
             }
+            
+            if let endDateTemp = UserDefaults.standard.object(forKey: "endDate") as? Date {
+                viewController.endDate = endDateTemp
+            }
+          
 
 
             DispatchQueue.main.async { [weak self] in
@@ -81,8 +86,9 @@ class SaveData {
         UserDefaults.standard.set(viewController.timeFasting, forKey: "timeFasting")
         UserDefaults.standard.set(viewController.isStarvation, forKey: "isStarvation")
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
+        UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
         
-        print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate) ")
+        print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }
 }
 
