@@ -10,7 +10,7 @@ import UIKit
 
 class SetupTimer: UIViewController {
     
-    weak var vc: ViewController?
+    var viewController: ViewController!
     var circularProgressView: CircularProgressView?
 
     // Таймер
@@ -19,63 +19,59 @@ class SetupTimer: UIViewController {
     let currentTime = Date()
     
     func startTimer() {
-        guard let vc = vc else {
-               print("Ошибка: vc не инициализирован")
-               return
-           }
+        
         // Останавливаем предыдущий таймер, если он существует
         countdownTimer?.invalidate()
         
         // Если таймер запущен (не голодание)
-        if vc.isStarvation {
+        if viewController.isStarvation {
             
             // Вычисляем оставшееся время
-            remainingTime = Double(vc.timeResting) - currentTime.timeIntervalSince(vc.startDate)
+            remainingTime = Double(viewController.timeFasting) - currentTime.timeIntervalSince(viewController.startDate)
             
             // Создаем новый таймер
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
             }
-            vc.titleProgressLabel.text = "Залишилось часу"
+            viewController.titleProgressLabel.text = "Залишилось часу"
         } else {
-            countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
-            vc.percentProgressLabel.text = ""
-            vc.titleProgressLabel.text = "Поточний час"
+            
+            remainingTime = Double(viewController.timeResting) - currentTime.timeIntervalSince(viewController.startDate)
+            print("remainingTime - \(remainingTime)")
+            // Создаем новый таймер
+            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+                self?.updateCountdown()
+            }
+                viewController.percentProgressLabel.text = ""
+                viewController.titleProgressLabel.text = "До наступного\n інтервального голодування"
+                
+            //countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
+            //viewController.titleProgressLabel.text = "Поточний час"
+           
         }
     }
     
-    @objc private func updateCurrentTime() {
-        guard let vc = vc else {
-               print("Ошибка: vc не инициализирован")
-               return
-           }
-        
-        // Получаем текущее время
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
-        let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
-        
-        // Обновляем метку с текущим временем
-        vc.timerProgressLabel.text = formattedTime
-    }
+//    @objc private func updateCurrentTime() {
+//        
+//        // Получаем текущее время
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = "HH:mm:ss"
+//        let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
+//        
+//        // Обновляем метку с текущим временем
+//        viewController.timerProgressLabel.text = formattedTime
+//    }
     
     private func updateCountdown() {
-        guard let vc = vc else {
-               print("Ошибка: vc не инициализирован")
-               return
-           }
+     
         remainingTime -= 1
         updateTimerLabel()
         
         // Обновляем прогресс (например, по пропорции)
-        vc.valueProgress = CGFloat(1 - remainingTime / TimeInterval(vc.timeResting))
+        viewController.valueProgress = CGFloat(1 - remainingTime / TimeInterval(viewController.timeFasting))
     }
     
     private func updateTimerLabel() {
-        guard let vc = vc else {
-               print("Ошибка: vc не инициализирован")
-               return
-           }
         
         let validRemainingTime = abs(remainingTime)
         // Форматируем оставшееся время в HH:MM:SS
@@ -90,10 +86,10 @@ class SetupTimer: UIViewController {
         } else {
             callChangeColorFunction(isColorChanged: true)
         }
-        vc.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
+        viewController.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
     }
     
     func callChangeColorFunction(isColorChanged: Bool) {
-            vc?.circularProgressView?.changeColorProgressView(isColorChanged)
+            viewController?.circularProgressView?.changeColorProgressView(isColorChanged)
         }
 }

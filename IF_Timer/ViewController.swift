@@ -76,8 +76,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sd.vc = self
-        setupTimer.vc = self
+        sd.viewController = self
+        setupTimer.viewController = self
         sd.loadSaveDate() // загрузка данных
         setupTitle()
         
@@ -112,7 +112,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center // Выравнивание по центру
         titleLabel.textColor = .black // Цвет текста (можно изменить)
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 20) // Увеличиваем шрифт и делаем его жирным
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 25) // Увеличиваем шрифт и делаем его жирным
         isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
@@ -313,9 +313,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectPlanSegue" {
-            if let selectPlanVC = segue.destination as? SelectPlanView {
+            if let selectPlanviewController = segue.destination as? SelectPlanView {
                 // Передаем ссылку на текущий контроллер
-                selectPlanVC.parentVC = self
+                selectPlanviewController.parentviewController = self
             }
         }
     }
@@ -325,12 +325,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
         
         if isStarvation {
-            let alertVC = CustomAlertViewController()
+            let alertviewController = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
-            alertVC.delegate = self
+            alertviewController.delegate = self
             
-            self.present(alertVC, animated: true) {
-                alertVC.showCustomAlert()
+            self.present(alertviewController, animated: true) {
+                alertviewController.showCustomAlert()
             }
         } else {
             //didTapYesButton()

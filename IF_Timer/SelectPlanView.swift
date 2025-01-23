@@ -9,7 +9,7 @@ import UIKit
 
 class SelectPlanView: UIViewController {
     
-    var parentVC: ViewController? // Ссылка на первый контроллер
+    var parentviewController: ViewController? // Ссылка на первый контроллер
     
     @IBOutlet weak var viewTab: UIView!
     
@@ -143,7 +143,7 @@ class SelectPlanView: UIViewController {
         //        }
         deleteSelectPlanView()
         selectPlanView(sender)
-        //parentVC?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .myPlan)
+        //parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .myPlan)
         navigationController?.popViewController(animated: true)
     }
     
@@ -151,7 +151,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .basic)
+        parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .basic)
         navigationController?.popViewController(animated: true)
     }
     
@@ -159,7 +159,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 12 * 3600, timeFasting: 12 * 3600, selectedPlan: .start)
+        parentviewController?.updatePlan(timeResting: 12 * 3600, timeFasting: 12 * 3600, selectedPlan: .start)
         navigationController?.popViewController(animated: true)
     }
     
@@ -167,7 +167,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 10 * 3600, timeFasting: 14 * 3600, selectedPlan: .startPlus)
+        parentviewController?.updatePlan(timeResting: 10 * 3600, timeFasting: 14 * 3600, selectedPlan: .startPlus)
         navigationController?.popViewController(animated: true)
     }
     
@@ -175,7 +175,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 6 * 3600, timeFasting: 18 * 3600, selectedPlan: .strong)
+        parentviewController?.updatePlan(timeResting: 6 * 3600, timeFasting: 18 * 3600, selectedPlan: .strong)
         navigationController?.popViewController(animated: true)
     }
     
@@ -183,7 +183,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentVC?.updatePlan(timeResting: 4 * 3600, timeFasting: 20 * 3600, selectedPlan: .strongPlus)
+        parentviewController?.updatePlan(timeResting: 4 * 3600, timeFasting: 20 * 3600, selectedPlan: .strongPlus)
         navigationController?.popViewController(animated: true)
     }
     

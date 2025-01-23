@@ -9,12 +9,12 @@ import Foundation
 import UIKit
 
 class SaveData {
-    var vc: ViewController?
+    var viewController: ViewController?
 
     func loadSaveDate() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
-            guard let self = self, let vc = self.vc else {
-                print("Error: self or vc is nil")
+            guard let self = self, let viewController = self.viewController else {
+                print("Error: self or viewController is nil")
                 return
             }
 
@@ -23,24 +23,24 @@ class SaveData {
                 savedStartDate = savedDate
                 print("загрузка savedDate - \(savedDate)")
             }
-            vc.startDate = savedStartDate ?? Date()
+            viewController.startDate = savedStartDate ?? Date()
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
-                vc.isStarvation = tempIsStarvation
+                viewController.isStarvation = tempIsStarvation
                 print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
-                vc.timeFasting = saveTimeFasting
+                viewController.timeFasting = saveTimeFasting
             }
             
             if let tempTimeWait = UserDefaults.standard.object(forKey: "timeWait") as? Int {
-                vc.timeWait = tempTimeWait
+                viewController.timeWait = tempTimeWait
             }
             
             if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan"),
                let plan = ViewController.Plan(rawValue: rawValue) {
-                vc.selectedPlan = plan
+                viewController.selectedPlan = plan
                 print("Загруженный план: \(plan)")
             } else {
                 print("Ошибка: не удалось загрузить план из UserDefaults")
@@ -48,41 +48,41 @@ class SaveData {
 
 
             DispatchQueue.main.async { [weak self] in
-                guard let self = self, let vc = self.vc else {
-                    print("Error: self or vc is nil on main queue")
+                guard let self = self, let viewController = self.viewController else {
+                    print("Error: self or viewController is nil on main queue")
                     return
                 }
 
                 if let savedStartDate = savedStartDate {
-                    vc.setButtonTitle(for: vc.startButton, date: savedStartDate)
+                    viewController.setButtonTitle(for: viewController.startButton, date: savedStartDate)
                 }
                 
                 if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
-                    vc.timeResting = saveTimeResting
-                    vc.finishDate = vc.startDate.addingTimeInterval(TimeInterval(vc.timeResting))
-                    vc.updateFinishDateButton()
+                    viewController.timeResting = saveTimeResting
+                    viewController.finishDate = viewController.startDate.addingTimeInterval(TimeInterval(viewController.timeResting))
+                    viewController.updateFinishDateButton()
                 } else {
-                    vc.finishButton.setTitle("Скоро", for: .normal)
+                    viewController.finishButton.setTitle("Скоро", for: .normal)
                 }
             }
         }
     }
 
     func saveDateUserDefaults() {
-        guard let vc = vc else {
-            print("Error: vc is nil")
+        guard let viewController = viewController else {
+            print("Error: viewController is nil")
             return
         }
-        UserDefaults.standard.set(vc.startDate, forKey: "startDate")
-        UserDefaults.standard.set(vc.selectedPlan.rawValue, forKey: "selectedMyPlan")
+        UserDefaults.standard.set(viewController.startDate, forKey: "startDate")
+        UserDefaults.standard.set(viewController.selectedPlan.rawValue, forKey: "selectedMyPlan")
 
-       // UserDefaults.standard.set(vc.selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
-        UserDefaults.standard.set(vc.timeResting, forKey: "timeResting")
-        UserDefaults.standard.set(vc.timeFasting, forKey: "timeFasting")
-        UserDefaults.standard.set(vc.isStarvation, forKey: "isStarvation")
-        UserDefaults.standard.set(vc.timeWait, forKey: "timeWait")
+       // UserDefaults.standard.set(viewController.selectedPlan.selectedMyPlan, forKey: "selectedMyPlan")
+        UserDefaults.standard.set(viewController.timeResting, forKey: "timeResting")
+        UserDefaults.standard.set(viewController.timeFasting, forKey: "timeFasting")
+        UserDefaults.standard.set(viewController.isStarvation, forKey: "isStarvation")
+        UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         
-        print("сохранение данных в UserDefaults, isStarvation - \(vc.isStarvation), timeResting - \(vc.timeResting / 3600), timeFasting - \(vc.timeFasting / 3600), timeWait - \(vc.timeWait / 3600), selectedMyPlan - \(vc.selectedPlan.selectedMyPlan), startDate - \(vc.startDate) ")
+        print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate) ")
     }
 }
 
