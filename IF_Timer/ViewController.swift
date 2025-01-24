@@ -347,6 +347,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             let alertviewController = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
             alertviewController.delegate = self
+            alertviewController.parentviewController = self  // Передаём текущий контроллер
             
             self.present(alertviewController, animated: true) {
                 alertviewController.showCustomAlert()

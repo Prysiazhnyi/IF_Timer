@@ -13,6 +13,7 @@ protocol CustomAlertDelegate: AnyObject {
 
 class CustomAlertViewController: UIViewController {
     
+    var parentviewController: ViewController? // Ссылка на первый контроллер
     weak var delegate: CustomAlertDelegate?
     
     // Функция для отображения кастомного алерта
@@ -104,7 +105,31 @@ class CustomAlertViewController: UIViewController {
         // Если нужно просто закрыть алерт, то достаточно его убрать
         self.dismiss(animated: true, completion: nil)
         
+        // Инициализируем ResultViewController из Storyboard
+           let storyboard = UIStoryboard(name: "Main", bundle: nil)
+           if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
+               resultVC.modalPresentationStyle = .fullScreen
+               parentviewController?.present(resultVC, animated: true, completion: nil)
+           }
+        
     }
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "resultSegue",
+//           let resultVC = segue.destination as? ResultViewController {
+//            //resultVC.someProperty = "Your Data"
+//        }
+//    }
+
+    
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == "resaltSegue" {
+//            if let resaltViewController = segue.destination as? SelectPlanView {
+//                // Передаем ссылку на текущий контроллер
+//                resaltViewController.parentviewController = self
+//            }
+//        }
+   //}
     
     @objc private func noButtonTapped() {
         print("Нажата кнопка НІ")
