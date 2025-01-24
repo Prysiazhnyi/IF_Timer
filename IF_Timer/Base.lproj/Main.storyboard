@@ -401,12 +401,12 @@
                         <outlet property="finishMainContainerButton" destination="JOi-Hd-wy8" id="GWX-SP-Xnd"/>
                         <outlet property="finishMainContainerLabel" destination="k4W-do-VOG" id="Fma-jN-4Hn"/>
                         <outlet property="mainContainerView" destination="aHw-xT-duX" id="tSS-Gt-db0"/>
-                        <outlet property="planMainContainerButton" destination="MJe-dK-jtl" id="aKp-pQ-mZc"/>
-                        <outlet property="planMainContainerLabel" destination="G8p-M0-b8D" id="O5r-zN-viQ"/>
+                        <outlet property="planMainContainerButton" destination="KXB-ob-5l5" id="XbY-ci-BSu"/>
+                        <outlet property="planMainContainerLabel" destination="fn0-sd-MXN" id="JVR-KN-d4B"/>
                         <outlet property="secondContainerLabel" destination="7QL-22-kT8" id="eoo-tm-dqe"/>
                         <outlet property="secondContainerView" destination="G3p-z2-zh2" id="Uor-iS-LF9"/>
-                        <outlet property="startMainContainerButton" destination="KXB-ob-5l5" id="nI0-f0-xgU"/>
-                        <outlet property="startMainContainerLabel" destination="fn0-sd-MXN" id="Pij-mv-TUa"/>
+                        <outlet property="startMainContainerButton" destination="MJe-dK-jtl" id="ylp-E1-MT3"/>
+                        <outlet property="startMainContainerLabel" destination="G8p-M0-b8D" id="XcS-m2-v5z"/>
                         <outlet property="timeMainContainerLabel" destination="aYH-Ez-Fln" id="mTn-8z-9qw"/>
                         <outlet property="titleMainContainerLabel" destination="nTb-VC-j7I" id="KWW-bt-oZ9"/>
                     </connections>

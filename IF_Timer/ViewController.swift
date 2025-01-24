@@ -13,6 +13,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     let sd = SaveData()
     let setupTimer = SetupTimer()
     var circularProgressView: CircularProgressView?
+    var resultViewController: ResultViewController?
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -85,8 +86,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         datePickerManager = DatePickerManager(parentViewController: self)
         
-        //if !isStarvation {startDate = Date()}
-        //endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
+        // Инициализируем resultViewController после того, как self уже доступен
+        //resultViewController = ResultViewController()
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundTab
@@ -145,9 +146,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         finishButton.isUserInteractionEnabled = false
         
-        startButton.backgroundColor = UIColor(red: 173/255, green: 216/255, blue: 230/255, alpha: 0.8)  // Светло-голубой
-        planButton.backgroundColor = UIColor(red: 174/255, green: 238/255, blue: 238/255, alpha: 0.8)  // Светло-зелено-голубой
-        finishButton.backgroundColor = UIColor(red: 255/255, green: 220/255, blue: 130/255, alpha: 0.8)  // Светло-желтый с оранжевым оттенком
+        planButton.backgroundColor = UIColor(red: 180/255, green: 235/255, blue: 250/255, alpha: 0.6)
+        startButton.backgroundColor = UIColor(red: 186/255, green: 217/255, blue: 181/255, alpha: 0.6)
+        finishButton.backgroundColor = UIColor(red: 250/255, green: 245/255, blue: 228/255, alpha: 0.6)
         
         let buttonsInfo: [UIButton] = [startButton, planButton, finishButton]
         
@@ -352,6 +353,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             self.present(alertviewController, animated: true) {
                 alertviewController.showCustomAlert()
             }
+            
         } else {
             didTapYesButton()
         }

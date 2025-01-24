@@ -108,7 +108,9 @@ class CustomAlertViewController: UIViewController {
         // Инициализируем ResultViewController из Storyboard
            let storyboard = UIStoryboard(name: "Main", bundle: nil)
            if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
+        //let resultVC = ResultViewController(viewController: parentviewController!)
                resultVC.modalPresentationStyle = .fullScreen
+               resultVC.viewController = parentviewController!
                parentviewController?.present(resultVC, animated: true, completion: nil)
            }
         
