@@ -113,24 +113,7 @@ class CustomAlertViewController: UIViewController {
            }
         
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "resultSegue",
-//           let resultVC = segue.destination as? ResultViewController {
-//            //resultVC.someProperty = "Your Data"
-//        }
-//    }
 
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "resaltSegue" {
-//            if let resaltViewController = segue.destination as? SelectPlanView {
-//                // Передаем ссылку на текущий контроллер
-//                resaltViewController.parentviewController = self
-//            }
-//        }
-   //}
-    
     @objc private func noButtonTapped() {
         print("Нажата кнопка НІ")
         dismissAlert()
