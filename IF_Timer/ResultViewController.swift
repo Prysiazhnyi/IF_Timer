@@ -54,6 +54,9 @@ class ResultViewController: UIViewController {
         secondContainerView.backgroundColor = UIColor.white
         secondContainerView.layer.cornerRadius = 25
         
+        secondContainerLabel.layer.cornerRadius = 20
+        secondContainerLabel.layer.masksToBounds = true
+        
     }
 
     

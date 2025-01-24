@@ -361,13 +361,14 @@
                                     <constraint firstItem="aYH-Ez-Fln" firstAttribute="top" secondItem="nTb-VC-j7I" secondAttribute="bottom" constant="10" id="zI5-1m-auF"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="G3p-z2-zh2">
-                                <rect key="frame" x="41" y="357" width="310" height="60.666666666666664"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="G3p-z2-zh2">
+                                <rect key="frame" x="41.666666666666657" y="351.33333333333331" width="310" height="80"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="&quot;Всі перемоги починаються з перемоги над самим собою&quot;" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7QL-22-kT8">
-                                        <rect key="frame" x="10" y="10" width="290" height="43"/>
+                                        <rect key="frame" x="10" y="10" width="290" height="60"/>
                                         <color key="backgroundColor" red="0.93627804517745972" green="0.93147730827331543" blue="0.71370553970336914" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="Iix-QO-LyS"/>
                                             <constraint firstAttribute="width" constant="290" id="WyK-F9-1ED"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="italicSystem" pointSize="18"/>
