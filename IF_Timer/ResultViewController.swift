@@ -9,8 +9,6 @@ import UIKit
 
 class ResultViewController: UIViewController {
     
-    //var parentviewController: ViewController! // Ссылка на первый контроллер
-    //var someProperty: String?
     var viewController: ViewController?
     
     @IBOutlet weak var mainContainerView: UIView!
@@ -29,16 +27,6 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var finishMainContainerButton: UIButton!
     
     var imageView: UIImageView!
-    
-    // Переопределите инициализатор, чтобы он принимал ViewController
-//    init(viewController: ViewController) {
-//        self.viewController = viewController
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
 
     
     override func viewDidLoad() {
