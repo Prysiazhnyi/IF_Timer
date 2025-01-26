@@ -71,7 +71,7 @@ class FastingChartView: UIView {
         NSLayoutConstraint.activate([
             scaleView.leadingAnchor.constraint(equalTo: leadingAnchor), // Шкала слева
             scaleView.topAnchor.constraint(equalTo: topAnchor),
-            scaleView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scaleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18),
             scaleView.widthAnchor.constraint(equalToConstant: 40) // Ширина шкалы
         ])
         
@@ -163,7 +163,7 @@ class FastingChartView: UIView {
         
         let label = UILabel()
         label.text = day
-        label.font = UIFont.systemFont(ofSize: 8)
+        label.font = UIFont.systemFont(ofSize: 9)
         label.textAlignment = .center
         label.textColor = .darkGray
         label.translatesAutoresizingMaskIntoConstraints = false
