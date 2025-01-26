@@ -160,9 +160,20 @@ class ViewController: UIViewController, CustomAlertDelegate {
             button.widthAnchor.constraint(equalToConstant: CGFloat(equalToConstant)).isActive = true
             
             if button !== finishButton {
-                imageView = UIImageView(image: UIImage(named: "icon-pencil"))
-                imageView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
                 
+                let originalImage = UIImage(named: "iconPencil")
+                let newSize = CGSize(width: 16, height: 16) // Новый размер изображения
+
+                // Создаем уменьшенное изображение
+                let resizedImage = UIGraphicsImageRenderer(size: newSize).image { _ in
+                    originalImage?.draw(in: CGRect(origin: .zero, size: newSize))
+                }
+
+                // Присваиваем уменьшенное изображение в ImageView
+                imageView = UIImageView(image: resizedImage)
+                imageView.contentMode = .center // Центрируем изображение внутри UIImageView
+
+                imageView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
                 imageView.layer.cornerRadius = 10
                 imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner] // Верхний левый и нижний правый углы
                 imageView.layer.masksToBounds = true
