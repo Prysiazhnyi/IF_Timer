@@ -86,9 +86,16 @@ class FastingChartView: UIView {
         let scaleLabels = ["0", "6", "12", "18", "24"]
         let font = UIFont.systemFont(ofSize: 12)
         let textColor = UIColor.darkGray
+        let labelHeight: CGFloat = 20 // Высота текстовой метки
         
         // Вычисляем высоту шкалы
-        let scaleHeight = self.frame.height
+       // let scaleHeight = self.frame.height
+        
+        // Рассчитываем высоту шкалы относительно barView
+            guard let barView = contentView.subviews.first else { return }
+            barView.layoutIfNeeded() // Убедимся, что layout обновлен
+            let barHeight = barView.frame.height
+        print("barHeight - \(barHeight)")
         
         // Позиции для значений 0, 6, 12, 18, 24
         let positions: [CGFloat] = [0, 6, 12, 18, 24]
@@ -104,14 +111,19 @@ class FastingChartView: UIView {
             scaleView.addSubview(label)
             
             // Рассчитываем положение метки относительно всей высоты шкалы
-            let relativeHeight = (CGFloat(positions[index]) / 24.0) * scaleHeight
+            //let relativeHeight = (CGFloat(positions[index]) / 24.0) * barHeight
+            
+            // Вычисляем поправку на высоту шрифта и позицию
+                    let positionMultiplier = CGFloat(index) / CGFloat(scaleLabels.count - 1) // Пропорциональное положение (0.0, 0.25, 0.5, 0.75, 1.0)
+                    let relativeHeight = positionMultiplier * barHeight // Высота относительно бара
+                    let offsetAdjustment = labelHeight / 2 // Половина высоты метки для компенсации выравнивания
             
             // Привязываем метки с учетом пропорции от верхней части шкалы
             NSLayoutConstraint.activate([
                 label.heightAnchor.constraint(equalToConstant: 20),
                 label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
                 label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
-                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -relativeHeight)
+                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -relativeHeight + offsetAdjustment)
             ])
             
             print("relativeHeight - \(relativeHeight)")
