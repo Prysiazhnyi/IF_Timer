@@ -35,6 +35,12 @@ class FastingChartView: UIView {
         setupUI()
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        addScale()  // Обновляем шкалу после того, как размеры точно установлены
+    }
+
+    
     private func setupUI() {
         addSubview(scrollView)
         addSubview(scaleView)  // Добавляем шкалу в FastingChartView (вне scrollView)
@@ -69,36 +75,46 @@ class FastingChartView: UIView {
             scaleView.widthAnchor.constraint(equalToConstant: 40) // Ширина шкалы
         ])
         
-        addScale() // Добавляем метки шкалы
+        //addScale() // Добавляем метки шкалы
     }
 
     private func addScale() {
-        let stepValues: [Int] = [0, 6, 12, 18, 24] // Шкала от 0 до 24
-        
-        // Высота шкалы
-        let scaleHeight = self.frame.height
-        
         // Очистим старые метки, если они есть
         scaleView.subviews.forEach { $0.removeFromSuperview() }
         
-        for (index, value) in stepValues.enumerated() {
+        // Параметры для всех меток (одинаковые для всех)
+        let scaleLabels = ["0", "6", "12", "18", "24"]
+        let font = UIFont.systemFont(ofSize: 12)
+        let textColor = UIColor.darkGray
+        
+        // Вычисляем высоту шкалы
+        let scaleHeight = self.frame.height
+        
+        // Позиции для значений 0, 6, 12, 18, 24
+        let positions: [CGFloat] = [0, 6, 12, 18, 24]
+        
+        // Добавляем метки по очереди
+        for (index, value) in scaleLabels.enumerated() {
             let label = UILabel()
-            label.text = "\(value)"
-            label.font = UIFont.systemFont(ofSize: 12)
-            label.textColor = .darkGray
+            label.text = value
+            label.font = font
+            label.textColor = textColor
             label.textAlignment = .center
             label.translatesAutoresizingMaskIntoConstraints = false
             scaleView.addSubview(label)
             
-            // Пропорциональное распределение меток от 0 до 24
-            let position = (CGFloat(value) / 24.0) * scaleHeight // Рассчитываем позицию по вертикали (от 0 до 24)
-
+            // Рассчитываем положение метки относительно всей высоты шкалы
+            let relativeHeight = (CGFloat(positions[index]) / 24.0) * scaleHeight
+            
+            // Привязываем метки с учетом пропорции от верхней части шкалы
             NSLayoutConstraint.activate([
-                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -position),
+                label.heightAnchor.constraint(equalToConstant: 20),
                 label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
                 label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
-                label.heightAnchor.constraint(equalToConstant: 20)
+                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -relativeHeight)
             ])
+            
+            print("relativeHeight - \(relativeHeight)")
         }
     }
 
