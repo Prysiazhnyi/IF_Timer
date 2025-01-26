@@ -10,6 +10,7 @@ import UIKit
 class ResultViewController: UIViewController {
     
     var viewController: ViewController?
+    let chartView = FastingChartView()
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
@@ -41,6 +42,35 @@ class ResultViewController: UIViewController {
         
         secondContainerLabel.layer.cornerRadius = 20
         secondContainerLabel.layer.masksToBounds = true
+        
+        //thirdContainerView.backgroundColor = .clear
+        // Пример данных
+                chartView.data = [
+                    ("14 С", 6),
+                    ("15 С", 2),
+                    ("16 С", 12),
+                    ("17 С", 0),
+                    ("18 С", 8),
+                    ("19 С", 4),
+                    ("20 С", 10),
+                    ("21 С", 1),
+                    ("22 С", 18),
+                    ("23 С", 2)
+                ]
+        
+        //chartView.backgroundColor = .red
+
+        
+        thirdContainerView.addSubview(chartView)
+        chartView.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            chartView.leadingAnchor.constraint(equalTo: thirdContainerView.leadingAnchor, constant: 10),
+            chartView.trailingAnchor.constraint(equalTo: thirdContainerView.trailingAnchor, constant: -10),
+            chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 30),
+            chartView.bottomAnchor.constraint(equalTo: thirdContainerView.bottomAnchor, constant: -10)
+        ])
+
     }
     
     func setupView() {
