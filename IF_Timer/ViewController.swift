@@ -95,7 +95,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         updateFinishDateButton()
         setupCircularProgress()
-        setupButtonsInfo(90)
+        setupButtonsInfo(100)
         setupButtonsStart()
         setupTimer.startTimer()
         
@@ -217,7 +217,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         if isStarvation {
             timeWait = timeFasting
             finishStackView.isHidden = false
-            setupButtonsInfo(90)
+            setupButtonsInfo(100)
         } else {
             timeWait = timeResting
             finishStackView.isHidden = true
