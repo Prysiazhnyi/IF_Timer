@@ -78,9 +78,6 @@ class FastingChartView: UIView {
         // Высота шкалы
         let scaleHeight = self.frame.height
         
-        // Распределение шагов шкалы по высоте
-        let stepHeight = scaleHeight / CGFloat(stepValues.count - 1)
-        
         // Очистим старые метки, если они есть
         scaleView.subviews.forEach { $0.removeFromSuperview() }
         
@@ -93,15 +90,18 @@ class FastingChartView: UIView {
             label.translatesAutoresizingMaskIntoConstraints = false
             scaleView.addSubview(label)
             
-            // Размещение меток от нижней границы
+            // Пропорциональное распределение меток от 0 до 24
+            let position = (CGFloat(value) / 24.0) * scaleHeight // Рассчитываем позицию по вертикали (от 0 до 24)
+
             NSLayoutConstraint.activate([
-                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -(CGFloat(index) * stepHeight)),
+                label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -position),
                 label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
                 label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
                 label.heightAnchor.constraint(equalToConstant: 20)
             ])
         }
     }
+
 
     // MARK: - Отрисовка столбцов
     private func setupBars() {
