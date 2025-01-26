@@ -63,11 +63,13 @@ class ResultViewController: UIViewController {
         
         thirdContainerView.addSubview(chartView)
         chartView.translatesAutoresizingMaskIntoConstraints = false
+        thirdContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
+
 
         NSLayoutConstraint.activate([
             chartView.leadingAnchor.constraint(equalTo: thirdContainerView.leadingAnchor, constant: 10),
             chartView.trailingAnchor.constraint(equalTo: thirdContainerView.trailingAnchor, constant: -10),
-            chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 30),
+            chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 10),
             chartView.bottomAnchor.constraint(equalTo: thirdContainerView.bottomAnchor, constant: -10)
         ])
 

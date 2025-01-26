@@ -384,15 +384,15 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayn-aP-PcV">
-                                <rect key="frame" x="26.666666666666657" y="461.33333333333326" width="340" height="170"/>
+                                <rect key="frame" x="26.666666666666657" y="461.33333333333326" width="340" height="200"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="170" id="6gf-st-nNs"/>
+                                    <constraint firstAttribute="height" constant="200" id="6gf-st-nNs"/>
                                     <constraint firstAttribute="width" constant="340" id="gne-Lv-k0F"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="l1X-NK-ah6">
-                                <rect key="frame" x="26.666666666666657" y="676.33333333333337" width="340" height="60"/>
+                                <rect key="frame" x="26.666666666666657" y="706.33333333333337" width="340" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gV6-Bb-ugC">
                                         <rect key="frame" x="0.0" y="0.0" width="150" height="60"/>

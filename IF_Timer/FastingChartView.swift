@@ -13,6 +13,8 @@ class FastingChartView: UIView {
     // MARK: - Параметры диаграммы
     private let scrollView = UIScrollView()
     private let contentView = UIView()
+    private let scaleView = UIView() // Шкала
+    
     
     var data: [(day: String, fastingHours: CGFloat)] = [] {
         didSet {
@@ -39,13 +41,15 @@ class FastingChartView: UIView {
     
     private func setupUI() {
         addSubview(scrollView)
-        addScale()  // Добавляем шкалу сразу в основной контейнер (не в scrollView)
-        scrollView.addSubview(contentView)
-        
-        // Конфигурация ScrollView
-        scrollView.showsHorizontalScrollIndicator = false
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+               addSubview(scaleView)  // Добавляем шкалу в FastingChartView (вне scrollView)
+
+               scrollView.addSubview(contentView)
+               
+               // Настройка ScrollView
+               scrollView.showsHorizontalScrollIndicator = true
+               scrollView.translatesAutoresizingMaskIntoConstraints = false
+               contentView.translatesAutoresizingMaskIntoConstraints = false
+
         
         // Настройка автолэйаута
         NSLayoutConstraint.activate([
@@ -62,34 +66,46 @@ class FastingChartView: UIView {
         ])
     }
     
+    private func addScale() {
+            let stepValues: [Int] = [0, 6, 12, 18, 24] // Шкала от 0 до 24
+            
+            // Высота шкалы
+            let scaleHeight = self.frame.height
+            
+            // Распределение шагов шкалы по высоте
+            let stepHeight = scaleHeight / CGFloat(stepValues.count - 1)
+            
+            // Очистим старые метки, если они есть
+            scaleView.subviews.forEach { $0.removeFromSuperview() }
+            
+            for (index, value) in stepValues.enumerated() {
+                let label = UILabel()
+                label.text = "\(value)"
+                label.font = UIFont.systemFont(ofSize: 12)
+                label.textColor = .darkGray
+                label.textAlignment = .center
+                label.translatesAutoresizingMaskIntoConstraints = false
+                scaleView.addSubview(label)
+                
+                // Размещение меток от нижней границы
+                NSLayoutConstraint.activate([
+                    label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -(CGFloat(index) * stepHeight)),
+                    label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
+                    label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
+                    label.heightAnchor.constraint(equalToConstant: 20)
+                ])
+            }
+        }
+    
     // MARK: - Отрисовка столбцов
-//    private func setupBars() {
-//        // Удаляем старые столбцы
-//        contentView.subviews.forEach { $0.removeFromSuperview() }
-//        
-//        // Рассчитываем ширину contentView
-//        let contentWidth = CGFloat(data.count) * (barWidth + barSpacing)
-//        contentView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
-//        
-//        for (index, item) in data.enumerated() {
-//            let barView = createBar(day: item.day, fastingHours: item.fastingHours)
-//            contentView.addSubview(barView)
-//            
-//            // Устанавливаем позицию
-//            let xPosition = CGFloat(index) * (barWidth + barSpacing)
-//            barView.frame = CGRect(x: xPosition, y: 0, width: barWidth, height: contentView.frame.height)
-//        }
-//        contentView.layoutIfNeeded() // обновление верстки
-//        contentView.backgroundColor = .lightGray
-//
-//        contentView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = false
-//        contentView.widthAnchor.constraint(equalToConstant: contentWidth).isActive = true
-//
-//    }
+
     
     private func setupBars() {
         // Удаляем старые столбцы
         contentView.subviews.forEach { $0.removeFromSuperview() }
+        
+        // Получаем высоту родительского вью для корректной пропорции
+            let chartHeight = self.frame.height
         
         // Рассчитываем ширину contentView
         let contentWidth = CGFloat(data.count) * (barWidth + barSpacing) - barSpacing // Убираем последний отступ
@@ -115,40 +131,6 @@ class FastingChartView: UIView {
 
         contentView.layoutIfNeeded() // Обновление верстки
     }
-
-    private func addScale() {
-        let scaleView = UIView()
-        scaleView.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(scaleView)  // Добавляем шкалу в FastingChartView, а не в contentView
-        
-        // Настройка Constraints для шкалы
-        NSLayoutConstraint.activate([
-            scaleView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16), // Расположение шкалы слева
-            scaleView.topAnchor.constraint(equalTo: topAnchor),  // Шкала начинается сверху
-            scaleView.bottomAnchor.constraint(equalTo: bottomAnchor),  // Шкала занимает всю высоту
-            scaleView.widthAnchor.constraint(equalToConstant: 40)  // Ширина шкалы
-        ])
-        
-        let stepValues: [CGFloat] = [0, 6, 12, 18, 24]
-        
-        for (index, value) in stepValues.enumerated() {
-            let label = UILabel()
-            label.text = "\(Int(value))"
-            label.font = UIFont.systemFont(ofSize: 10)
-            label.textAlignment = .right
-            label.translatesAutoresizingMaskIntoConstraints = false
-            scaleView.addSubview(label)
-            
-            // Устанавливаем расположение меток по вертикали
-            NSLayoutConstraint.activate([
-                label.topAnchor.constraint(equalTo: scaleView.topAnchor, constant: CGFloat(index) * (contentView.frame.height / 5)),
-                label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
-                label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
-                label.heightAnchor.constraint(equalToConstant: 20)
-            ])
-        }
-    }
-
 
     
     private func createBar(day: String, fastingHours: CGFloat) -> UIView {
