@@ -233,12 +233,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0c-mQ-JIW">
-                                <rect key="frame" x="159" y="620" width="75" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                            </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aHw-xT-duX">
                                 <rect key="frame" x="26.666666666666657" y="103.00000000000001" width="340" height="218.33333333333337"/>
                                 <subviews>
@@ -389,27 +383,79 @@
                                     <constraint firstItem="7QL-22-kT8" firstAttribute="top" secondItem="G3p-z2-zh2" secondAttribute="top" constant="10" id="mcF-zC-xp8"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ayn-aP-PcV">
+                                <rect key="frame" x="26.666666666666657" y="461.33333333333326" width="340" height="170"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="170" id="6gf-st-nNs"/>
+                                    <constraint firstAttribute="width" constant="340" id="gne-Lv-k0F"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" spacing="40" translatesAutoresizingMaskIntoConstraints="NO" id="l1X-NK-ah6">
+                                <rect key="frame" x="26.666666666666657" y="676.33333333333337" width="340" height="60"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gV6-Bb-ugC">
+                                        <rect key="frame" x="0.0" y="0.0" width="150" height="60"/>
+                                        <color key="backgroundColor" red="0.61301499605178833" green="0.92014831304550171" blue="0.91666978597640991" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="60" id="3La-vN-4uR"/>
+                                            <constraint firstAttribute="width" constant="150" id="QgE-3i-yb8"/>
+                                        </constraints>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Видалити">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="21"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="cancellButtonTapped:" destination="2vD-PS-aBC" eventType="touchUpInside" id="N9F-TY-XFS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0c-mQ-JIW">
+                                        <rect key="frame" x="190" y="0.0" width="150" height="60"/>
+                                        <color key="backgroundColor" red="0.089625142514705658" green="0.6876603364944458" blue="0.36386466026306152" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="150" id="7kC-5j-EKg"/>
+                                            <constraint firstAttribute="height" constant="60" id="pFn-Gn-9SX"/>
+                                        </constraints>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Зберегти">
+                                            <fontDescription key="titleFontDescription" type="system" pointSize="21"/>
+                                        </buttonConfiguration>
+                                        <connections>
+                                            <action selector="saveButtonTapped:" destination="2vD-PS-aBC" eventType="touchUpInside" id="H5C-UH-lbb"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="i3e-oP-Bh3"/>
                         <color key="backgroundColor" systemColor="systemGray2Color"/>
                         <constraints>
                             <constraint firstItem="G3p-z2-zh2" firstAttribute="top" secondItem="aHw-xT-duX" secondAttribute="bottom" constant="30" id="LM7-Ku-G5n"/>
+                            <constraint firstItem="ayn-aP-PcV" firstAttribute="top" secondItem="G3p-z2-zh2" secondAttribute="bottom" constant="30" id="N9r-Ag-lqf"/>
                             <constraint firstItem="G3p-z2-zh2" firstAttribute="centerX" secondItem="aHw-xT-duX" secondAttribute="centerX" id="Psg-5x-bqX"/>
+                            <constraint firstItem="ayn-aP-PcV" firstAttribute="centerX" secondItem="i3e-oP-Bh3" secondAttribute="centerX" id="VFI-KJ-CgY"/>
+                            <constraint firstItem="l1X-NK-ah6" firstAttribute="centerX" secondItem="i3e-oP-Bh3" secondAttribute="centerX" id="fQ8-Ti-Ygg"/>
                             <constraint firstItem="aHw-xT-duX" firstAttribute="centerX" secondItem="i3e-oP-Bh3" secondAttribute="centerX" id="fgr-GJ-Ff8"/>
                             <constraint firstItem="aHw-xT-duX" firstAttribute="firstBaseline" secondItem="i3e-oP-Bh3" secondAttribute="top" id="h57-6c-exo"/>
+                            <constraint firstItem="l1X-NK-ah6" firstAttribute="top" secondItem="ayn-aP-PcV" secondAttribute="bottom" constant="45" id="mUd-1K-vSU"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="KNw-XX-cZD"/>
                     <connections>
+                        <outlet property="cancellResultButton" destination="gV6-Bb-ugC" id="5Sj-Gv-nlF"/>
                         <outlet property="finishMainContainerButton" destination="JOi-Hd-wy8" id="GWX-SP-Xnd"/>
                         <outlet property="finishMainContainerLabel" destination="k4W-do-VOG" id="Fma-jN-4Hn"/>
                         <outlet property="mainContainerView" destination="aHw-xT-duX" id="tSS-Gt-db0"/>
                         <outlet property="planMainContainerButton" destination="KXB-ob-5l5" id="XbY-ci-BSu"/>
                         <outlet property="planMainContainerLabel" destination="fn0-sd-MXN" id="JVR-KN-d4B"/>
+                        <outlet property="saveResultButton" destination="T0c-mQ-JIW" id="EZX-be-6YG"/>
                         <outlet property="secondContainerLabel" destination="7QL-22-kT8" id="eoo-tm-dqe"/>
                         <outlet property="secondContainerView" destination="G3p-z2-zh2" id="Uor-iS-LF9"/>
                         <outlet property="startMainContainerButton" destination="MJe-dK-jtl" id="ylp-E1-MT3"/>
                         <outlet property="startMainContainerLabel" destination="G8p-M0-b8D" id="XcS-m2-v5z"/>
+                        <outlet property="thirdContainerView" destination="ayn-aP-PcV" id="Q3t-Ai-Ah7"/>
                         <outlet property="timeMainContainerLabel" destination="aYH-Ez-Fln" id="mTn-8z-9qw"/>
                         <outlet property="titleMainContainerLabel" destination="nTb-VC-j7I" id="KWW-bt-oZ9"/>
                     </connections>

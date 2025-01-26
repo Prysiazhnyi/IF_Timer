@@ -13,6 +13,7 @@ class ResultViewController: UIViewController {
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
+    @IBOutlet weak var thirdContainerView: UIView!
     
     @IBOutlet weak var titleMainContainerLabel: UILabel!
     @IBOutlet weak var timeMainContainerLabel: UILabel!
@@ -26,6 +27,9 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var startMainContainerButton: UIButton!
     @IBOutlet weak var finishMainContainerButton: UIButton!
     
+    @IBOutlet weak var saveResultButton: UIButton!
+    @IBOutlet weak var cancellResultButton: UIButton!
+    
     var imageView: UIImageView!
 
     
@@ -34,6 +38,9 @@ class ResultViewController: UIViewController {
         
         setupView()
         setupButtonsInfo()
+        
+        secondContainerLabel.layer.cornerRadius = 20
+        secondContainerLabel.layer.masksToBounds = true
     }
     
     func setupView() {
@@ -41,22 +48,19 @@ class ResultViewController: UIViewController {
         // Установка фона экрана
         self.view.backgroundColor = UIColor(red: 0.89, green: 0.94, blue: 0.91, alpha: 1.0)
         
-        // Настройка контейнера с информацией
-        mainContainerView.backgroundColor = UIColor.white
-        mainContainerView.layer.cornerRadius = 25
-        mainContainerView.layer.shadowColor = UIColor.black.cgColor
-        mainContainerView.layer.shadowOpacity = 0.1
-        mainContainerView.layer.shadowOffset = CGSize(width: 0, height: 4)
-        mainContainerView.layer.shadowRadius = 8
-        mainContainerView.layer.masksToBounds = false
-        
-        // Настройка блока с цитатой
-        secondContainerView.backgroundColor = UIColor.white
-        secondContainerView.layer.cornerRadius = 25
-        
-        secondContainerLabel.layer.cornerRadius = 20
-        secondContainerLabel.layer.masksToBounds = true
-        
+        let arrayViews: [UIView] = [mainContainerView, secondContainerView, thirdContainerView]
+        for view in arrayViews {
+            view.translatesAutoresizingMaskIntoConstraints = false
+            // Настройка контейнера с информацией
+            view.backgroundColor = UIColor.white
+            view.layer.cornerRadius = 25
+            view.layer.shadowColor = UIColor.black.cgColor
+            view.layer.shadowOpacity = 0.1
+            view.layer.shadowOffset = CGSize(width: 0, height: 4)
+            view.layer.shadowRadius = 8
+            view.layer.masksToBounds = false
+            view.layer.masksToBounds = true
+        }
     }
     
     func setupButtonsInfo() {
@@ -100,9 +104,24 @@ class ResultViewController: UIViewController {
         planMainContainerButton.setTitleColor(.black, for: .normal)
         planMainContainerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planMainContainerButton.setTitle(viewController?.selectedPlan.selectedMyPlan, for: .normal)
+        
+        saveResultButton.layer.cornerRadius = 30
+        saveResultButton.layer.masksToBounds = true
+        
+        cancellResultButton.layer.cornerRadius = 30
+        cancellResultButton.layer.masksToBounds = true
       
     }
     
+    @IBAction func saveButtonTapped(_ sender: UIButton) {
+        print("Тап на кнопку сохранить")
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func cancellButtonTapped(_ sender: UIButton) {
+        print("Тап на кнопку отмена")
+        dismiss(animated: true, completion: nil)
+    }
     
 
     
