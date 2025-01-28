@@ -150,11 +150,11 @@ class FastingChartView: UIView {
             ])
         }
         // Обновляем верстку
-           contentView.layoutIfNeeded()
-           scrollView.layoutIfNeeded()
-           
-           // Перемещаем scrollView на последний элемент
-           showLastBar()
+        contentView.layoutIfNeeded()
+        scrollView.layoutIfNeeded()
+        
+        // Перемещаем scrollView на последний элемент
+        showLastBar()
     }
     
     private func showLastBar() {

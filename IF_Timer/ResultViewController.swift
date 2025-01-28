@@ -32,7 +32,7 @@ class ResultViewController: UIViewController {
     @IBOutlet weak var cancellResultButton: UIButton!
     
     var imageView: UIImageView!
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,34 +45,34 @@ class ResultViewController: UIViewController {
         
         //thirdContainerView.backgroundColor = .clear
         // Пример данных
-                chartView.data = [
-                    ("14 С", 6),
-                    ("15 С", 2),
-                    ("16 С", 12),
-                    ("17 С", 0),
-                    ("18 С", 8),
-                    ("19 С", 4),
-                    ("20 С", 10),
-                    ("21 С", 1),
-                    ("22 С", 18),
-                    ("23 С", 2)
-                ]
+        chartView.data = [
+            ("14 С", 6),
+            ("15 С", 2),
+            ("16 С", 12),
+            ("17 С", 0),
+            ("18 С", 8),
+            ("19 С", 4),
+            ("20 С", 10),
+            ("21 С", 1),
+            ("22 С", 18),
+            ("23 С", 2)
+        ]
         
         //chartView.backgroundColor = .red
-
+        
         
         thirdContainerView.addSubview(chartView)
         chartView.translatesAutoresizingMaskIntoConstraints = false
         thirdContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
-
-
+        
+        
         NSLayoutConstraint.activate([
             chartView.leadingAnchor.constraint(equalTo: thirdContainerView.leadingAnchor, constant: 10),
             chartView.trailingAnchor.constraint(equalTo: thirdContainerView.trailingAnchor, constant: -10),
             chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 10),
             chartView.bottomAnchor.constraint(equalTo: thirdContainerView.bottomAnchor, constant: -10)
         ])
-
+        
     }
     
     func setupView() {
@@ -109,19 +109,19 @@ class ResultViewController: UIViewController {
             button.layer.cornerRadius = 15
             button.layer.masksToBounds = true
             // Задаем ширину кнопок
-           //button.constraints.filter { $0.firstAttribute == .width }.forEach { $0.isActive = false }
+            //button.constraints.filter { $0.firstAttribute == .width }.forEach { $0.isActive = false }
             //button.widthAnchor.constraint(equalToConstant: CGFloat(equalToConstant)).isActive = true
             
             if button !== planMainContainerButton {
                 
                 let originalImage = UIImage(named: "iconPencil")
                 let newSize = CGSize(width: 16, height: 16) // Новый размер изображения
-
+                
                 // Создаем уменьшенное изображение
                 let resizedImage = UIGraphicsImageRenderer(size: newSize).image { _ in
                     originalImage?.draw(in: CGRect(origin: .zero, size: newSize))
                 }
-
+                
                 // Присваиваем уменьшенное изображение в ImageView
                 imageView = UIImageView(image: resizedImage)
                 imageView.contentMode = .center // Центрируем изображение внутри UIImageView
@@ -154,7 +154,7 @@ class ResultViewController: UIViewController {
         
         cancellResultButton.layer.cornerRadius = 30
         cancellResultButton.layer.masksToBounds = true
-      
+        
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
@@ -167,6 +167,6 @@ class ResultViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-
+    
     
 }

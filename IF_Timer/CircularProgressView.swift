@@ -59,12 +59,9 @@ class CircularProgressView: UIView {
     }
     
     func changeColorProgressView() {
-        guard let viewController = viewController else {
-            print("viewController is nil in CircularProgressView")
-            return}
-       print("viewController - not nil")
+        guard let viewController = viewController else {return}
         colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
-        progressLayer.strokeColor = viewController.isFastingExpired ? colorStep : UIColor.systemPink.cgColor
-       }
+        progressLayer.strokeColor = !viewController.isFastingExpired ? colorStep : UIColor.systemPink.cgColor
+    }
     
 }

@@ -42,7 +42,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
-   
+    
     var valueProgress: CGFloat = 0.0 {
         didSet {
             updateProgress(valueProgress)
@@ -53,7 +53,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             }
         }
     }
-
+    
     var backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     var timeResting = 8 * 3600 // время голодания
@@ -85,8 +85,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
-           circularProgressView = CircularProgressView(frame: progressBar.bounds)
-           guard let circularProgressView = circularProgressView else { return }
+        circularProgressView = CircularProgressView(frame: progressBar.bounds)
+        guard let circularProgressView = circularProgressView else { return }
         // Инициализация SetupTimer и передача ссылки на circularProgressView
         setupTimer = SetupTimer(viewController: self, circularProgressView: circularProgressView)
         sd.loadSaveDate() // загрузка данных
@@ -169,16 +169,16 @@ class ViewController: UIViewController, CustomAlertDelegate {
                 
                 let originalImage = UIImage(named: "iconPencil")
                 let newSize = CGSize(width: 16, height: 16) // Новый размер изображения
-
+                
                 // Создаем уменьшенное изображение
                 let resizedImage = UIGraphicsImageRenderer(size: newSize).image { _ in
                     originalImage?.draw(in: CGRect(origin: .zero, size: newSize))
                 }
-
+                
                 // Присваиваем уменьшенное изображение в ImageView
                 imageView = UIImageView(image: resizedImage)
                 imageView.contentMode = .center // Центрируем изображение внутри UIImageView
-
+                
                 imageView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
                 imageView.layer.cornerRadius = 10
                 imageView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner] // Верхний левый и нижний правый углы
@@ -200,7 +200,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         planButton.setTitleColor(.black, for: .normal)
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
-      
+        
     }
     
     func setupButtonsStart() {
@@ -230,7 +230,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     func updateFinishDateButton() {
-       
+        
         if isStarvation {
             timeWait = timeFasting
             finishStackView.isHidden = false
@@ -310,40 +310,40 @@ class ViewController: UIViewController, CustomAlertDelegate {
         let timeString = dateFormatter.string(from: date)
         
         // Настроим отступ между строками
-            let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.lineSpacing = 6 // Увеличиваем межстрочный интервал (в точках)
-            paragraphStyle.alignment = .center // Центрируем текст
-
-            // Создаем атрибутированный текст для первой строки (жирный шрифт)
-            let dateAttributedString = NSMutableAttributedString(
-                string: "\(dateString)\n",
-                attributes: [
-                    .font: UIFont.boldSystemFont(ofSize: 17), // Жирный шрифт для первой строки
-                    .foregroundColor: UIColor.black, // Черный цвет текста
-                    .paragraphStyle: paragraphStyle // Применяем межстрочный стиль
-                ]
-            )
-            
-            // Создаем атрибутированный текст для второй строки (обычный шрифт)
-            let timeAttributedString = NSAttributedString(
-                string: timeString,
-                attributes: [
-                    .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
-                    .foregroundColor: UIColor.black, // Черный цвет текста
-                    .paragraphStyle: paragraphStyle // Применяем тот же межстрочный стиль для выравнивания
-                ]
-            )
-            
-            // Добавляем вторую строку к первой
-            dateAttributedString.append(timeAttributedString)
-            
-            // Устанавливаем атрибутированный текст для кнопки
-            button.setAttributedTitle(dateAttributedString, for: .normal)
-            
-            // Включаем многострочный текст и выравнивание
-            button.titleLabel?.numberOfLines = 2
-            button.titleLabel?.textAlignment = .center // Выравниваем по центру
-        }
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = 6 // Увеличиваем межстрочный интервал (в точках)
+        paragraphStyle.alignment = .center // Центрируем текст
+        
+        // Создаем атрибутированный текст для первой строки (жирный шрифт)
+        let dateAttributedString = NSMutableAttributedString(
+            string: "\(dateString)\n",
+            attributes: [
+                .font: UIFont.boldSystemFont(ofSize: 17), // Жирный шрифт для первой строки
+                .foregroundColor: UIColor.black, // Черный цвет текста
+                .paragraphStyle: paragraphStyle // Применяем межстрочный стиль
+            ]
+        )
+        
+        // Создаем атрибутированный текст для второй строки (обычный шрифт)
+        let timeAttributedString = NSAttributedString(
+            string: timeString,
+            attributes: [
+                .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
+                .foregroundColor: UIColor.black, // Черный цвет текста
+                .paragraphStyle: paragraphStyle // Применяем тот же межстрочный стиль для выравнивания
+            ]
+        )
+        
+        // Добавляем вторую строку к первой
+        dateAttributedString.append(timeAttributedString)
+        
+        // Устанавливаем атрибутированный текст для кнопки
+        button.setAttributedTitle(dateAttributedString, for: .normal)
+        
+        // Включаем многострочный текст и выравнивание
+        button.titleLabel?.numberOfLines = 2
+        button.titleLabel?.textAlignment = .center // Выравниваем по центру
+    }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectPlanSegue" {
