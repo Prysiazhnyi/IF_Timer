@@ -207,7 +207,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
                 ])
             }
         }
-        planButton.setTitleColor(.black, for: .normal)
+        planButton.setTitleColor(.darkGray, for: .normal)
         planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         
