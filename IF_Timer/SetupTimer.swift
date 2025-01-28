@@ -56,7 +56,8 @@ class SetupTimer: UIViewController {
                 self?.updateCountdown()
             }
             viewController.percentProgressLabel.text = ""
-            viewController.titleProgressLabel.text = "До наступного\n інтервального голодування"
+            viewController.titleProgressLabel.text = viewController.isFastingTimeExpired ?  "До наступного\n інтервального голодування" : "Ви почали\n голодувати?"
+            //viewController.titleProgressLabel.text = "До наступного\n інтервального голодування"
             
             //countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
             //viewController.titleProgressLabel.text = "Поточний час"
@@ -99,8 +100,9 @@ class SetupTimer: UIViewController {
         let sign = Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 ? "+" : ""
         
         viewController.circularProgressView?.changeColorProgressView()
-        viewController.isFastingExpired = (sign == "+") ? true : false
+        viewController.timeIsUp = (sign == "+") ? true : false
         viewController.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
         //print("viewController.isFastingExpired - \(viewController.isFastingExpired), sign - \(sign)")
+        print("isFastingTimeExpired - \(viewController.isFastingTimeExpired), isStarvation - \(viewController.isStarvation), timeIsUp - \(viewController.timeIsUp)")
     }
 }

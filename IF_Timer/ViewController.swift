@@ -38,7 +38,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     
     var isStarvation: Bool = false
-    var isFastingExpired: Bool = false
+    var timeIsUp: Bool = false
+    var isFastingTimeExpired: Bool = false
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
@@ -80,9 +81,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupTitle()
-        
+
         sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
@@ -104,10 +103,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupButtonsInfo(100)
         setupButtonsStart()
         setupTimer.startTimer()
-        
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
-        print("startDate начало  - \(startDate)) ")
-        
+        isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
+        setupTitle()
+        //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
+        //print("startDate начало  - \(startDate)) ")
+        print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,8 +122,17 @@ class ViewController: UIViewController, CustomAlertDelegate {
         let titleLabel = UILabel()
         titleLabel.textAlignment = .center // Выравнивание по центру
         titleLabel.textColor = .black // Цвет текста (можно изменить)
-        titleLabel.font = UIFont.boldSystemFont(ofSize: 25) // Увеличиваем шрифт и делаем его жирным
-        isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
+        titleLabel.font = UIFont.boldSystemFont(ofSize: 23) // Увеличиваем шрифт и делаем его жирным
+
+        if isStarvation {
+            timeIsUp ? (titleLabel.text = "Ти живий? Закінчуй з цим!") : (titleLabel.text = "Вікно голодування")
+            isFastingTimeExpired = false
+        } else {
+            timeIsUp ? (titleLabel.text = "Час розпочати інтервал голоду") : (titleLabel.text = "Почніть вікно голодування")
+            isFastingTimeExpired = timeIsUp ? true : false
+        }
+        
+       // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
         
@@ -400,7 +409,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     deinit {
         setupTimer.countdownTimer?.invalidate()
+        sd.saveDateUserDefaults()
     }
+    
+    
+    
 }
 
 

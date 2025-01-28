@@ -29,6 +29,11 @@ class SaveData {
                 viewController.isStarvation = tempIsStarvation
                 print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
+            if let temptimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
+                viewController.timeIsUp = temptimeIsUp
+                print("загрузка timeIsUp - \(temptimeIsUp)")
+            }
+            
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
                 viewController.timeFasting = saveTimeFasting
@@ -87,6 +92,7 @@ class SaveData {
         UserDefaults.standard.set(viewController.isStarvation, forKey: "isStarvation")
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
+        UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
         
         print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }
