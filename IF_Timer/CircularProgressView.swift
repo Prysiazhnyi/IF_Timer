@@ -9,7 +9,7 @@ import UIKit
 
 class CircularProgressView: UIView {
     
-    var viewController: ViewController?
+    weak var viewController: ViewController?
     
     private var progressLayer = CAShapeLayer()
     private var trackLayer = CAShapeLayer()
@@ -49,8 +49,7 @@ class CircularProgressView: UIView {
         // Прогресс
         progressLayer.path = circlePath.cgPath
         
-        colorFromIsStarvation()
-        changeColorProgressView(true)
+        changeColorProgressView()
         
         //progressLayer.strokeColor = UIColor.green.cgColor
         progressLayer.fillColor = UIColor.clear.cgColor
@@ -59,18 +58,13 @@ class CircularProgressView: UIView {
         layer.addSublayer(progressLayer)
     }
     
-    func changeColorProgressView(_ controlProgress: Bool) {
-        colorFromIsStarvation()
-        if !controlProgress {
-            progressLayer.strokeColor = UIColor.systemPink.cgColor
-        } else {
-            progressLayer.strokeColor = colorStep
-        }
-    }
+    func changeColorProgressView() {
+        guard let viewController = viewController else {
+            print("viewController is nil in CircularProgressView")
+            return}
+       print("viewController - not nil")
+        colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
+        progressLayer.strokeColor = viewController.isFastingExpired ? colorStep : UIColor.systemPink.cgColor
+       }
     
-    func colorFromIsStarvation() {
-        if let viewController = viewController {
-            colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
-        }
-    }
 }

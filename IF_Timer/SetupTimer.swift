@@ -10,9 +10,23 @@ import UIKit
 
 class SetupTimer: UIViewController {
     
-    var viewController: ViewController!
-    var circularProgressView: CircularProgressView?
+//    var viewController: ViewController!
+//    var circularProgressView = CircularProgressView()
 
+    var viewController: ViewController
+       var circularProgressView: CircularProgressView
+
+       init(viewController: ViewController, circularProgressView: CircularProgressView) {
+           self.viewController = viewController
+           self.circularProgressView = circularProgressView
+           super.init(nibName: nil, bundle: nil)
+       }
+       
+       required init?(coder: NSCoder) {
+           fatalError("init(coder:) has not been implemented")
+       }
+    
+    
     // Таймер
     var countdownTimer: Timer?
     var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
@@ -82,17 +96,11 @@ class SetupTimer: UIViewController {
         let minutes = (Int(validRemainingTime) % 3600) / 60
         let seconds = Int(validRemainingTime) % 60
         
-        var  sign = ""
-        if  Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 {
-            sign = "+"
-            callChangeColorFunction(isColorChanged: false)
-        } else {
-            callChangeColorFunction(isColorChanged: true)
-        }
+        let  sign = Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 ? "+" : ""
+       
+        viewController.circularProgressView?.changeColorProgressView()
+        viewController.isFastingExpired = (sign == "+") ? true : false
         viewController.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
+        print("viewController.isFastingExpired - \(viewController.isFastingExpired), sign - \(sign)")
     }
-    
-    func callChangeColorFunction(isColorChanged: Bool) {
-            viewController?.circularProgressView?.changeColorProgressView(isColorChanged)
-        }
 }

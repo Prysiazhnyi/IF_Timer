@@ -11,7 +11,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
     let sd = SaveData()
-    let setupTimer = SetupTimer()
+    var setupTimer: SetupTimer!
     var circularProgressView: CircularProgressView?
     var resultViewController: ResultViewController?
     
@@ -38,6 +38,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     
     var isStarvation: Bool = false
+    var isFastingExpired: Bool = false
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
@@ -79,11 +80,16 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sd.viewController = self
-        setupTimer.viewController = self
-        sd.loadSaveDate() // загрузка данных
+        
         setupTitle()
         
+        sd.viewController = self
+        // Инициализация CircularProgressView перед инициализацией SetupTimer
+           circularProgressView = CircularProgressView(frame: progressBar.bounds)
+           guard let circularProgressView = circularProgressView else { return }
+        // Инициализация SetupTimer и передача ссылки на circularProgressView
+        setupTimer = SetupTimer(viewController: self, circularProgressView: circularProgressView)
+        sd.loadSaveDate() // загрузка данных
         datePickerManager = DatePickerManager(parentViewController: self)
         
         // Инициализируем resultViewController после того, как self уже доступен
@@ -247,13 +253,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
     private func setupCircularProgress() {
         // Создаем экземпляр CircularProgressView
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
-        
         // Убедимся, что прогресс-бар существует
         guard let circularProgressView = circularProgressView else { return }
-        
         // Передаем viewController после инициализации
         circularProgressView.viewController = self
-        
         // Добавляем его в progressBar
         progressBar.addSubview(circularProgressView)
     }
