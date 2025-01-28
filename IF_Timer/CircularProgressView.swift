@@ -63,6 +63,7 @@ class CircularProgressView: UIView {
         colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
         progressLayer.strokeColor = !viewController.timeIsUp ? colorStep : UIColor.systemPink.cgColor
         viewController.setupTitle()
+        viewController.setupTitleProgressLabel()
     }
     
 }

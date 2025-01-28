@@ -103,8 +103,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupButtonsInfo(100)
         setupButtonsStart()
         setupTimer.startTimer()
-        isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
+        setupIfFastingTimeExpired()
         setupTitle()
+        setupTitleProgressLabel()
         //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         //print("startDate начало  - \(startDate)) ")
         print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
@@ -115,6 +116,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateProgress(valueProgress)
         updateFinishDateButton()
         setupTimer.startTimer()
+        setupIfFastingTimeExpired()
+        setupTitleProgressLabel()
+        setupTitle()
     }
     
     func setupTitle() {
@@ -123,15 +127,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
         titleLabel.textAlignment = .center // Выравнивание по центру
         titleLabel.textColor = .black // Цвет текста (можно изменить)
         titleLabel.font = UIFont.boldSystemFont(ofSize: 23) // Увеличиваем шрифт и делаем его жирным
-
         if isStarvation {
             timeIsUp ? (titleLabel.text = "Ти живий? Закінчуй з цим!") : (titleLabel.text = "Вікно голодування")
-            isFastingTimeExpired = false
         } else {
             timeIsUp ? (titleLabel.text = "Час розпочати інтервал голоду") : (titleLabel.text = "Почніть вікно голодування")
-            isFastingTimeExpired = timeIsUp ? true : false
         }
-        
+        setupIfFastingTimeExpired()
        // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
@@ -412,7 +413,26 @@ class ViewController: UIViewController, CustomAlertDelegate {
         sd.saveDateUserDefaults()
     }
     
+    func setupIfFastingTimeExpired() {
+        isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
+        if isFastingTimeExpired {
+            startStackView.isHidden = true
+            setupButtonsInfo(320)
+            planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 28)
+        } else {
+            startStackView.isHidden = false
+        }
+    }
     
+    func setupTitleProgressLabel() {
+        
+        if isStarvation {
+            titleProgressLabel.text = timeIsUp ? "Ви вже закінчили?" : "Залишилось часу"
+        } else {
+            percentProgressLabel.text = ""
+            titleProgressLabel.text = timeIsUp ? "Ви почали\n голодувати?" :  "До наступного\n інтервального голодування"
+        }
+    }
     
 }
 

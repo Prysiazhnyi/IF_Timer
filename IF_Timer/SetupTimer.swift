@@ -47,7 +47,6 @@ class SetupTimer: UIViewController {
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
             }
-            viewController.titleProgressLabel.text = "Залишилось часу"
         } else {
             
             remainingTime = Double(viewController.timeResting) - currentTime.timeIntervalSince(viewController.startDate)
@@ -55,26 +54,9 @@ class SetupTimer: UIViewController {
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
             }
-            viewController.percentProgressLabel.text = ""
-            viewController.titleProgressLabel.text = viewController.isFastingTimeExpired ?  "До наступного\n інтервального голодування" : "Ви почали\n голодувати?"
-            //viewController.titleProgressLabel.text = "До наступного\n інтервального голодування"
-            
-            //countdownTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateCurrentTime), userInfo: nil, repeats: true)
-            //viewController.titleProgressLabel.text = "Поточний час"
-            
         }
+        viewController.setupTitleProgressLabel()
     }
-    
-    //    @objc private func updateCurrentTime() {
-    //        
-    //        // Получаем текущее время
-    //        let dateFormatter = DateFormatter()
-    //        dateFormatter.dateFormat = "HH:mm:ss"
-    //        let formattedTime = dateFormatter.string(from: Date())  // Используем Date() для текущего времени
-    //        
-    //        // Обновляем метку с текущим временем
-    //        viewController.timerProgressLabel.text = formattedTime
-    //    }
     
     private func updateCountdown() {
         
@@ -103,6 +85,6 @@ class SetupTimer: UIViewController {
         viewController.timeIsUp = (sign == "+") ? true : false
         viewController.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
         //print("viewController.isFastingExpired - \(viewController.isFastingExpired), sign - \(sign)")
-        print("isFastingTimeExpired - \(viewController.isFastingTimeExpired), isStarvation - \(viewController.isStarvation), timeIsUp - \(viewController.timeIsUp)")
+        //print("isFastingTimeExpired - \(viewController.isFastingTimeExpired), isStarvation - \(viewController.isStarvation), timeIsUp - \(viewController.timeIsUp)")
     }
 }
