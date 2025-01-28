@@ -7,7 +7,11 @@
 
 import UIKit
 
-class ResultViewController: UIViewController {
+protocol ProtocolToRecultDelegat: AnyObject {
+    func setupTimeButtonsDelegat(_: Date, _: Date)
+}
+
+class ResultViewController: UIViewController, ProtocolToRecultDelegat {
     
     var viewController: ViewController?
     let chartView = FastingChartView()
@@ -33,6 +37,8 @@ class ResultViewController: UIViewController {
     
     var imageView: UIImageView!
     
+    var timeForStartButton = Date()
+    var timeForFinishButton = Date()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +49,7 @@ class ResultViewController: UIViewController {
         secondContainerLabel.layer.cornerRadius = 20
         secondContainerLabel.layer.masksToBounds = true
         
+        //setupTimeButtons(timeForStartButton, timeForFinishButton)
         //thirdContainerView.backgroundColor = .clear
         // Пример данных
         chartView.data = [
@@ -94,6 +101,20 @@ class ResultViewController: UIViewController {
             view.layer.masksToBounds = true
         }
     }
+  
+    func setupTimeButtonsDelegat(_ timeForStartButton: Date, _ timeForFinishButton: Date) {
+        self.timeForStartButton = timeForStartButton
+        self.timeForFinishButton = timeForFinishButton
+        //print("setupTimeButtons - timeForStartButton - \(timeForStartButton), timeForFinishButton - \(timeForFinishButton)")
+        setupTimeButtons()
+    }
+    
+    
+    func setupTimeButtons() {
+        viewController?.setButtonTitle(for: self.startMainContainerButton, date: timeForStartButton)
+        viewController?.setButtonTitle(for: self.finishMainContainerButton, date: timeForFinishButton)
+        print("setupTimeButtons - timeForStartButton - \(timeForStartButton), timeForFinishButton - \(timeForFinishButton)")
+    }
     
     func setupButtonsInfo() {
         
@@ -108,6 +129,7 @@ class ResultViewController: UIViewController {
         for button in buttonsInfo {
             button.layer.cornerRadius = 15
             button.layer.masksToBounds = true
+            button.setTitleColor(.darkGray, for: .normal)
             // Задаем ширину кнопок
             //button.constraints.filter { $0.firstAttribute == .width }.forEach { $0.isActive = false }
             //button.widthAnchor.constraint(equalToConstant: CGFloat(equalToConstant)).isActive = true
@@ -145,7 +167,7 @@ class ResultViewController: UIViewController {
                 ])
             }
         }
-        planMainContainerButton.setTitleColor(.black, for: .normal)
+       // planMainContainerButton.setTitleColor(.darkGray, for: .normal)
         planMainContainerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planMainContainerButton.setTitle(viewController?.selectedPlan.selectedMyPlan, for: .normal)
         

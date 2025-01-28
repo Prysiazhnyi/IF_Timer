@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
@@ -14,6 +16,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var setupTimer: SetupTimer!
     var circularProgressView: CircularProgressView?
     var resultViewController: ResultViewController?
+    var customAlertViewController: CustomAlertViewController?
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -63,7 +66,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var selectedPlan: Plan = .basic // Установите дефолтный план
     
     var startDate = Date()
-    var finishDate: Date?
+    var finishDate = Date()
     var endDate = Date()
     
     enum Plan: String {
@@ -252,7 +255,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
         
         finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
-        guard let finishDate = finishDate else { return }
+        //guard let finishDate = finishDate else { return }
         setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle(for: self.startButton, date: endDate)
@@ -385,6 +388,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     func didTapYesButton() {
         isStarvation.toggle()
+        let resultVC = ResultViewController()
+        resultVC.setupTimeButtonsDelegat(startDate, finishDate)
+        
         startDate = Date()
         valueProgress = 0
         setupButtonsStart()
@@ -398,7 +404,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setButtonTitle(for: self.startButton, date: startDate)
         } else {
             endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
-            print("endDate \(endDate), timeResting \(timeResting / 3600), valueProgress \(valueProgress)")
+            //print("endDate \(endDate), timeResting \(timeResting / 3600), valueProgress \(valueProgress)")
             setButtonTitle(for: self.startButton, date: endDate)
         }
     }

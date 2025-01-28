@@ -14,6 +14,7 @@ protocol CustomAlertDelegate: AnyObject {
 class CustomAlertViewController: UIViewController {
     
     var parentviewController: ViewController? // Ссылка на первый контроллер
+    var resultViewController: ResultViewController? 
     weak var delegate: CustomAlertDelegate?
     
     // Функция для отображения кастомного алерта
