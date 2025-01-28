@@ -112,6 +112,8 @@ class CustomAlertViewController: UIViewController {
         //let resultVC = ResultViewController(viewController: parentviewController!)
                resultVC.modalPresentationStyle = .fullScreen
                resultVC.viewController = parentviewController!
+               resultVC.timeForStartButton = parentviewController?.tempStartDateForResult
+               resultVC.timeForFinishButton = parentviewController?.tempFinishDateForResult
                parentviewController?.present(resultVC, animated: true, completion: nil)
            }
         

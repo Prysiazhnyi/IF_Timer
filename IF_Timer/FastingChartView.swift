@@ -94,7 +94,7 @@ class FastingChartView: UIView {
         guard let barView = contentView.subviews.first else { return }
         barView.layoutIfNeeded() // Убедимся, что layout обновлен
         let barHeight = barView.frame.height
-        print("barHeight - \(barHeight)")
+        //print("barHeight - \(barHeight)")
         
         // Добавляем метки по очереди
         for (index, value) in scaleLabels.enumerated() {
@@ -121,7 +121,7 @@ class FastingChartView: UIView {
                 label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -relativeHeight)
             ])
             
-            print("relativeHeight - \(relativeHeight)")
+            //print("relativeHeight - \(relativeHeight)")
         }
     }
     

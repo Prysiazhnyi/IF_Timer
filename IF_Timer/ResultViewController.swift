@@ -7,14 +7,15 @@
 
 import UIKit
 
-protocol ProtocolToRecultDelegat: AnyObject {
-    func setupTimeButtonsDelegat(_: Date, _: Date)
-}
+//protocol ProtocolToRecultDelegat: AnyObject {
+//    func setupTimeButtonsDelegat(_ start: Date, _ finish: Date)
+//}
 
-class ResultViewController: UIViewController, ProtocolToRecultDelegat {
+class ResultViewController: UIViewController {
     
     var viewController: ViewController?
     let chartView = FastingChartView()
+    let setButtonTitle = SetButtonTitle()
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
@@ -37,8 +38,8 @@ class ResultViewController: UIViewController, ProtocolToRecultDelegat {
     
     var imageView: UIImageView!
     
-    var timeForStartButton = Date()
-    var timeForFinishButton = Date()
+    var timeForStartButton: Date?
+    var timeForFinishButton: Date?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +50,7 @@ class ResultViewController: UIViewController, ProtocolToRecultDelegat {
         secondContainerLabel.layer.cornerRadius = 20
         secondContainerLabel.layer.masksToBounds = true
         
-        //setupTimeButtons(timeForStartButton, timeForFinishButton)
+        setupTimeButtons()
         //thirdContainerView.backgroundColor = .clear
         // Пример данных
         chartView.data = [
@@ -102,18 +103,26 @@ class ResultViewController: UIViewController, ProtocolToRecultDelegat {
         }
     }
   
-    func setupTimeButtonsDelegat(_ timeForStartButton: Date, _ timeForFinishButton: Date) {
-        self.timeForStartButton = timeForStartButton
-        self.timeForFinishButton = timeForFinishButton
-        //print("setupTimeButtons - timeForStartButton - \(timeForStartButton), timeForFinishButton - \(timeForFinishButton)")
-        setupTimeButtons()
-    }
+//    func setupTimeButtonsDelegat(_ start: Date, _ finish: Date) {
+//        self.timeForStartButton = start
+//        self.timeForFinishButton = finish
+//        print("start - \(start), finish - \(finish)")
+//        // Вызываем обновление UI после того, как экран уже готов
+//               DispatchQueue.main.async {
+//                   self.setupTimeButtons()
+//               }
+//    }
     
     
     func setupTimeButtons() {
-        viewController?.setButtonTitle(for: self.startMainContainerButton, date: timeForStartButton)
-        viewController?.setButtonTitle(for: self.finishMainContainerButton, date: timeForFinishButton)
-        print("setupTimeButtons - timeForStartButton - \(timeForStartButton), timeForFinishButton - \(timeForFinishButton)")
+        if let start = timeForStartButton, let finish = timeForFinishButton {
+                setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
+                setButtonTitle.setButtonTitle(for: finishMainContainerButton, date: finish)
+                print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
+            } else {
+                print("Даты не инициализированы")
+            }
+       
     }
     
     func setupButtonsInfo() {

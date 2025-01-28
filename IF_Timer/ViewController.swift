@@ -7,8 +7,6 @@
 
 import UIKit
 
-
-
 class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
@@ -17,6 +15,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var circularProgressView: CircularProgressView?
     var resultViewController: ResultViewController?
     var customAlertViewController: CustomAlertViewController?
+    let setButtonTitle = SetButtonTitle()
     
     @IBOutlet weak var progressBar: UIView!
     @IBOutlet weak var titleProgressLabel: UILabel!
@@ -69,6 +68,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var finishDate = Date()
     var endDate = Date()
     
+    var tempStartDateForResult = Date()
+    var tempFinishDateForResult = Date()
+    
     enum Plan: String {
         case myPlan = "Мой план"
         case basic = "16-8"
@@ -84,7 +86,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
@@ -111,7 +113,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupTitleProgressLabel()
         //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         //print("startDate начало  - \(startDate)) ")
-        print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -136,7 +139,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             timeIsUp ? (titleLabel.text = "Час розпочати інтервал голоду") : (titleLabel.text = "Почніть вікно голодування")
         }
         setupIfFastingTimeExpired()
-       // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
+        // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
         
@@ -155,7 +158,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         sd.saveDateUserDefaults()
         
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
+        //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -256,9 +259,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
         //guard let finishDate = finishDate else { return }
-        setButtonTitle(for: finishButton, date: finishDate)
+        setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
-        isStarvation ? setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle(for: self.startButton, date: endDate)
+        isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
     }
     
     //MARK: Progress Bar
@@ -282,7 +285,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     @IBAction func startButtonTapped(_ sender: UIButton) {
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: isStarvation ? startDate : endDate) { [self] selectedDate in
-            self.setButtonTitle(for: sender, date: selectedDate)
+            setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
             
             if isStarvation {startDate = selectedDate
             } else {
@@ -294,68 +297,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupTimer.startTimer()
             sd.saveDateUserDefaults()
         }
-    }
-    
-    func setButtonTitle(for button: UIButton, date: Date) {
-        let calendar = Calendar.current
-        let today = calendar.startOfDay(for: Date())
-        let tomorrow = calendar.date(byAdding: .day, value: 1, to: today)!
-        let selectedDate = calendar.startOfDay(for: date)
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "uk_UA") // Украинская локализация
-        
-        // Форматируем дату и время
-        var dateString: String
-        
-        if selectedDate == today {
-            dateString = "Сьогодні"
-        } else if selectedDate == tomorrow {
-            dateString = "Завтра"
-        } else {
-            dateFormatter.dateFormat = "dd MMM"
-            dateString = dateFormatter.string(from: date)
-        }
-        
-        // Форматируем время
-        
-        dateFormatter.dateFormat = "HH:mm"
-        let timeString = dateFormatter.string(from: date)
-        
-        // Настроим отступ между строками
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 6 // Увеличиваем межстрочный интервал (в точках)
-        paragraphStyle.alignment = .center // Центрируем текст
-        
-        // Создаем атрибутированный текст для первой строки (жирный шрифт)
-        let dateAttributedString = NSMutableAttributedString(
-            string: "\(dateString)\n",
-            attributes: [
-                .font: UIFont.boldSystemFont(ofSize: 17), // Жирный шрифт для первой строки
-                .foregroundColor: UIColor.black, // Черный цвет текста
-                .paragraphStyle: paragraphStyle // Применяем межстрочный стиль
-            ]
-        )
-        
-        // Создаем атрибутированный текст для второй строки (обычный шрифт)
-        let timeAttributedString = NSAttributedString(
-            string: timeString,
-            attributes: [
-                .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
-                .foregroundColor: UIColor.black, // Черный цвет текста
-                .paragraphStyle: paragraphStyle // Применяем тот же межстрочный стиль для выравнивания
-            ]
-        )
-        
-        // Добавляем вторую строку к первой
-        dateAttributedString.append(timeAttributedString)
-        
-        // Устанавливаем атрибутированный текст для кнопки
-        button.setAttributedTitle(dateAttributedString, for: .normal)
-        
-        // Включаем многострочный текст и выравнивание
-        button.titleLabel?.numberOfLines = 2
-        button.titleLabel?.textAlignment = .center // Выравниваем по центру
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -372,6 +313,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
         
         if isStarvation {
+            tempStartDateForResult = startDate
+            tempFinishDateForResult = finishDate
+            
             let alertviewController = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
             alertviewController.delegate = self
@@ -387,10 +331,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func didTapYesButton() {
-        isStarvation.toggle()
-        let resultVC = ResultViewController()
-        resultVC.setupTimeButtonsDelegat(startDate, finishDate)
+        print("ВЫЗОВ   ---    didTapYesButton")
         
+        isStarvation.toggle()
         startDate = Date()
         valueProgress = 0
         setupButtonsStart()
@@ -401,11 +344,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
         //updateProgress(valueProgress)
         
         if isStarvation {
-            setButtonTitle(for: self.startButton, date: startDate)
+            setButtonTitle.setButtonTitle(for: self.startButton, date: startDate)
         } else {
             endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
             //print("endDate \(endDate), timeResting \(timeResting / 3600), valueProgress \(valueProgress)")
-            setButtonTitle(for: self.startButton, date: endDate)
+            setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
         }
     }
     

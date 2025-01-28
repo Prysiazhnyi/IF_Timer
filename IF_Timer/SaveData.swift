@@ -14,24 +14,24 @@ class SaveData {
     func loadSaveDate() {
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self, let viewController = self.viewController else {
-                print("Error: self or viewController is nil")
+                //print("Error: self or viewController is nil")
                 return
             }
 
             var savedStartDate: Date?
             if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
                 savedStartDate = savedDate
-                print("загрузка savedDate - \(savedDate)")
+                //print("загрузка savedDate - \(savedDate)")
             }
             viewController.startDate = savedStartDate ?? Date()
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 viewController.isStarvation = tempIsStarvation
-                print("загрузка tempIsStarvation - \(tempIsStarvation)")
+                //print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
             if let temptimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
                 viewController.timeIsUp = temptimeIsUp
-                print("загрузка timeIsUp - \(temptimeIsUp)")
+               //print("загрузка timeIsUp - \(temptimeIsUp)")
             }
             
             
@@ -46,9 +46,9 @@ class SaveData {
             if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan"),
                let plan = ViewController.Plan(rawValue: rawValue) {
                 viewController.selectedPlan = plan
-                print("Загруженный план: \(plan)")
+                //print("Загруженный план: \(plan)")
             } else {
-                print("Ошибка: не удалось загрузить план из UserDefaults")
+                //print("Ошибка: не удалось загрузить план из UserDefaults")
             }
             
             if let endDateTemp = UserDefaults.standard.object(forKey: "endDate") as? Date {
@@ -64,7 +64,7 @@ class SaveData {
                 }
 
                 if let savedStartDate = savedStartDate {
-                    viewController.setButtonTitle(for: viewController.startButton, date: savedStartDate)
+                    viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedStartDate)
                 }
                 
                 if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
