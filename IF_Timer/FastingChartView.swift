@@ -20,9 +20,18 @@ class FastingChartView: UIView {
     }
     
     private let maxHours: CGFloat = 24.0 // Максимум часов в сутках
-    private let barWidth: CGFloat = 20.0
-    private let barSpacing: CGFloat = 16.0
-    private let barHeight: CGFloat = 150.0 // Фиксированная высота для всех баров
+    private let barWidth: CGFloat = 20.0 // ширина столбцов
+    private let barSpacing: CGFloat = 8.0 // отступ между столбцами
+    private let barHeight: CGFloat = 110.0 // Фиксированная высота для всех баров
+    
+    private let labelsContainer = UIView()
+    private let fastingLabel = UILabel()
+    private let timeStackView = UIStackView()
+    private let timeLabel = UILabel()
+    private let completedLabel = UILabel()
+    private let timeDot = UIView()
+    private let completedDot = UIView()
+    
     
     // MARK: - Инициализация
     override init(frame: CGRect) {
@@ -40,8 +49,64 @@ class FastingChartView: UIView {
         addScale()  // Обновляем шкалу после того, как размеры точно установлены
     }
     
+    private func setupLabels() {
+        addSubview(labelsContainer)
+        labelsContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        fastingLabel.text = "Час голодування"
+        fastingLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        fastingLabel.textColor = .darkGray
+        fastingLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        timeLabel.text = "24 години"
+        timeLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        timeLabel.textColor = .darkGray
+        
+        completedLabel.text = "Завершено"
+        completedLabel.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        completedLabel.textColor = .darkGray
+        
+        timeStackView.axis = .horizontal
+        timeStackView.spacing = 8
+        timeStackView.alignment = .center
+        timeStackView.translatesAutoresizingMaskIntoConstraints = false
+        
+        timeDot.backgroundColor = .systemGreen
+        completedDot.backgroundColor = .red
+        
+        [timeDot, completedDot].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            $0.layer.cornerRadius = 4
+            $0.widthAnchor.constraint(equalToConstant: 8).isActive = true
+            $0.heightAnchor.constraint(equalToConstant: 8).isActive = true
+        }
+        
+        timeStackView.addArrangedSubview(timeDot)
+        timeStackView.addArrangedSubview(timeLabel)
+        timeStackView.addArrangedSubview(completedDot)
+        timeStackView.addArrangedSubview(completedLabel)
+        
+        labelsContainer.addSubview(fastingLabel)
+        labelsContainer.addSubview(timeStackView)
+        
+        NSLayoutConstraint.activate([
+            labelsContainer.topAnchor.constraint(equalTo: topAnchor, constant: 0),
+            labelsContainer.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            labelsContainer.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            
+            fastingLabel.topAnchor.constraint(equalTo: labelsContainer.topAnchor),
+            fastingLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
+            
+            timeStackView.topAnchor.constraint(equalTo: fastingLabel.bottomAnchor, constant: 8),
+            timeStackView.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
+            timeStackView.bottomAnchor.constraint(equalTo: labelsContainer.bottomAnchor)
+        ])
+    }
     
     private func setupUI() {
+        
+        setupLabels()
+        
         addSubview(scrollView)
         addSubview(scaleView)  // Добавляем шкалу в FastingChartView (вне scrollView)
         
