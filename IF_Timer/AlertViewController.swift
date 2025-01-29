@@ -18,10 +18,10 @@ class CustomAlertViewController: UIViewController {
     weak var delegate: CustomAlertDelegate?
     
     var isCustomAlertShownMainOrResult = true // true при прек4ращение цикоа на главной, false - при подтверждении удаления данных
-    // Функция для отображения кастомного алерта
+    var isStarvationTimeExpiredAlert = false
     
     func showCustomAlert(_ isCustomAlertShownMainOrResult : Bool) {
-        
+        //print("isStarvationTimeExpiredAlert - \(isStarvationTimeExpiredAlert)")
         self.isCustomAlertShownMainOrResult = isCustomAlertShownMainOrResult
         
         // Создаем затемнение для фона
@@ -48,7 +48,8 @@ class CustomAlertViewController: UIViewController {
         
         // Сообщение алерта
         let messageLabel = UILabel()
-        messageLabel.text = isCustomAlertShownMainOrResult ? "Ви дійсно хочете перервати інтервал голоду?" : "Запис вашого інтервалу не буде\nзбережено. Ви впевнені, що хочете\nвидалити дані?"
+        let tempTextToMain = isStarvationTimeExpiredAlert ? "Ви дійсно хочете перервати інтервал голоду?" : "Ви ще не досягли мети. Ви дійсно\nхочете перервати інтервал голоду?"
+        messageLabel.text = isCustomAlertShownMainOrResult ? tempTextToMain : "Запис вашого інтервалу не буде\nзбережено. Ви впевнені, що хочете\nвидалити дані?"
         messageLabel.font = UIFont.systemFont(ofSize: 15)
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0

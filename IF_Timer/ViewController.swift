@@ -39,9 +39,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBOutlet weak var myProfilButton: UIButton!
     
     
-    var isStarvation: Bool = false
-    var timeIsUp: Bool = false
-    var isFastingTimeExpired: Bool = false
+    var isStarvation: Bool = false // это голодание или окно приема пищи
+    var timeIsUp: Bool = false // время вышло
+    var isFastingTimeExpired: Bool = false // вышло время приема пищ
+    var isStarvationTimeExpired: Bool = false // вышло время голодания
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
@@ -115,8 +116,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupTitleProgressLabel()
         //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         //print("startDate начало  - \(startDate)) ")
-        print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+       // print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         timeIsUp = finishDate < currentTime || endDate < currentTime
+        isStarvationTimeExpired = isStarvation && timeIsUp
+       // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -316,12 +319,15 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBAction func startStarvationButtonPressed(_ sender: Any) {
         
         if isStarvation {
+            isStarvationTimeExpired = isStarvation && timeIsUp
+          // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
             tempStartDateForResult = startDate
             tempFinishDateForResult = finishDate
             
             let alertviewController = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
             alertviewController.delegate = self
+            alertviewController.isStarvationTimeExpiredAlert = isStarvationTimeExpired
             alertviewController.parentviewController = self  // Передаём текущий контроллер
             alertviewController.modalPresentationStyle = .overFullScreen
             self.present(alertviewController, animated: true) {
