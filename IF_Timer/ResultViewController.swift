@@ -18,6 +18,7 @@ class ResultViewController: UIViewController {
     let setButtonTitle = SetButtonTitle()
     let fastingTracker = FastingTracker()
     let alertviewController = CustomAlertViewController()
+    private var datePickerManager: DatePickerManager!
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
@@ -54,28 +55,26 @@ class ResultViewController: UIViewController {
         
         setupTimeButtons()
         timeMainContainerLabel.text = formatFastingDuration(start: timeForStartButton, finish: timeForFinishButton)
-
-        // Передача данных из fastingTracker в chartView
         
-       // print(fastingTracker.fastingData)
+        datePickerManager = DatePickerManager(parentViewController: self)
         
         //chartView.data = fastingTracker.getFastingData()
         chartView.data = fastingTracker.getFastingData().map { ($0.date, $0.hours) }
-
+        
         //thirdContainerView.backgroundColor = .clear
         // Пример данных
-//        chartView.data = [
-//            ("14 С", 6),
-//            ("15 С", 2),
-//            ("16 С", 12),
-//            ("17 С", 0),
-//            ("18 С", 8),
-//            ("19 С", 4),
-//            ("20 С", 10),
-//            ("21 С", 1),
-//            ("22 С", 18),
-//            ("23 С", 2)
-//        ]
+        //        chartView.data = [
+        //            ("14 С", 6),
+        //            ("15 С", 2),
+        //            ("16 С", 12),
+        //            ("17 С", 0),
+        //            ("18 С", 8),
+        //            ("19 С", 4),
+        //            ("20 С", 10),
+        //            ("21 С", 1),
+        //            ("22 С", 18),
+        //            ("23 С", 2)
+        //        ]
         
         //chartView.backgroundColor = .red
         
@@ -105,7 +104,7 @@ class ResultViewController: UIViewController {
         
         return String(format: "%d год. %02d хв.", hours, minutes)
     }
-
+    
     
     func setupView() {
         
@@ -126,27 +125,27 @@ class ResultViewController: UIViewController {
             view.layer.masksToBounds = true
         }
     }
-  
-//    func setupTimeButtonsDelegat(_ start: Date, _ finish: Date) {
-//        self.timeForStartButton = start
-//        self.timeForFinishButton = finish
-//        print("start - \(start), finish - \(finish)")
-//        // Вызываем обновление UI после того, как экран уже готов
-//               DispatchQueue.main.async {
-//                   self.setupTimeButtons()
-//               }
-//    }
+    
+    //    func setupTimeButtonsDelegat(_ start: Date, _ finish: Date) {
+    //        self.timeForStartButton = start
+    //        self.timeForFinishButton = finish
+    //        print("start - \(start), finish - \(finish)")
+    //        // Вызываем обновление UI после того, как экран уже готов
+    //               DispatchQueue.main.async {
+    //                   self.setupTimeButtons()
+    //               }
+    //    }
     
     
     func setupTimeButtons() {
         if let start = timeForStartButton, let finish = timeForFinishButton {
-                setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
-                setButtonTitle.setButtonTitle(for: finishMainContainerButton, date: finish)
-                print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
-            } else {
-                print("Даты не инициализированы")
-            }
-       
+            setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
+            setButtonTitle.setButtonTitle(for: finishMainContainerButton, date: finish)
+            print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
+        } else {
+            print("Даты не инициализированы")
+        }
+        
     }
     
     func setupButtonsInfo() {
@@ -200,7 +199,7 @@ class ResultViewController: UIViewController {
                 ])
             }
         }
-       // planMainContainerButton.setTitleColor(.darkGray, for: .normal)
+        // planMainContainerButton.setTitleColor(.darkGray, for: .normal)
         planMainContainerButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         planMainContainerButton.setTitle(viewController?.selectedPlan.selectedMyPlan, for: .normal)
         
@@ -223,7 +222,7 @@ class ResultViewController: UIViewController {
         
         //let alertviewController = CustomAlertViewController()
         // Устанавливаем делегат перед презентацией
-       // alertviewController.delegate = self
+        // alertviewController.delegate = self
         alertviewController.resultViewController = self  // Передаём текущий контроллер
         alertviewController.modalPresentationStyle = .overFullScreen
         self.present(alertviewController, animated: true) {
@@ -234,6 +233,23 @@ class ResultViewController: UIViewController {
         //dismiss(animated: true, completion: nil)
     }
     
+    @IBAction func  startMainContainerButtonTapped(_ sender: UIButton) {
+        print("Тап на кнопку startMainContainerButton")
+        
+        guard let timeForStartButton = timeForStartButton else { return }
+        datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForStartButton) { [self] selectedDate in
+            setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
+            self.timeForStartButton = selectedDate
+        }
+    }
     
-    
+    @IBAction func finishMainContainerButtonTapped(_ sender: UIButton) {
+        print("Тап на кнопку finishMainContainerButton")
+        
+        guard let timeForFinishButton = timeForFinishButton else { return }
+        datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForFinishButton) { [self] selectedDate in
+            setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
+            self.timeForFinishButton = selectedDate
+        }
+    }
 }

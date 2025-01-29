@@ -312,6 +312,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
                                                             <action selector="startButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Uzg-Yr-EGY"/>
+                                                            <action selector="startMainContainerButtonTapped:" destination="2vD-PS-aBC" eventType="touchUpInside" id="ZJM-70-1Uh"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
@@ -340,6 +341,9 @@
                                                                 <integer key="value" value="10"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="finishMainContainerButtonTapped:" destination="2vD-PS-aBC" eventType="touchUpInside" id="Ypa-g5-FuY"/>
+                                                        </connections>
                                                     </button>
                                                 </subviews>
                                             </stackView>
