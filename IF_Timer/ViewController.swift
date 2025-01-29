@@ -323,9 +323,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
             // Устанавливаем делегат перед презентацией
             alertviewController.delegate = self
             alertviewController.parentviewController = self  // Передаём текущий контроллер
-            
+            alertviewController.modalPresentationStyle = .overFullScreen
             self.present(alertviewController, animated: true) {
-                alertviewController.showCustomAlert()
+                alertviewController.showCustomAlert(true)
             }
             
         } else {

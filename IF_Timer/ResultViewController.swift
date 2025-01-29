@@ -17,6 +17,7 @@ class ResultViewController: UIViewController {
     let chartView = FastingChartView()
     let setButtonTitle = SetButtonTitle()
     let fastingTracker = FastingTracker()
+    let alertviewController = CustomAlertViewController()
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
@@ -52,6 +53,8 @@ class ResultViewController: UIViewController {
         secondContainerLabel.layer.masksToBounds = true
         
         setupTimeButtons()
+        timeMainContainerLabel.text = formatFastingDuration(start: timeForStartButton, finish: timeForFinishButton)
+
         // Передача данных из fastingTracker в chartView
         
        // print(fastingTracker.fastingData)
@@ -90,6 +93,17 @@ class ResultViewController: UIViewController {
         ])
         
     }
+    
+    func formatFastingDuration(start: Date?, finish: Date?) -> String {
+        guard let start = start, let finish = finish else { return "Немає даних" }
+        
+        let totalMinutes = Int(finish.timeIntervalSince(start) / 60)
+        let hours = totalMinutes / 60
+        let minutes = totalMinutes % 60
+        
+        return String(format: "%d год. %02d хв.", hours, minutes)
+    }
+
     
     func setupView() {
         
@@ -204,7 +218,18 @@ class ResultViewController: UIViewController {
     
     @IBAction func cancellButtonTapped(_ sender: UIButton) {
         print("Тап на кнопку отмена")
-        dismiss(animated: true, completion: nil)
+        
+        //let alertviewController = CustomAlertViewController()
+        // Устанавливаем делегат перед презентацией
+       // alertviewController.delegate = self
+        alertviewController.resultViewController = self  // Передаём текущий контроллер
+        alertviewController.modalPresentationStyle = .overFullScreen
+        self.present(alertviewController, animated: true) {
+            self.alertviewController.showCustomAlert(false)
+        }
+        
+        
+        //dismiss(animated: true, completion: nil)
     }
     
     

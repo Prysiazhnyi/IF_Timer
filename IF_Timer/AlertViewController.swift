@@ -17,8 +17,12 @@ class CustomAlertViewController: UIViewController {
     var resultViewController: ResultViewController? 
     weak var delegate: CustomAlertDelegate?
     
+    var isCustomAlertShownMainOrResult = true // true при прек4ращение цикоа на главной, false - при подтверждении удаления данных
     // Функция для отображения кастомного алерта
-    func showCustomAlert() {
+    
+    func showCustomAlert(_ isCustomAlertShownMainOrResult : Bool) {
+        
+        self.isCustomAlertShownMainOrResult = isCustomAlertShownMainOrResult
         
         // Создаем затемнение для фона
         let overlayView = UIView(frame: self.view.bounds)
@@ -35,7 +39,7 @@ class CustomAlertViewController: UIViewController {
         
         // Заголовок алерта
         let titleLabel = UILabel()
-        titleLabel.text = "Перервати інтервал голоду?"
+        titleLabel.text = isCustomAlertShownMainOrResult ? "Перервати інтервал голоду?" : "Увага!!"
         titleLabel.font = UIFont.boldSystemFont(ofSize: 18)
         titleLabel.textAlignment = .center
         titleLabel.numberOfLines = 0
@@ -44,7 +48,7 @@ class CustomAlertViewController: UIViewController {
         
         // Сообщение алерта
         let messageLabel = UILabel()
-        messageLabel.text = "Ви дійсно хочете перервати інтервал голоду?"
+        messageLabel.text = isCustomAlertShownMainOrResult ? "Ви дійсно хочете перервати інтервал голоду?" : "Запис вашого інтервалу не буде\nзбережено. Ви впевнені, що хочете\nвидалити дані?"
         messageLabel.font = UIFont.systemFont(ofSize: 15)
         messageLabel.textAlignment = .center
         messageLabel.numberOfLines = 0
@@ -99,24 +103,48 @@ class CustomAlertViewController: UIViewController {
         
     }
     
+//    @objc private func yesButtonTapped() {
+//        print("Нажата кнопка ТАК")
+//        delegate?.didTapYesButton()
+//        dismissAlert()
+//        // Если нужно просто закрыть алерт, то достаточно его убрать
+//        self.dismiss(animated: true, completion: nil)
+//        
+//        // Инициализируем ResultViewController из Storyboard
+//           let storyboard = UIStoryboard(name: "Main", bundle: nil)
+//           if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
+//        //let resultVC = ResultViewController(viewController: parentviewController!)
+//               resultVC.modalPresentationStyle = .overFullScreen
+//               resultVC.viewController = parentviewController!
+//               resultVC.timeForStartButton = parentviewController?.tempStartDateForResult
+//               resultVC.timeForFinishButton = parentviewController?.tempFinishDateForResult
+//               parentviewController?.present(resultVC, animated: true, completion: nil)
+//           }
+//        
+//    }
+
     @objc private func yesButtonTapped() {
         print("Нажата кнопка ТАК")
-        delegate?.didTapYesButton()
+        
         dismissAlert()
-        // Если нужно просто закрыть алерт, то достаточно его убрать
         self.dismiss(animated: true, completion: nil)
         
-        // Инициализируем ResultViewController из Storyboard
-           let storyboard = UIStoryboard(name: "Main", bundle: nil)
-           if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
-        //let resultVC = ResultViewController(viewController: parentviewController!)
-               resultVC.modalPresentationStyle = .fullScreen
-               resultVC.viewController = parentviewController!
-               resultVC.timeForStartButton = parentviewController?.tempStartDateForResult
-               resultVC.timeForFinishButton = parentviewController?.tempFinishDateForResult
-               parentviewController?.present(resultVC, animated: true, completion: nil)
-           }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
         
+        if isCustomAlertShownMainOrResult {
+            delegate?.didTapYesButton()
+            // Открываем ResultViewController
+            if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
+                resultVC.modalPresentationStyle = .overFullScreen
+                resultVC.viewController = parentviewController
+                resultVC.timeForStartButton = parentviewController?.tempStartDateForResult
+                resultVC.timeForFinishButton = parentviewController?.tempFinishDateForResult
+                parentviewController?.present(resultVC, animated: true, completion: nil)
+            }
+        } else {
+            // Открываем основной ViewController
+            self.resultViewController?.dismiss(animated: true, completion: nil)
+        }
     }
 
     @objc private func noButtonTapped() {
