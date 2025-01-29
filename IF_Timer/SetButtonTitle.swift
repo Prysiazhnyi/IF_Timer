@@ -46,7 +46,7 @@ class SetButtonTitle: NSObject, UIAppearanceContainer {
             string: "\(dateString)\n",
             attributes: [
                 .font: UIFont.boldSystemFont(ofSize: 17), // Жирный шрифт для первой строки
-                .foregroundColor: UIColor.black, // Черный цвет текста
+                .foregroundColor: UIColor.darkGray, // Черный цвет текста
                 .paragraphStyle: paragraphStyle // Применяем межстрочный стиль
             ]
         )
@@ -55,8 +55,8 @@ class SetButtonTitle: NSObject, UIAppearanceContainer {
         let timeAttributedString = NSAttributedString(
             string: timeString,
             attributes: [
-                .font: UIFont.systemFont(ofSize: 14), // Обычный шрифт для второй строки
-                .foregroundColor: UIColor.black, // Черный цвет текста
+                .font: UIFont.systemFont(ofSize: 17), // Обычный шрифт для второй строки
+                .foregroundColor: UIColor.darkGray, // Черный цвет текста
                 .paragraphStyle: paragraphStyle // Применяем тот же межстрочный стиль для выравнивания
             ]
         )

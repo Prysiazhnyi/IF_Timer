@@ -67,6 +67,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var startDate = Date()
     var finishDate = Date()
     var endDate = Date()
+    let currentTime = Date() // Получить текущее время
     
     var tempStartDateForResult = Date()
     var tempFinishDateForResult = Date()
@@ -86,14 +87,15 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        sd.loadSaveDate() // загрузка данных
+       
         sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
         guard let circularProgressView = circularProgressView else { return }
         // Инициализация SetupTimer и передача ссылки на circularProgressView
         setupTimer = SetupTimer(viewController: self, circularProgressView: circularProgressView)
-        sd.loadSaveDate() // загрузка данных
+        
         datePickerManager = DatePickerManager(parentViewController: self)
         
         // Инициализируем resultViewController после того, как self уже доступен
@@ -113,8 +115,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupTitleProgressLabel()
         //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
         //print("startDate начало  - \(startDate)) ")
-        //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
-        
+        print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        timeIsUp = finishDate < currentTime || endDate < currentTime
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -122,9 +124,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateProgress(valueProgress)
         updateFinishDateButton()
         setupTimer.startTimer()
-        setupIfFastingTimeExpired()
         setupTitleProgressLabel()
         setupTitle()
+        setupIfFastingTimeExpired()
     }
     
     func setupTitle() {
@@ -246,7 +248,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     func updateFinishDateButton() {
-        
+      //  print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isStarvation {
             timeWait = timeFasting
             finishStackView.isHidden = false
@@ -296,6 +298,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             updateFinishDateButton()
             setupTimer.startTimer()
             sd.saveDateUserDefaults()
+            setupIfFastingTimeExpired()
         }
     }
     
@@ -331,7 +334,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func didTapYesButton() {
-        print("ВЫЗОВ   ---    didTapYesButton")
+        //print("ВЫЗОВ   ---    didTapYesButton")
         
         isStarvation.toggle()
         startDate = Date()
@@ -363,7 +366,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func setupIfFastingTimeExpired() {
+        
+       // print("Beffore timeIsUp - \(timeIsUp)")
+        
+       // print("Affetr timeIsUp - \(timeIsUp)")
+        
+       // print("Beffor isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
+       // print("Affter isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isFastingTimeExpired {
             startStackView.isHidden = true
             setupButtonsInfo(320)

@@ -16,6 +16,7 @@ class ResultViewController: UIViewController {
     var viewController: ViewController?
     let chartView = FastingChartView()
     let setButtonTitle = SetButtonTitle()
+    let fastingTracker = FastingTracker()
     
     @IBOutlet weak var mainContainerView: UIView!
     @IBOutlet weak var secondContainerView: UIView!
@@ -51,20 +52,27 @@ class ResultViewController: UIViewController {
         secondContainerLabel.layer.masksToBounds = true
         
         setupTimeButtons()
+        // Передача данных из fastingTracker в chartView
+        
+       // print(fastingTracker.fastingData)
+        
+        //chartView.data = fastingTracker.getFastingData()
+        chartView.data = fastingTracker.getFastingData().map { ($0.date, $0.hours) }
+
         //thirdContainerView.backgroundColor = .clear
         // Пример данных
-        chartView.data = [
-            ("14 С", 6),
-            ("15 С", 2),
-            ("16 С", 12),
-            ("17 С", 0),
-            ("18 С", 8),
-            ("19 С", 4),
-            ("20 С", 10),
-            ("21 С", 1),
-            ("22 С", 18),
-            ("23 С", 2)
-        ]
+//        chartView.data = [
+//            ("14 С", 6),
+//            ("15 С", 2),
+//            ("16 С", 12),
+//            ("17 С", 0),
+//            ("18 С", 8),
+//            ("19 С", 4),
+//            ("20 С", 10),
+//            ("21 С", 1),
+//            ("22 С", 18),
+//            ("23 С", 2)
+//        ]
         
         //chartView.backgroundColor = .red
         
@@ -190,6 +198,7 @@ class ResultViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         print("Тап на кнопку сохранить")
+        fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
         dismiss(animated: true, completion: nil)
     }
     
