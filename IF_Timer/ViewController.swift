@@ -130,6 +130,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupTitleProgressLabel()
         setupTitle()
         setupIfFastingTimeExpired()
+        setupButtonsInfo(100)
     }
     
     func setupTitle() {
