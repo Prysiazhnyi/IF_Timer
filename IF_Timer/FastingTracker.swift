@@ -10,7 +10,7 @@ import Foundation
 // Структура, которая будет использоваться для хранения данных
 struct FastingDataEntry: Codable {
     let date: String
-    let hours: CGFloat
+    var hours: CGFloat
 }
 
 class FastingTracker {
@@ -35,54 +35,42 @@ class FastingTracker {
     private func updateChartData() {
         var result: [String: CGFloat] = [:]
         let dateFormatter = DateFormatter()
-       // dateFormatter.dateFormat = = dateFormatter.formatToDayAndMonthFirstLetter(from: date)
-       // dateFormatter.locale = Locale(identifier: "uk_UA")
-        print(dateFormatter)
-        
+
+        // Получаем все даты, которые необходимо обработать
         for (start, finish) in fastingPeriods {
             var current = start
             let end = finish
-            
+
             while current < end {
                 let nextMidnight = calendar.nextDate(after: current, matching: DateComponents(hour: 0, minute: 0, second: 0), matchingPolicy: .strict, direction: .forward) ?? end
                 let periodEnd = min(nextMidnight, end)
-                
+
                 let hours = CGFloat(periodEnd.timeIntervalSince(current) / 3600)
-                //let dateKey = dateFormatter.string(from: current)
                 let dateKey = dateFormatter.formatToDayAndMonthFirstLetter(from: current)
 
-                
+                // Добавляем только дни с данными
                 result[dateKey, default: 0] += hours
                 current = periodEnd
             }
         }
-        
-        let sortedKeys = result.keys.sorted()
-        var completeResult: [FastingDataEntry] = []
-        var previousDate: String?
-        
-        for date in sortedKeys {
-            if let prev = previousDate, let prevDate = dateFormatter.date(from: prev), let currentDate = dateFormatter.date(from: date) {
-                let dayDifference = calendar.dateComponents([.day], from: prevDate, to: currentDate).day ?? 0
-                
-                if dayDifference > 1 {
-                    for missingDay in 1..<(dayDifference) {
-                        if let missingDate = calendar.date(byAdding: .day, value: missingDay, to: prevDate) {
-                            let missingKey = dateFormatter.string(from: missingDate)
-                            completeResult.append(FastingDataEntry(date: missingKey, hours: 0.0))
-                        }
-                    }
-                }
+
+        // Обновляем данные в fastingData
+        for date in result.keys {
+            if let index = fastingData.firstIndex(where: { $0.date == date }) {
+                // Если дата уже есть в fastingData, добавляем часы
+                fastingData[index].hours += result[date] ?? 0.0
+            } else {
+                // Если дата не найдена, добавляем новый элемент
+                fastingData.append(FastingDataEntry(date: date, hours: result[date] ?? 0.0))
             }
-            completeResult.append(FastingDataEntry(date: date, hours: result[date] ?? 0.0))
-            previousDate = date
         }
-        
-        // Debug output to see how fastingData changes
-        print("Before appending, fastingData: \(fastingData)")
-        fastingData.append(contentsOf: completeResult)
-        print("After appending, fastingData: \(fastingData)")
+
+        // Сортируем данные по дате
+        fastingData.sort { $0.date < $1.date }
+
+        //print("After appending, fastingData: \(fastingData)")
     }
+
     
     // Сохранение данных в UserDefaults
     private func saveFastingData() {
