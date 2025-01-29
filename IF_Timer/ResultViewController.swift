@@ -80,6 +80,8 @@ class ResultViewController: UIViewController {
         //chartView.backgroundColor = .red
         
         
+        thirdContainerView.isHidden = fastingTracker.fastingData.isEmpty ? true : false
+        
         thirdContainerView.addSubview(chartView)
         chartView.translatesAutoresizingMaskIntoConstraints = false
         thirdContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
