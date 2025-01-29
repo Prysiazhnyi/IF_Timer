@@ -110,7 +110,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupCircularProgress()
         setupButtonsInfo(100)
         setupButtonsStart()
-        setupTimer.startTimer()
+        setupTimer.startTimer(Date())
         setupIfFastingTimeExpired()
         setupTitle()
         setupTitleProgressLabel()
@@ -126,7 +126,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillAppear(animated)
         updateProgress(valueProgress)
         updateFinishDateButton()
-        setupTimer.startTimer()
+        setupTimer.startTimer(Date())
         setupTitleProgressLabel()
         setupTitle()
         setupIfFastingTimeExpired()
@@ -164,7 +164,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         sd.saveDateUserDefaults()
         
-        //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
+        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -300,7 +300,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             }
             
             updateFinishDateButton()
-            setupTimer.startTimer()
+            setupTimer.startTimer(Date())
             sd.saveDateUserDefaults()
             setupIfFastingTimeExpired()
         }
@@ -323,8 +323,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
             isStarvationTimeExpired = isStarvation && timeIsUp
           // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
             tempStartDateForResult = startDate
-            tempFinishDateForResult = finishDate
-            
+            tempFinishDateForResult = Date()
+            //tempFinishDateForResult = finishDate
             let alertviewController = CustomAlertViewController()
             // Устанавливаем делегат перед презентацией
             alertviewController.delegate = self
@@ -348,7 +348,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         valueProgress = 0
         setupButtonsStart()
         setupTitle()
-        setupTimer.startTimer()
+        setupTimer.startTimer(Date())
         sd.saveDateUserDefaults()
         updateFinishDateButton()
         //updateProgress(valueProgress)

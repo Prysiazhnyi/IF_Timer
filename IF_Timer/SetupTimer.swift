@@ -30,10 +30,10 @@ class SetupTimer: UIViewController {
     // Таймер
     var countdownTimer: Timer?
     var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
-    let currentTime = Date()
+   // let currentTime = Date()
     
-    func startTimer() {
-        
+    func startTimer(_ currentTime: Date) {
+        let currentTime = currentTime
         // Останавливаем предыдущий таймер, если он существует
         countdownTimer?.invalidate()
         
@@ -42,7 +42,8 @@ class SetupTimer: UIViewController {
             
             // Вычисляем оставшееся время
             remainingTime = Double(viewController.timeFasting) - currentTime.timeIntervalSince(viewController.startDate)
-            
+            print("remainingTime: \(remainingTime)")
+
             // Создаем новый таймер
             countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
                 self?.updateCountdown()
