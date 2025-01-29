@@ -22,7 +22,7 @@ class FastingChartView: UIView {
     private let maxHours: CGFloat = 24.0 // Максимум часов в сутках
     private let barWidth: CGFloat = 20.0 // ширина столбцов
     private let barSpacing: CGFloat = 8.0 // отступ между столбцами
-    private let barHeight: CGFloat = 110.0 // Фиксированная высота для всех баров
+    private let barHeight: CGFloat = 122.0 // Фиксированная высота для всех баров
     
     private let labelsContainer = UIView()
     private let fastingLabel = UILabel()
@@ -71,8 +71,8 @@ class FastingChartView: UIView {
         timeStackView.alignment = .center
         timeStackView.translatesAutoresizingMaskIntoConstraints = false
         
-        timeDot.backgroundColor = .systemGreen
-        completedDot.backgroundColor = .red
+        timeDot.backgroundColor = UIColor.systemGreen.withAlphaComponent(0.2)
+        completedDot.backgroundColor = UIColor.systemGreen
         
         [timeDot, completedDot].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +97,7 @@ class FastingChartView: UIView {
             fastingLabel.topAnchor.constraint(equalTo: labelsContainer.topAnchor),
             fastingLabel.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
             
-            timeStackView.topAnchor.constraint(equalTo: fastingLabel.bottomAnchor, constant: 8),
+            timeStackView.topAnchor.constraint(equalTo: fastingLabel.bottomAnchor, constant: 4),
             timeStackView.leadingAnchor.constraint(equalTo: labelsContainer.leadingAnchor),
             timeStackView.bottomAnchor.constraint(equalTo: labelsContainer.bottomAnchor)
         ])
@@ -136,7 +136,7 @@ class FastingChartView: UIView {
         NSLayoutConstraint.activate([
             scaleView.leadingAnchor.constraint(equalTo: leadingAnchor), // Шкала слева
             scaleView.topAnchor.constraint(equalTo: topAnchor),
-            scaleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18),// выравнивание по высоте с barview
+            scaleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),// выравнивание по высоте с barview
             scaleView.widthAnchor.constraint(equalToConstant: 40) // Ширина шкалы
         ])
         
@@ -180,7 +180,7 @@ class FastingChartView: UIView {
             
             // Привязываем метки с учетом пропорции от верхней части шкалы
             NSLayoutConstraint.activate([
-                label.heightAnchor.constraint(equalToConstant: 20),
+                label.heightAnchor.constraint(equalToConstant: 10),
                 label.leadingAnchor.constraint(equalTo: scaleView.leadingAnchor),
                 label.widthAnchor.constraint(equalTo: scaleView.widthAnchor),
                 label.bottomAnchor.constraint(equalTo: scaleView.bottomAnchor, constant: -relativeHeight)
@@ -274,7 +274,7 @@ class FastingChartView: UIView {
             label.leadingAnchor.constraint(equalTo: barView.leadingAnchor),
             label.trailingAnchor.constraint(equalTo: barView.trailingAnchor),
             label.bottomAnchor.constraint(equalTo: barView.bottomAnchor),
-            label.heightAnchor.constraint(equalToConstant: 20)
+            label.heightAnchor.constraint(equalToConstant: 10)
         ])
         
         return barView
