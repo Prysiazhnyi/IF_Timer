@@ -23,6 +23,8 @@ class FastingTracker {
     
     init() {
         loadFastingData()
+        UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
+
     }
     
     func addFastingPeriod(start: Date, finish: Date) {
@@ -50,6 +52,7 @@ class FastingTracker {
 
                 // Добавляем только дни с данными
                 result[dateKey, default: 0] += hours
+                result[dateKey] = min(result[dateKey] ?? 0, 24) // Ограничение до 24 часов
                 current = periodEnd
             }
         }
@@ -66,9 +69,10 @@ class FastingTracker {
         }
 
         // Сортируем данные по дате
-        fastingData.sort { $0.date < $1.date }
+//        fastingData.sort { $0.date < $1.date }
+        
 
-        //print("After appending, fastingData: \(fastingData)")
+        print("After appending, fastingData: \(fastingData)")
     }
 
     
@@ -95,6 +99,7 @@ class FastingTracker {
     }
     
     func getFastingData() -> [FastingDataEntry] {
+        fastingData.reverse() // изменяет массив на месте
         return fastingData
     }
 }

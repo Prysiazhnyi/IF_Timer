@@ -12,6 +12,7 @@ class SaveData {
     var viewController: ViewController?
 
     func loadSaveDate() {
+        print("Загрузка данных ..........................")
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self, let viewController = self.viewController else {
                 //print("Error: self or viewController is nil")
@@ -31,7 +32,7 @@ class SaveData {
             }
 //            if let temptimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
 //                viewController.timeIsUp = temptimeIsUp
-//               //print("загрузка timeIsUp - \(temptimeIsUp)")
+//               print("загрузка timeIsUp - \(temptimeIsUp)")
 //            }
             
             
@@ -93,8 +94,8 @@ class SaveData {
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
         //UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
-        
-        print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
+        print("Сохранение данных !!!!!!!!!!!!!!")
+       // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }
     
 }

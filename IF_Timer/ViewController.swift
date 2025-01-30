@@ -111,7 +111,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupButtonsInfo(100)
         setupButtonsStart()
         setupTimer.startTimer(Date())
-        setupIfFastingTimeExpired()
+        //setupIfFastingTimeExpired()
         setupTitle()
         setupTitleProgressLabel()
         //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
@@ -122,6 +122,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
        // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
     }
     
+//    override func loadView() {
+//        super.loadView()
+//        //print("loadView() — раньше viewDidLoad()")
+//       // sd.loadSaveDate() // загрузка данных
+//    }
+//    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateProgress(valueProgress)
@@ -144,7 +150,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         } else {
             timeIsUp ? (titleLabel.text = "Час розпочати інтервал голоду") : (titleLabel.text = "Почніть вікно голодування")
         }
-        setupIfFastingTimeExpired()
+       setupIfFastingTimeExpired()
         // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
@@ -161,10 +167,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateFinishDateButton()
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
+        setupIfFastingTimeExpired()
         
         sd.saveDateUserDefaults()
         
-        print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
+       // print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -252,7 +259,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     func updateFinishDateButton() {
-      //  print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+       //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isStarvation {
             timeWait = timeFasting
             finishStackView.isHidden = false
@@ -373,12 +380,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func setupIfFastingTimeExpired() {
-        
-       // print("Beffore timeIsUp - \(timeIsUp)")
-        
-       // print("Affetr timeIsUp - \(timeIsUp)")
-        
-       // print("Beffor isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        //print("Beffor isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
        // print("Affter isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isFastingTimeExpired {
@@ -386,6 +388,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupButtonsInfo(320)
             planButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 28)
         } else {
+            updateFinishDateButton()
             startStackView.isHidden = false
         }
     }

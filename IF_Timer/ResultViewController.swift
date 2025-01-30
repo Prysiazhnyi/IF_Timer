@@ -54,8 +54,8 @@ class ResultViewController: UIViewController {
         secondContainerLabel.layer.masksToBounds = true
         
         setupTimeButtons()
-        timeMainContainerLabel.text = formatFastingDuration(start: timeForStartButton, finish: timeForFinishButton)
-        
+        //timeMainContainerLabel.text = formatFastingDuration(start: timeForStartButton, finish: timeForFinishButton)
+        setupTimeMainLabel()
         datePickerManager = DatePickerManager(parentViewController: self)
         
         //chartView.data = fastingTracker.getFastingData()
@@ -95,14 +95,14 @@ class ResultViewController: UIViewController {
         
     }
     
-    func formatFastingDuration(start: Date?, finish: Date?) -> String {
-        guard let start = start, let finish = finish else { return "Немає даних" }
+    func setupTimeMainLabel() {
+        guard let start = timeForStartButton, let finish = timeForFinishButton else { return}
         
         let totalMinutes = Int(finish.timeIntervalSince(start) / 60)
         let hours = totalMinutes / 60
         let minutes = totalMinutes % 60
         
-        return String(format: "%d год. %02d хв.", hours, minutes)
+        timeMainContainerLabel.text =  String(format: "%d год. %02d хв.", hours, minutes)
     }
     
     
@@ -149,7 +149,7 @@ class ResultViewController: UIViewController {
     }
     
     func setupButtonsInfo() {
-        
+        planMainContainerButton.isUserInteractionEnabled = false
         //finishMainContainerButton.isUserInteractionEnabled = false
         
         planMainContainerButton.backgroundColor = UIColor(red: 180/255, green: 235/255, blue: 250/255, alpha: 0.6)
@@ -240,6 +240,7 @@ class ResultViewController: UIViewController {
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForStartButton) { [self] selectedDate in
             setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
             self.timeForStartButton = selectedDate
+            self.setupTimeMainLabel()
         }
     }
     
@@ -250,6 +251,7 @@ class ResultViewController: UIViewController {
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForFinishButton) { [self] selectedDate in
             setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
             self.timeForFinishButton = selectedDate
+            self.setupTimeMainLabel() 
         }
     }
 }
