@@ -7,10 +7,11 @@
 
 import Foundation
 
-// Структура, которая будет использоваться для хранения данных
+// Структура для хранения данных с датой без времени
 struct FastingDataEntry: Codable {
     let date: String
     var hours: CGFloat
+    let fullDate: String  // Сохраняем полную дату в формате "yyyy-MM-dd" для сортировки
 }
 
 class FastingTracker {
@@ -24,20 +25,21 @@ class FastingTracker {
     init() {
         loadFastingData()
         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
-
     }
     
     func addFastingPeriod(start: Date, finish: Date) {
         fastingPeriods.append((start, finish))
         updateChartData()
-       //clearFastingData()
         saveFastingData()  // Сохраняем данные после изменения
     }
     
     private func updateChartData() {
         var result: [String: CGFloat] = [:]
         let dateFormatter = DateFormatter()
-
+        
+        // Устанавливаем формат для полной даты (для сортировки)
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
         // Получаем все даты, которые необходимо обработать
         for (start, finish) in fastingPeriods {
             var current = start
@@ -48,8 +50,8 @@ class FastingTracker {
                 let periodEnd = min(nextMidnight, end)
 
                 let hours = CGFloat(periodEnd.timeIntervalSince(current) / 3600)
-                let dateKey = dateFormatter.formatToDayAndMonthFirstLetter(from: current)
-
+                let dateKey = dateFormatter.string(from: current)
+                
                 // Добавляем только дни с данными
                 result[dateKey, default: 0] += hours
                 result[dateKey] = min(result[dateKey] ?? 0, 24) // Ограничение до 24 часов
@@ -64,18 +66,39 @@ class FastingTracker {
                 fastingData[index].hours += result[date] ?? 0.0
             } else {
                 // Если дата не найдена, добавляем новый элемент
-                fastingData.append(FastingDataEntry(date: date, hours: result[date] ?? 0.0))
+                let dateObj = result[date] ?? 0.0
+                // Используем dateFormatter для форматирования даты в "день месяц" (например, "25 С")
+                let dayAndMonth = formatToDayAndMonthFirstLetter(from: dateFormatter.date(from: date)!)
+                fastingData.append(FastingDataEntry(date: dayAndMonth, hours: dateObj, fullDate: date))
             }
         }
 
-        // Сортируем данные по дате
-//        fastingData.sort { $0.date < $1.date }
-        
+        // Сортируем данные по полной дате (сравниваем строковые представления дат)
+        fastingData.sort { $0.fullDate < $1.fullDate }
 
         print("After appending, fastingData: \(fastingData)")
     }
 
-    
+    // Метод для форматирования даты в формат "день первая буква месяца" (например, "25 С")
+    private func formatToDayAndMonthFirstLetter(from date: Date) -> String {
+        let monthFirstLetters = ["С", "Л", "Б", "К", "Т", "Ч", "Л", "С", "В", "Ж", "Л", "Г"]
+        
+        // Получаем номер месяца (1-12)
+        let calendar = Calendar.current
+        let month = calendar.component(.month, from: date) - 1 // Индексация с 0
+        
+        // Форматируем день (день месяца)
+        let dayFormatter = DateFormatter()
+        dayFormatter.dateFormat = "dd"
+        
+        // Получаем день и первую букву месяца
+        let dayString = dayFormatter.string(from: date)
+        let monthFirstLetter = monthFirstLetters[month]
+        
+        // Формируем финальную строку
+        return "\(dayString) \(monthFirstLetter)"
+    }
+
     // Сохранение данных в UserDefaults
     private func saveFastingData() {
         let encodedData = try? JSONEncoder().encode(fastingData)
@@ -99,30 +122,6 @@ class FastingTracker {
     }
     
     func getFastingData() -> [FastingDataEntry] {
-        fastingData.reverse() // изменяет массив на месте
         return fastingData
-    }
-}
-
-extension DateFormatter {
-    // Метод для форматирования даты с первой буквой месяца
-    func formatToDayAndMonthFirstLetter(from date: Date) -> String {
-        // Массив с первой буквой месяца на украинском
-        let monthFirstLetters = ["С", "Л", "Б", "К", "Т", "Ч", "Л", "С", "В", "Ж", "Л", "Г"]
-        
-        // Получаем номер месяца (1-12)
-        let calendar = Calendar.current
-        let month = calendar.component(.month, from: date) - 1 // Индексация с 0
-        
-        // Форматируем день (день месяца)
-        let dayFormatter = DateFormatter()
-        dayFormatter.dateFormat = "dd"
-        
-        // Получаем день и первую букву месяца
-        let dayString = dayFormatter.string(from: date)
-        let monthFirstLetter = monthFirstLetters[month]
-        
-        // Формируем финальную строку
-        return "\(dayString) \(monthFirstLetter)"
     }
 }
