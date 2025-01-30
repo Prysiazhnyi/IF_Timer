@@ -106,23 +106,26 @@ class FastingChartView: UIView {
     private func setupUI() {
         
         setupLabels()
-        
+       
         addSubview(scrollView)
         addSubview(scaleView)  // Добавляем шкалу в FastingChartView (вне scrollView)
         
         scrollView.addSubview(contentView)
         
         // Настройка ScrollView
-        scrollView.showsHorizontalScrollIndicator = true
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: -5, right: 0)
+
+        //scrollView.showsHorizontalScrollIndicator = false // Скрываем горизонтальную полосу прокрутки
+     
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
         // Настройка автолэйаута
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 40), // Увеличиваем отступ для шкалы
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35), // Увеличиваем отступ для шкалы
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 0), // поднять/опустить scrollview
             
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -137,7 +140,7 @@ class FastingChartView: UIView {
             scaleView.leadingAnchor.constraint(equalTo: leadingAnchor), // Шкала слева
             scaleView.topAnchor.constraint(equalTo: topAnchor),
             scaleView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -14),// выравнивание по высоте с barview
-            scaleView.widthAnchor.constraint(equalToConstant: 40) // Ширина шкалы
+            scaleView.widthAnchor.constraint(equalToConstant: 35) // Ширина шкалы
         ])
         
         //addScale() // Добавляем метки шкалы
