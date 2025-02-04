@@ -10,12 +10,14 @@ import UIKit
 
 class SetupTimer: UIViewController {
     
-    //    var viewController: ViewController!
-    //    var circularProgressView = CircularProgressView()
-    
     var viewController: ViewController
     var circularProgressView: CircularProgressView
     
+    var countdownTimer: Timer?
+    var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
+    
+    var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = .invalid
+
     init(viewController: ViewController, circularProgressView: CircularProgressView) {
         self.viewController = viewController
         self.circularProgressView = circularProgressView
@@ -26,45 +28,49 @@ class SetupTimer: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Регистрируем наблюдателей для перехода приложения в фон и обратно
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
+    }
     
-    // Таймер
-    var countdownTimer: Timer?
-    var remainingTime: TimeInterval = 2 * 3600 // Оставшееся время в секундах
-   // let currentTime = Date()
-    
+    // Старт таймера
     func startTimer(_ currentTime: Date) {
         let currentTime = currentTime
+        
         // Останавливаем предыдущий таймер, если он существует
         countdownTimer?.invalidate()
+
+        // Сохраняем время старта в UserDefaults перед переходом в фон
+        UserDefaults.standard.set(currentTime, forKey: "startTime")
+
+        // Запускаем фоновую задачу для продолжения таймера в фоновом режиме
+        backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask {
+            UIApplication.shared.endBackgroundTask(self.backgroundTaskIdentifier)
+            self.backgroundTaskIdentifier = .invalid
+        }
         
         // Если таймер запущен (не голодание)
         if viewController.isStarvation {
-            
-            // Вычисляем оставшееся время
             remainingTime = Double(viewController.timeFasting) - currentTime.timeIntervalSince(viewController.startDate)
-            print("remainingTime: \(remainingTime)")
-
-            // Создаем новый таймер
-            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                self?.updateCountdown()
-            }
         } else {
-            
             remainingTime = Double(viewController.timeResting) - currentTime.timeIntervalSince(viewController.startDate)
-            // Создаем новый таймер
-            countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-                self?.updateCountdown()
-            }
         }
+
+        countdownTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            self?.updateCountdown()
+        }
+        
         viewController.setupTitleProgressLabel()
     }
     
     private func updateCountdown() {
-        
         remainingTime -= 1
         updateTimerLabel()
         
-        // Обновляем прогресс (например, по пропорции)
+        // Обновляем прогресс
         if viewController.isStarvation {
             viewController.valueProgress = CGFloat(1 - remainingTime / TimeInterval(viewController.timeFasting))
         } else {
@@ -73,19 +79,29 @@ class SetupTimer: UIViewController {
     }
     
     private func updateTimerLabel() {
-        
         let validRemainingTime = abs(remainingTime)
-        // Форматируем оставшееся время в HH:MM:SS
         let hours = Int(validRemainingTime) / 3600
         let minutes = (Int(validRemainingTime) % 3600) / 60
         let seconds = Int(validRemainingTime) % 60
         
-        let sign = Int(remainingTime) / 3600 < 0 || Int(remainingTime) % 3600 / 60 < 0 || Int(remainingTime) % 60 < 0 ? "+" : ""
+        let sign = Int(remainingTime) < 0 ? "+" : ""
         
         viewController.circularProgressView?.changeColorProgressView()
         viewController.timeIsUp = (sign == "+") ? true : false
         viewController.timerProgressLabel.text = String(format: "%@%02d:%02d:%02d", sign, hours, minutes, seconds)
-        //print("viewController.isFastingExpired - \(viewController.isFastingExpired), sign - \(sign)")
-        //print("isFastingTimeExpired - \(viewController.isFastingTimeExpired), isStarvation - \(viewController.isStarvation), timeIsUp - \(viewController.timeIsUp)")
+    }
+    
+    // При переходе в фон
+    @objc func applicationWillResignActive() {
+        UserDefaults.standard.set(remainingTime, forKey: "remainingTime")
+        countdownTimer?.invalidate()
+    }
+    
+    // При возвращении в активное состояние
+    @objc func applicationDidBecomeActive() {
+        if let savedTime = UserDefaults.standard.object(forKey: "remainingTime") as? TimeInterval {
+            remainingTime = savedTime
+            startTimer(Date())
+        }
     }
 }
