@@ -76,7 +76,7 @@ class FastingTracker {
         // Сортируем данные по полной дате (сравниваем строковые представления дат)
         fastingData.sort { $0.fullDate < $1.fullDate }
 
-        print("After appending, fastingData: \(fastingData)")
+       // print("After appending, fastingData: \(fastingData)")
     }
 
     // Метод для форматирования даты в формат "день первая буква месяца" (например, "25 С")

@@ -130,6 +130,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
 //    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("viewWillAppear triggered")
         updateProgress(valueProgress)
         updateFinishDateButton()
         setupTimer.startTimer(Date())

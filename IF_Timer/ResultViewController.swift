@@ -213,8 +213,12 @@ class ResultViewController: UIViewController {
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         print("Тап на кнопку сохранить")
+        viewController?.startDate = timeForFinishButton!
         fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
-        dismiss(animated: true, completion: nil)
+       // dismiss(animated: true, completion: nil)
+        dismiss(animated: true) { [weak self] in
+                self?.viewController?.viewWillAppear(true) // Принудительный вызов
+            }
     }
     
     @IBAction func cancellButtonTapped(_ sender: UIButton) {
