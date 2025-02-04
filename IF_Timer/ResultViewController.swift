@@ -203,7 +203,7 @@ class ResultViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         print("Тап на кнопку сохранить")
         viewController?.startDate = timeForFinishButton!
-        viewController?.sd.saveDateUserDefaults()
+        SaveData.shared.saveDateUserDefaults()
         fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
        // dismiss(animated: true, completion: nil)
         dismiss(animated: true) { [weak self] in

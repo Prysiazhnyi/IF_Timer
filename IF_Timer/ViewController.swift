@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
-    let sd = SaveData()
+    //let sd = SaveData()
     var setupTimer: SetupTimer!
     var circularProgressView: CircularProgressView?
     var resultViewController: ResultViewController?
@@ -88,9 +88,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        sd.loadSaveDate() // загрузка данных
+        // Устанавливаем viewController перед загрузкой данных
+        SaveData.shared.viewController = self
+        
+        SaveData.shared.loadSaveDate() // загрузка данных
        
-        sd.viewController = self
+        //sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
         guard let circularProgressView = circularProgressView else { return }
@@ -114,7 +117,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
-        sd.loadSaveDate() // загрузка данных
+        SaveData.shared.loadSaveDate() // загрузка данных
        
     }
     
@@ -167,7 +170,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         setupIfFastingTimeExpired()
         
-        sd.saveDateUserDefaults()
+        SaveData.shared.saveDateUserDefaults()
         
        // print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
@@ -309,7 +312,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             
             updateFinishDateButton()
             setupTimer.startTimer(Date())
-            sd.saveDateUserDefaults()
+            SaveData.shared.saveDateUserDefaults()
             setupIfFastingTimeExpired()
         }
     }
@@ -357,7 +360,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupButtonsStart()
         setupTitle()
         setupTimer.startTimer(Date())
-        sd.saveDateUserDefaults()
+        SaveData.shared.saveDateUserDefaults()
         updateFinishDateButton()
         //updateProgress(valueProgress)
         
@@ -374,26 +377,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillDisappear(animated)
         print("Это viewWillDisappear")
         setupTimer.countdownTimer?.invalidate()
-        sd.saveDateUserDefaults()
+        SaveData.shared.saveDateUserDefaults()
     }
-    
-    func sceneDidEnterBackground(_ scene: UIScene) {
-        print("Приложение перешло в фон")
-        // Ваш код для сохранения или остановки задач
-        setupTimer.countdownTimer?.invalidate()
-        sd.saveDateUserDefaults()
-    }
-
-    func sceneWillEnterForeground(_ scene: UIScene) {
-        print("Приложение возвращается в передний план")
-        updateUI()
-    }
-
     
     deinit {
         print("Это deinit")
         setupTimer.countdownTimer?.invalidate()
-        sd.saveDateUserDefaults()
+        SaveData.shared.saveDateUserDefaults()
     }
     
     func setupIfFastingTimeExpired() {
