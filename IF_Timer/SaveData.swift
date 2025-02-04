@@ -10,6 +10,8 @@ import UIKit
 
 class SaveData {
     var viewController: ViewController?
+    
+    static let shared = SaveData()  // Singleton
 
     func loadSaveDate() {
         print("Загрузка данных ..........................")

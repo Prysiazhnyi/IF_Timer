@@ -279,6 +279,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     //MARK: Progress Bar
     
     private func setupCircularProgress() {
+        // Если circularProgressView уже существует, удаляем его
+        circularProgressView?.removeFromSuperview()
         // Создаем экземпляр CircularProgressView
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
         // Убедимся, что прогресс-бар существует
@@ -370,11 +372,26 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        print("Это viewWillDisappear")
         setupTimer.countdownTimer?.invalidate()
         sd.saveDateUserDefaults()
     }
     
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        print("Приложение перешло в фон")
+        // Ваш код для сохранения или остановки задач
+        setupTimer.countdownTimer?.invalidate()
+        sd.saveDateUserDefaults()
+    }
+
+    func sceneWillEnterForeground(_ scene: UIScene) {
+        print("Приложение возвращается в передний план")
+        updateUI()
+    }
+
+    
     deinit {
+        print("Это deinit")
         setupTimer.countdownTimer?.invalidate()
         sd.saveDateUserDefaults()
     }
