@@ -67,6 +67,7 @@ class SaveData {
             
             if let isFirstStartAppTemp = UserDefaults.standard.object(forKey: "isFirstStartApp") as? Bool {
                 viewController.isFirstStartApp = isFirstStartAppTemp
+              //  print(" viewController.isFirstStartApp - \(viewController.isFirstStartApp)")
             }
             
             DispatchQueue.main.async {
@@ -89,9 +90,9 @@ class SaveData {
         UserDefaults.standard.set(viewController.isStarvation, forKey: "isStarvation")
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
-        UserDefaults.standard.set(viewController.timeIsUp, forKey: "isFirstStartApp")
+        UserDefaults.standard.set(viewController.isFirstStartApp, forKey: "isFirstStartApp")
         print("Сохранение данных !!!!!!!!!!!!!!")
-        print("Сохранениие startDate - \(viewController.startDate)")
+       // print("Сохранениие startDate - \(viewController.startDate)")
        // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }
     

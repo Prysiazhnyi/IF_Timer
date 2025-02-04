@@ -93,7 +93,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         SaveData.shared.viewController = self
         
         SaveData.shared.loadSaveDate() // загрузка данных
-       
+        
         //sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
@@ -119,7 +119,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
         SaveData.shared.loadSaveDate() // загрузка данных
-       
+        
     }
     
     func updateUI() {
@@ -143,9 +143,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     func setupFirstStartApp() {
         if isFirstStartApp {
+            isFirstStartApp = false
             performSegue(withIdentifier: "selectPlanSegue", sender: nil)
         }
-        isFirstStartApp = false
     }
     
     func setupTitle() {
@@ -159,7 +159,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         } else {
             timeIsUp ? (titleLabel.text = "Час розпочати інтервал голоду") : (titleLabel.text = "Почніть вікно голодування")
         }
-       setupIfFastingTimeExpired()
+        setupIfFastingTimeExpired()
         // isStarvation ? (titleLabel.text = "Вікно голодування") : (titleLabel.text = "Почніть вікно голодування")
         // Устанавливаем UILabel как titleView
         navigationItem.titleView = titleLabel
@@ -178,11 +178,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         setupIfFastingTimeExpired()
         
-        isFirstStartApp = false
-        
         SaveData.shared.saveDateUserDefaults()
         
-       // print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
+        // print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), selectedPlan - \(selectedPlan) ")
     }
     
     
@@ -270,7 +268,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     func updateFinishDateButton() {
-       //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isStarvation {
             timeWait = timeFasting
             finishStackView.isHidden = false
@@ -286,7 +284,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
-        print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait), endDate - \(endDate)")
+        //print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait), endDate - \(endDate)")
     }
     
     //MARK: Progress Bar
@@ -342,7 +340,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         
         if isStarvation {
             isStarvationTimeExpired = isStarvation && timeIsUp
-          // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+            // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
             tempStartDateForResult = startDate
             tempFinishDateForResult = Date()
             //tempFinishDateForResult = finishDate
@@ -399,7 +397,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     func setupIfFastingTimeExpired() {
         //print("Beffor isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
-       // print("Affter isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        // print("Affter isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isFastingTimeExpired {
             startStackView.isHidden = true
             setupButtonsInfo(320)

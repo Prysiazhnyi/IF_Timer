@@ -58,13 +58,32 @@ class CircularProgressView: UIView {
         layer.addSublayer(progressLayer)
     }
     
-    func changeColorProgressView() {
-        guard let viewController = viewController else {return}
-        print("changeColorProgressView - \(viewController.isStarvation)")
-        colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
-        progressLayer.strokeColor = !viewController.timeIsUp ? colorStep : UIColor.systemPink.cgColor
-        viewController.setupTitle()
-        viewController.setupTitleProgressLabel()
-    }
+//    func changeColorProgressView() {
+//        guard let viewController = viewController else {return}
+//        print("changeColorProgressView - \(viewController.isStarvation)")
+//        colorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
+//        progressLayer.strokeColor = !viewController.timeIsUp ? colorStep : UIColor.systemPink.cgColor
+//        viewController.setupTitle()
+//        viewController.setupTitleProgressLabel()
+//    }
     
+    func changeColorProgressView() {
+        guard let viewController = viewController else { return }
+        
+        DispatchQueue.global(qos: .userInitiated).async { [weak self] in
+            guard let self = self else { return }
+            
+            // Вычисления в фоне
+            let newColorStep = !viewController.isStarvation ? UIColor.systemOrange.cgColor : UIColor.green.cgColor
+            let finalColor = !viewController.timeIsUp ? newColorStep : UIColor.systemPink.cgColor
+            
+            // Обновление UI в главном потоке
+            DispatchQueue.main.async {
+                self.progressLayer.strokeColor = finalColor
+                viewController.setupTitle()
+                viewController.setupTitleProgressLabel()
+            }
+        }
+    }
+
 }
