@@ -19,22 +19,17 @@ class SaveData {
                 return
             }
 
-            var savedStartDate: Date?
             if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
-                savedStartDate = savedDate
-                //print("загрузка savedDate - \(savedDate)")
+                viewController.startDate = savedDate
+                //viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedDate)
+                print("загрузка savedDate - \(savedDate)")
             }
-            viewController.startDate = savedStartDate ?? Date()
+            
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 viewController.isStarvation = tempIsStarvation
                 //print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
-//            if let temptimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
-//                viewController.timeIsUp = temptimeIsUp
-//               print("загрузка timeIsUp - \(temptimeIsUp)")
-//            }
-            
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
                 viewController.timeFasting = saveTimeFasting
@@ -55,27 +50,18 @@ class SaveData {
             if let endDateTemp = UserDefaults.standard.object(forKey: "endDate") as? Date {
                 viewController.endDate = endDateTemp
             }
-          
-
-
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self, let viewController = self.viewController else {
-                    print("Error: self or viewController is nil on main queue")
-                    return
-                }
-
-                if let savedStartDate = savedStartDate {
-                    viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedStartDate)
-                }
-                
-                if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
-                    viewController.timeResting = saveTimeResting
-                    viewController.finishDate = viewController.startDate.addingTimeInterval(TimeInterval(viewController.timeResting))
-                    viewController.updateFinishDateButton()
-                } else {
-                    viewController.finishButton.setTitle("Скоро", for: .normal)
-                }
+            
+            if let saveTimeResting = UserDefaults.standard.object(forKey: "timeResting") as? Int {
+                viewController.timeResting = saveTimeResting
+                viewController.finishDate = viewController.startDate.addingTimeInterval(TimeInterval(viewController.timeResting))
+                //viewController.updateFinishDateButton()
+            } else {
+                viewController.finishButton.setTitle("Скоро", for: .normal)
             }
+            
+            DispatchQueue.main.async {
+                           viewController.updateUI() // Обновляем UI на главном потоке
+                       }
         }
     }
 
@@ -95,6 +81,7 @@ class SaveData {
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
         //UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
         print("Сохранение данных !!!!!!!!!!!!!!")
+        print("Сохранениие startDate - \(viewController.startDate)")
        // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }
     

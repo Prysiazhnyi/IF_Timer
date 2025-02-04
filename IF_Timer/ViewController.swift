@@ -106,39 +106,36 @@ class ViewController: UIViewController, CustomAlertDelegate {
         view.backgroundColor = backgroundTab
         progressBar.backgroundColor = .clear
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
-        updateFinishDateButton()
-        setupCircularProgress()
-        setupButtonsInfo(100)
-        setupButtonsStart()
-        setupTimer.startTimer(Date())
-        //setupIfFastingTimeExpired()
-        setupTitle()
-        setupTitleProgressLabel()
-        //print("timeResting - \(timeResting / 3600), timeFasting - \(timeFasting / 3600), timeWait - \(timeWait / 3600), isStarvation - \(isStarvation) ")
-        //print("startDate начало  - \(startDate)) ")
-       // print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
-        timeIsUp = finishDate < currentTime || endDate < currentTime
-        isStarvationTimeExpired = isStarvation && timeIsUp
-       // print("isStarvationTimeExpired - \(isStarvationTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
+        
+        updateUI()
+        
     }
     
-//    override func loadView() {
-//        super.loadView()
-//        //print("loadView() — раньше viewDidLoad()")
-//       // sd.loadSaveDate() // загрузка данных
-//    }
-//    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
+        sd.loadSaveDate() // загрузка данных
+       
+    }
+    
+    func updateUI() {
+        print("Вызов updateUI()")
+        timeIsUp = finishDate < currentTime || endDate < currentTime
+        isStarvationTimeExpired = isStarvation && timeIsUp
+        
+        setupTitle()
+        setupTitleProgressLabel()
+        setupTitleProgressLabel()
+        setupCircularProgress()
         updateProgress(valueProgress)
+        setupButtonsInfo(100)
+        setupButtonsStart()
         updateFinishDateButton()
         setupTimer.startTimer(Date())
-        setupTitleProgressLabel()
-        setupTitle()
         setupIfFastingTimeExpired()
-        setupButtonsInfo(100)
+       
     }
+    
     
     func setupTitle() {
         // Создаем UILabel
@@ -276,6 +273,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
+       // print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait)")
     }
     
     //MARK: Progress Bar
@@ -372,6 +370,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        setupTimer.countdownTimer?.invalidate()
         sd.saveDateUserDefaults()
     }
     

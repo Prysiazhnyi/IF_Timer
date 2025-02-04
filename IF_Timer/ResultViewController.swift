@@ -126,17 +126,6 @@ class ResultViewController: UIViewController {
         }
     }
     
-    //    func setupTimeButtonsDelegat(_ start: Date, _ finish: Date) {
-    //        self.timeForStartButton = start
-    //        self.timeForFinishButton = finish
-    //        print("start - \(start), finish - \(finish)")
-    //        // Вызываем обновление UI после того, как экран уже готов
-    //               DispatchQueue.main.async {
-    //                   self.setupTimeButtons()
-    //               }
-    //    }
-    
-    
     func setupTimeButtons() {
         if let start = timeForStartButton, let finish = timeForFinishButton {
             setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
@@ -214,6 +203,7 @@ class ResultViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         print("Тап на кнопку сохранить")
         viewController?.startDate = timeForFinishButton!
+        viewController?.sd.saveDateUserDefaults()
         fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
        // dismiss(animated: true, completion: nil)
         dismiss(animated: true) { [weak self] in
