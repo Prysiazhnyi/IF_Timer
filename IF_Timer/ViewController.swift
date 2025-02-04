@@ -43,6 +43,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var timeIsUp: Bool = false // время вышло
     var isFastingTimeExpired: Bool = false // вышло время приема пищ
     var isStarvationTimeExpired: Bool = false // вышло время голодания
+    var isFirstStartApp: Bool = true // первый запуск
     
     var imageView: UIImageView!
     // Ссылка на круговой прогресс
@@ -136,9 +137,16 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateFinishDateButton()
         setupTimer.startTimer(Date())
         setupIfFastingTimeExpired()
-       
+        
+        setupFirstStartApp()
     }
     
+    func setupFirstStartApp() {
+        if isFirstStartApp {
+            performSegue(withIdentifier: "selectPlanSegue", sender: nil)
+        }
+        isFirstStartApp = false
+    }
     
     func setupTitle() {
         // Создаем UILabel
@@ -169,6 +177,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         setupIfFastingTimeExpired()
+        
+        isFirstStartApp = false
         
         SaveData.shared.saveDateUserDefaults()
         
@@ -270,13 +280,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
             finishStackView.isHidden = true
             setupButtonsInfo(140)
         }
-        
+        endDate = startDate.addingTimeInterval(TimeInterval(timeResting))
         finishDate = startDate.addingTimeInterval(TimeInterval(timeWait))
         //guard let finishDate = finishDate else { return }
         setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
-       // print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait)")
+        print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait), endDate - \(endDate)")
     }
     
     //MARK: Progress Bar

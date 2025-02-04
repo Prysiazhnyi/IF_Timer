@@ -25,12 +25,16 @@ class SaveData {
                 viewController.startDate = savedDate
                 //viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedDate)
                 print("загрузка savedDate - \(savedDate)")
+            } else {
+                viewController.startDate = Date()
+                print("загрузка savedDate = NIL  - \(viewController.startDate)")
+                
             }
             
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 viewController.isStarvation = tempIsStarvation
-                //print("загрузка tempIsStarvation - \(tempIsStarvation)")
+                print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
@@ -61,6 +65,10 @@ class SaveData {
                 viewController.finishButton.setTitle("Скоро", for: .normal)
             }
             
+            if let isFirstStartAppTemp = UserDefaults.standard.object(forKey: "isFirstStartApp") as? Bool {
+                viewController.isFirstStartApp = isFirstStartAppTemp
+            }
+            
             DispatchQueue.main.async {
                            viewController.updateUI() // Обновляем UI на главном потоке
                        }
@@ -81,7 +89,7 @@ class SaveData {
         UserDefaults.standard.set(viewController.isStarvation, forKey: "isStarvation")
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
-        //UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
+        UserDefaults.standard.set(viewController.timeIsUp, forKey: "isFirstStartApp")
         print("Сохранение данных !!!!!!!!!!!!!!")
         print("Сохранениие startDate - \(viewController.startDate)")
        // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
