@@ -70,6 +70,21 @@ class SaveData {
               //  print(" viewController.isFirstStartApp - \(viewController.isFirstStartApp)")
             }
             
+            if let tempIsFastingTimeExpired = UserDefaults.standard.object(forKey: "isFastingTimeExpired") as? Bool {
+                viewController.isFastingTimeExpired = tempIsFastingTimeExpired
+                print("загрузка isFastingTimeExpired - \(tempIsFastingTimeExpired)")
+            }
+            
+            if let tempIsStarvationTimeExpired = UserDefaults.standard.object(forKey: "isStarvationTimeExpired") as? Bool {
+                viewController.isStarvationTimeExpired = tempIsStarvationTimeExpired
+                print("загрузка isStarvationTimeExpired - \(tempIsStarvationTimeExpired)")
+            }
+            
+            if let tempTimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
+                viewController.timeIsUp = tempTimeIsUp
+                print("загрузка timeIsUp - \(tempTimeIsUp)")
+            }
+            
             DispatchQueue.main.async {
                            viewController.updateUI() // Обновляем UI на главном потоке
                        }
@@ -94,6 +109,10 @@ class SaveData {
         UserDefaults.standard.set(viewController.timeWait, forKey: "timeWait")
         UserDefaults.standard.set(viewController.endDate, forKey: "endDate")
         UserDefaults.standard.set(viewController.isFirstStartApp, forKey: "isFirstStartApp")
+        UserDefaults.standard.set(viewController.isFastingTimeExpired, forKey: "isFastingTimeExpired")
+        UserDefaults.standard.set(viewController.isStarvationTimeExpired, forKey: "isStarvationTimeExpired")
+        UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
+        
         print("Сохранение данных !!!!!!!!!!!!!!")
        // print("Сохранениие startDate - \(viewController.startDate)")
        // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")

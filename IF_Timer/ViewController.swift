@@ -40,7 +40,14 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     
     var isStarvation: Bool = false // это голодание или окно приема пищи
-    var timeIsUp: Bool = false // время вышло
+    var timeIsUp: Bool = false {// время вышло
+        didSet {
+            setupRemindeButton()
+            
+           // setupButtonsStart()
+            //print("Обновление timeIsUp isStarvationTimeExpired - \(isStarvationTimeExpired), isFastingTimeExpired - \(isFastingTimeExpired)")
+        }
+    }
     var isFastingTimeExpired: Bool = false // вышло время приема пищ
     var isStarvationTimeExpired: Bool = false // вышло время голодания
     var isFirstStartApp: Bool = true // первый запуск
@@ -114,7 +121,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateUI()
         
         NotificationManager.shared.requestAuthorization()
-        //NotificationManager.shared.scheduleNotifications(finishDate: finishDate)
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
     }
     
@@ -136,10 +143,10 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupCircularProgress()
         updateProgress(valueProgress)
         setupButtonsInfo(100)
-        setupButtonsStart()
         updateFinishDateButton()
         setupTimer.startTimer(Date())
         setupIfFastingTimeExpired()
+        setupButtonsStart()
         
         setupFirstStartApp()
     }
@@ -263,13 +270,32 @@ class ViewController: UIViewController, CustomAlertDelegate {
                 button.backgroundColor = .clear
                 button.layer.borderWidth = 2
                 button.layer.borderColor = UIColor.systemGreen.cgColor
-                isStarvation ? (button.isHidden = true) : (button.isHidden = false)
+                
+                setupRemindeButton()
+                
             }
             if button == myProfilButton {
                 button.layer.borderColor = UIColor.systemBlue.cgColor
             }
         }
     }
+    
+    func setupRemindeButton() {
+        
+        isStarvationTimeExpired = isStarvation && timeIsUp
+        isFastingTimeExpired = !isStarvation && timeIsUp ? true : false
+        
+        DispatchQueue.main.async {
+            if  self.isFastingTimeExpired || self.isStarvationTimeExpired {
+                self.remindeButton.isHidden = false
+            } else {
+                self.remindeButton.isHidden = true
+            }
+        }
+        print("Обновление кнопки напоминания - isFastingTimeExpired - \(isFastingTimeExpired), isStarvationTimeExpired - \(isStarvationTimeExpired), Кнопка remindeButton скрыта: \(remindeButton.isHidden)")
+    }
+    
+    
     func updateFinishDateButton() {
         //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")
         if isStarvation {
@@ -326,6 +352,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupTimer.startTimer(Date())
             SaveData.shared.saveDateUserDefaults()
             setupIfFastingTimeExpired()
+            setupButtonsStart()
         }
     }
     
@@ -374,6 +401,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupTimer.startTimer(Date())
         SaveData.shared.saveDateUserDefaults()
         updateFinishDateButton()
+        isStarvationTimeExpired = isStarvation && timeIsUp
         //updateProgress(valueProgress)
         
         if isStarvation {
