@@ -96,11 +96,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+       if isFirstStartApp { FirebaseSaveData.shared.loadDataFromCloud(into: self)}
         // Устанавливаем viewController перед загрузкой данных
         SaveData.shared.viewController = self
         
         SaveData.shared.loadSaveDate() // загрузка данных
-
+        
         //sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
@@ -129,7 +131,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
         SaveData.shared.loadSaveDate() // загрузка данных
-        FirebaseSaveData.shared.saveDataToCloud(from: self)
+        
+       // FirebaseSaveData.shared.saveDataToCloud(from: self)
     }
     
     func updateUI() {
@@ -148,13 +151,18 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setupIfFastingTimeExpired()
         setupButtonsStart()
         
-        setupFirstStartApp()
+        //setupFirstStartApp()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+            self.setupFirstStartApp()
+        }
+
     }
     
+    
     func setupFirstStartApp() {
+        print("setupFirstStartApp called")  // Логирование внутри функции
         if isFirstStartApp {
-            FirebaseSaveData.shared.loadDataFromCloud(into: self)
-            print("vcSelectedButtonTag - \(vcSelectedButtonTag)")
+            //FirebaseSaveData.shared.loadDataFromCloud(into: self)
             isFirstStartApp = false
             performSegue(withIdentifier: "selectPlanSegue", sender: nil)
         }
@@ -431,6 +439,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         print("Это viewWillDisappear")
         setupTimer.countdownTimer?.invalidate()
         SaveData.shared.saveDateUserDefaults()
+        FirebaseSaveData.shared.saveDataToCloud(from: self)
     }
     
     deinit {

@@ -25,9 +25,9 @@ class SaveData {
                 viewController.startDate = savedDate
                 //viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedDate)
               //  print("загрузка savedDate - \(savedDate)")
-            } else {
-                viewController.startDate = Date()
-              // print("загрузка savedDate = NIL  - \(viewController.startDate)")
+//            } else {
+//                viewController.startDate = Date()
+//              // print("загрузка savedDate = NIL  - \(viewController.startDate)")
                 
             }
             
@@ -85,6 +85,10 @@ class SaveData {
                // print("загрузка timeIsUp - \(tempTimeIsUp)")
             }
             
+            if let tempVCSelectedButtonTag = UserDefaults.standard.object(forKey: "vcSelectedButtonTag") as? Int {
+                viewController.vcSelectedButtonTag = tempVCSelectedButtonTag
+            }
+            
             DispatchQueue.main.async {
                            viewController.updateUI() // Обновляем UI на главном потоке
                        }
@@ -112,6 +116,7 @@ class SaveData {
         UserDefaults.standard.set(viewController.isFastingTimeExpired, forKey: "isFastingTimeExpired")
         UserDefaults.standard.set(viewController.isStarvationTimeExpired, forKey: "isStarvationTimeExpired")
         UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
+        UserDefaults.standard.set(viewController.vcSelectedButtonTag, forKey: "vcSelectedButtonTag")
         
         print("Сохранение данных !!!!!!!!!!!!!!")
        // print("Сохранениие startDate - \(viewController.startDate)")

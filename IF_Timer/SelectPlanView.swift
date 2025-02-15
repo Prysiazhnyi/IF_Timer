@@ -68,9 +68,9 @@ class SelectPlanView: UIViewController {
         setupButton()
         
         // Восстанавливаем выбранную кнопку по tag
-        if let selectedButtonTempTag = UserDefaults.standard.value(forKey: "selectedButtonTag") as? Int {
-            selectedButtonTag = selectedButtonTempTag
-        }
+//        if let selectedButtonTempTag = UserDefaults.standard.value(forKey: "selectedButtonTag") as? Int {
+//            selectedButtonTag = selectedButtonTempTag
+      //  }
         for button in selectsButtons {
             if button.tag == selectedButtonTag {
                 buttonSelectTempButton = button

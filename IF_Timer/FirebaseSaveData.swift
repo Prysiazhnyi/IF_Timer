@@ -22,7 +22,7 @@ class FirebaseSaveData {
             "isStarvation": viewController.isStarvation,
             "timeWait": viewController.timeWait,
             "endDate": viewController.endDate.timeIntervalSince1970,
-            "isFirstStartApp": viewController.isFirstStartApp,
+            //"isFirstStartApp": viewController.isFirstStartApp,
             "isFastingTimeExpired": viewController.isFastingTimeExpired,
             "isStarvationTimeExpired": viewController.isStarvationTimeExpired,
             "timeIsUp": viewController.timeIsUp,
@@ -62,7 +62,7 @@ class FirebaseSaveData {
                 viewController.isStarvation = data["isStarvation"] as? Bool ?? false
                 viewController.timeWait = data["timeWait"] as? Int ?? 0
                 viewController.endDate = Date(timeIntervalSince1970: data["endDate"] as? TimeInterval ?? Date().timeIntervalSince1970)
-                viewController.isFirstStartApp = data["isFirstStartApp"] as? Bool ?? false
+                //viewController.isFirstStartApp = data["isFirstStartApp"] as? Bool ?? false
                 viewController.isFastingTimeExpired = data["isFastingTimeExpired"] as? Bool ?? false
                 viewController.isStarvationTimeExpired = data["isStarvationTimeExpired"] as? Bool ?? false
                 viewController.timeIsUp = data["timeIsUp"] as? Bool ?? false
