@@ -10,6 +10,7 @@ import UIKit
 class ViewController: UIViewController, CustomAlertDelegate {
     
     private var datePickerManager: DatePickerManager!
+    private var minutesPickerManager: MinutesPickerManager!
     //let sd = SaveData()
     var setupTimer: SetupTimer!
     var circularProgressView: CircularProgressView?
@@ -294,7 +295,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     @IBAction func remindeButtonTapped(_ sender: Any) {
         print("Нажата кнопка напоминания позже")
-        NotificationManager.shared.scheduleNotificationReminde(Date(), isStarvation)
+        minutesPickerManager = MinutesPickerManager(parentViewController: self, isStarvation: self.isStarvation)
+        minutesPickerManager.showPicker { selectedSeconds in
+            print("Выбрано время: \(selectedSeconds) секунд")
+        }
+        
+        //NotificationManager.shared.scheduleNotificationReminde(Date(), isStarvation)
     }
     
     func updateFinishDateButton() {

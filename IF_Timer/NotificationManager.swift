@@ -78,12 +78,12 @@ class NotificationManager {
         }
     }
     
-    func scheduleNotificationReminde(_ remindeDate: Date, _ isStarvation: Bool) {
+    func scheduleNotificationReminde(_ remindeSecond: Int, _ isStarvation: Bool) {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests() // Удаляем старые уведомления
         
             // Уведомление на 1 позже
-            let oneHourBeforeStartReminde = remindeDate.addingTimeInterval(+60)
+            let oneHourBeforeStartReminde = Date().addingTimeInterval(Double(remindeSecond))
             if oneHourBeforeStartReminde > Date() {
                 if isStarvation {
                 scheduleNotification(
@@ -92,7 +92,7 @@ class NotificationManager {
                     date: oneHourBeforeStartReminde,
                     identifier: "oneHourBeforeStartReminde"
                 )
-        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde)")
+        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         } else {
             scheduleNotification(
                 title: "Час вийшов!",
@@ -100,7 +100,7 @@ class NotificationManager {
                 date: oneHourBeforeStartReminde,
                 identifier: "oneHourBeforeStartRemindeRest"
             )
-            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde)")
+            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         }
         }
     }
