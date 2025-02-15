@@ -93,7 +93,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         SaveData.shared.viewController = self
         
         SaveData.shared.loadSaveDate() // загрузка данных
-        
+
         //sd.viewController = self
         // Инициализация CircularProgressView перед инициализацией SetupTimer
         circularProgressView = CircularProgressView(frame: progressBar.bounds)
@@ -112,6 +112,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         percentProgressLabel.text = "━━\n\(Int(valueProgress * 100)) %"
         
         updateUI()
+        
+        NotificationManager.shared.requestAuthorization()
+        //NotificationManager.shared.scheduleNotifications(finishDate: finishDate)
         
     }
     
@@ -284,6 +287,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
+        
+        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
+
         //print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait), endDate - \(endDate)")
     }
     
