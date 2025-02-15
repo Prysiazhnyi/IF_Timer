@@ -7,6 +7,7 @@
 
 import UIKit
 import UserNotifications
+import Firebase
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -17,6 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
            _ application: UIApplication,
            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
        ) -> Bool {
+           FirebaseApp.configure() // Инициализация Firebase
            
            // Запрашиваем разрешение на уведомления
            let center = UNUserNotificationCenter.current()

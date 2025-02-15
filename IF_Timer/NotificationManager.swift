@@ -52,7 +52,7 @@ class NotificationManager {
                     identifier: "startFasting"
                 )
             }
-            print("Заплонированы пуш уведомления при отдыхе, isStarvation = \(isStarvation), за час на = \(oneHourBeforeStart), по окончанию на = \(endDate)")
+           // print("Заплонированы пуш уведомления при отдыхе, isStarvation = \(isStarvation), за час на = \(oneHourBeforeStart), по окончанию на = \(endDate)")
         } else {
             // Уведомление за 1 час до окончания голодания
             let oneHourBeforeFinish = finishDate.addingTimeInterval(-3600)
@@ -74,7 +74,7 @@ class NotificationManager {
                     identifier: "finishNotification"
                 )
             }
-            print("Заплонированы пуш уведомления при голодании, isStarvation = \(isStarvation), за час на = \(oneHourBeforeFinish), по окончанию на = \(finishDate)")
+           // print("Заплонированы пуш уведомления при голодании, isStarvation = \(isStarvation), за час на = \(oneHourBeforeFinish), по окончанию на = \(finishDate)")
         }
     }
     
@@ -92,7 +92,7 @@ class NotificationManager {
                     date: oneHourBeforeStartReminde,
                     identifier: "oneHourBeforeStartReminde"
                 )
-        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+        //print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         } else {
             scheduleNotification(
                 title: "Час вийшов!",
@@ -100,7 +100,7 @@ class NotificationManager {
                 date: oneHourBeforeStartReminde,
                 identifier: "oneHourBeforeStartRemindeRest"
             )
-            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+           // print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         }
         }
     }

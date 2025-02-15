@@ -36,7 +36,7 @@ class SelectPlanView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print("selectedButtonTag - \(selectedButtonTag)")
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundColor
         viewTab.backgroundColor = backgroundColor
@@ -143,7 +143,7 @@ class SelectPlanView: UIViewController {
         //        }
         deleteSelectPlanView()
         selectPlanView(sender)
-        //parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .myPlan)
+        //parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .myPlan, selectedButtonTag : 1)
         navigationController?.popViewController(animated: true)
     }
     
@@ -151,7 +151,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .basic)
+        parentviewController?.updatePlan(timeResting: 8 * 3600, timeFasting: 16 * 3600, selectedPlan: .basic, selectedButtonTag : 2)
         navigationController?.popViewController(animated: true)
     }
     
@@ -159,7 +159,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentviewController?.updatePlan(timeResting: 12 * 3600, timeFasting: 12 * 3600, selectedPlan: .start)
+        parentviewController?.updatePlan(timeResting: 12 * 3600, timeFasting: 12 * 3600, selectedPlan: .start, selectedButtonTag : 3)
         navigationController?.popViewController(animated: true)
     }
     
@@ -167,7 +167,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentviewController?.updatePlan(timeResting: 10 * 3600, timeFasting: 14 * 3600, selectedPlan: .startPlus)
+        parentviewController?.updatePlan(timeResting: 10 * 3600, timeFasting: 14 * 3600, selectedPlan: .startPlus, selectedButtonTag : 4)
         navigationController?.popViewController(animated: true)
     }
     
@@ -175,7 +175,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentviewController?.updatePlan(timeResting: 6 * 3600, timeFasting: 18 * 3600, selectedPlan: .strong)
+        parentviewController?.updatePlan(timeResting: 6 * 3600, timeFasting: 18 * 3600, selectedPlan: .strong, selectedButtonTag : 5)
         navigationController?.popViewController(animated: true)
     }
     
@@ -183,7 +183,7 @@ class SelectPlanView: UIViewController {
         deleteSelectPlanView()
         selectPlanView(sender)
         
-        parentviewController?.updatePlan(timeResting: 4 * 3600, timeFasting: 20 * 3600, selectedPlan: .strongPlus)
+        parentviewController?.updatePlan(timeResting: 4 * 3600, timeFasting: 20 * 3600, selectedPlan: .strongPlus, selectedButtonTag : 6)
         navigationController?.popViewController(animated: true)
     }
     

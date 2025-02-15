@@ -92,6 +92,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     
+    var vcSelectedButtonTag = 2 // для таба SelectPlanView
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Устанавливаем viewController перед загрузкой данных
@@ -127,7 +129,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
         SaveData.shared.loadSaveDate() // загрузка данных
-        
+        FirebaseSaveData.shared.saveDataToCloud(from: self)
     }
     
     func updateUI() {
@@ -151,6 +153,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     func setupFirstStartApp() {
         if isFirstStartApp {
+            FirebaseSaveData.shared.loadDataFromCloud(into: self)
+            print("vcSelectedButtonTag - \(vcSelectedButtonTag)")
             isFirstStartApp = false
             performSegue(withIdentifier: "selectPlanSegue", sender: nil)
         }
@@ -177,10 +181,11 @@ class ViewController: UIViewController, CustomAlertDelegate {
         navigationController?.navigationBar.tintColor = .gray
     }
     
-    func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan) {
+    func updatePlan(timeResting: Int, timeFasting: Int, selectedPlan: Plan, selectedButtonTag: Int) {
         self.timeResting = timeResting
         self.timeFasting = timeFasting
         self.selectedPlan = selectedPlan // Обновляем выбранный план
+        self.vcSelectedButtonTag = selectedButtonTag
         updateFinishDateButton()
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
@@ -368,6 +373,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
             if let selectPlanviewController = segue.destination as? SelectPlanView {
                 // Передаем ссылку на текущий контроллер
                 selectPlanviewController.parentviewController = self
+                selectPlanviewController.selectedButtonTag = vcSelectedButtonTag
             }
         }
     }
@@ -431,6 +437,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
         print("Это deinit")
         setupTimer.countdownTimer?.invalidate()
         SaveData.shared.saveDateUserDefaults()
+        FirebaseSaveData.shared.saveDataToCloud(from: self)
     }
     
     func setupIfFastingTimeExpired() {
