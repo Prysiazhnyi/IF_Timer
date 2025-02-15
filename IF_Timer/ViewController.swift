@@ -287,8 +287,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
         setButtonTitle.setButtonTitle(for: finishButton, date: finishDate)
         //setButtonTitle(for: startButton, date: startDate)
         isStarvation ? setButtonTitle.setButtonTitle(for: self.startButton, date: startDate) : setButtonTitle.setButtonTitle(for: self.startButton, date: endDate)
-        
-        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
 
         //print("isStarvation - \(isStarvation), startDate - \(startDate), finishDate - \(finishDate), timeWait - \(timeWait), endDate - \(endDate)")
     }
