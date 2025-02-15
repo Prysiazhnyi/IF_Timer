@@ -43,9 +43,6 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var timeIsUp: Bool = false {// время вышло
         didSet {
             setupRemindeButton()
-            
-           // setupButtonsStart()
-            //print("Обновление timeIsUp isStarvationTimeExpired - \(isStarvationTimeExpired), isFastingTimeExpired - \(isFastingTimeExpired)")
         }
     }
     var isFastingTimeExpired: Bool = false // вышло время приема пищ
@@ -292,9 +289,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
                 self.remindeButton.isHidden = true
             }
         }
-        print("Обновление кнопки напоминания - isFastingTimeExpired - \(isFastingTimeExpired), isStarvationTimeExpired - \(isStarvationTimeExpired), Кнопка remindeButton скрыта: \(remindeButton.isHidden)")
+        //print("Обновление кнопки напоминания - isFastingTimeExpired - \(isFastingTimeExpired), isStarvationTimeExpired - \(isStarvationTimeExpired), Кнопка remindeButton скрыта: \(remindeButton.isHidden)")
     }
     
+    @IBAction func remindeButtonTapped(_ sender: Any) {
+        print("Нажата кнопка напоминания позже")
+        NotificationManager.shared.scheduleNotificationReminde(Date(), isStarvation)
+    }
     
     func updateFinishDateButton() {
         //print("isFastingTimeExpired - \(isFastingTimeExpired), isStarvation - \(isStarvation), timeIsUp - \(timeIsUp)")

@@ -78,6 +78,33 @@ class NotificationManager {
         }
     }
     
+    func scheduleNotificationReminde(_ remindeDate: Date, _ isStarvation: Bool) {
+        let center = UNUserNotificationCenter.current()
+        center.removeAllPendingNotificationRequests() // Удаляем старые уведомления
+        
+            // Уведомление на 1 позже
+            let oneHourBeforeStartReminde = remindeDate.addingTimeInterval(+60)
+            if oneHourBeforeStartReminde > Date() {
+                if isStarvation {
+                scheduleNotification(
+                    title: "Час вийшов!",
+                    body: "Час завершити голодування.",
+                    date: oneHourBeforeStartReminde,
+                    identifier: "oneHourBeforeStartReminde"
+                )
+        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde)")
+        } else {
+            scheduleNotification(
+                title: "Час вийшов!",
+                body: "Пора почати голодування.",
+                date: oneHourBeforeStartReminde,
+                identifier: "oneHourBeforeStartRemindeRest"
+            )
+            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde)")
+        }
+        }
+    }
+    
     // Метод создания уведомления
     private func scheduleNotification(title: String, body: String, date: Date, identifier: String) {
 

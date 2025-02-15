@@ -24,17 +24,17 @@ class SaveData {
             if let savedDate = UserDefaults.standard.object(forKey: "startDate") as? Date {
                 viewController.startDate = savedDate
                 //viewController.setButtonTitle.setButtonTitle(for: viewController.startButton, date: savedDate)
-                print("загрузка savedDate - \(savedDate)")
+              //  print("загрузка savedDate - \(savedDate)")
             } else {
                 viewController.startDate = Date()
-                print("загрузка savedDate = NIL  - \(viewController.startDate)")
+              // print("загрузка savedDate = NIL  - \(viewController.startDate)")
                 
             }
             
 
             if let tempIsStarvation = UserDefaults.standard.object(forKey: "isStarvation") as? Bool {
                 viewController.isStarvation = tempIsStarvation
-                print("загрузка tempIsStarvation - \(tempIsStarvation)")
+               // print("загрузка tempIsStarvation - \(tempIsStarvation)")
             }
             
             if let saveTimeFasting = UserDefaults.standard.object(forKey: "timeFasting") as? Int {
@@ -72,17 +72,17 @@ class SaveData {
             
             if let tempIsFastingTimeExpired = UserDefaults.standard.object(forKey: "isFastingTimeExpired") as? Bool {
                 viewController.isFastingTimeExpired = tempIsFastingTimeExpired
-                print("загрузка isFastingTimeExpired - \(tempIsFastingTimeExpired)")
+               // print("загрузка isFastingTimeExpired - \(tempIsFastingTimeExpired)")
             }
             
             if let tempIsStarvationTimeExpired = UserDefaults.standard.object(forKey: "isStarvationTimeExpired") as? Bool {
                 viewController.isStarvationTimeExpired = tempIsStarvationTimeExpired
-                print("загрузка isStarvationTimeExpired - \(tempIsStarvationTimeExpired)")
+                //print("загрузка isStarvationTimeExpired - \(tempIsStarvationTimeExpired)")
             }
             
             if let tempTimeIsUp = UserDefaults.standard.object(forKey: "timeIsUp") as? Bool {
                 viewController.timeIsUp = tempTimeIsUp
-                print("загрузка timeIsUp - \(tempTimeIsUp)")
+               // print("загрузка timeIsUp - \(tempTimeIsUp)")
             }
             
             DispatchQueue.main.async {
