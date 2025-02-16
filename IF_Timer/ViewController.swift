@@ -100,13 +100,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        if isFirstStartApp {
-            FirebaseSaveData.shared.loadDataFromCloud(into: self)
-            let fastingTracker = FastingTracker()
-            fastingTracker.loadFastingDataFromFirebase()
-
-        }
+        print("isFirstStartApp - \(isFirstStartApp)")
+        //if isFirstStartApp {FirebaseSaveData.shared.loadAndSaveDataFromFirebase()}
         // Устанавливаем viewController перед загрузкой данных
         SaveData.shared.viewController = self
         

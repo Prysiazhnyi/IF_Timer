@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
            didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
        ) -> Bool {
            FirebaseApp.configure() // Инициализация Firebase
+           checkIfFirstLaunch() // функция для загрузки данных с Firebase при пепрвом запуске
            
            // Запрашиваем разрешение на уведомления
            let center = UNUserNotificationCenter.current()
@@ -56,6 +57,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+    
+    func checkIfFirstLaunch() {
+        let userDefaults = UserDefaults.standard
+        if userDefaults.object(forKey: "isFirstStartApp") == nil {
+            // Первый запуск
+            print("🚀 Первый запуск приложения!")
+            userDefaults.set(false, forKey: "isFirstStartApp")
+            
+            FirebaseSaveData.shared.loadAndSaveDataFromFirebase {
+                // После загрузки данных вызываем loadSaveDate
+                SaveData.shared.loadSaveDate()
+                
+            }
+        } else {
+            // Не первый запуск — загружаем данные из UserDefaults
+            print("🔄 Приложение уже запускалось.")
+            SaveData.shared.loadSaveDate()
+        }
+    }
+
+
 
 }
 

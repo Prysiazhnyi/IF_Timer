@@ -18,40 +18,21 @@ class FastingTracker {
     private var fastingPeriods: [(start: Date, finish: Date)] = []
     private let calendar = Calendar(identifier: .gregorian)
     var fastingData: [FastingDataEntry] = []
-    var ifFirstLaunch: Bool = true // для загрузки данных с Faribase
     let fastingChartView = FastingChartView()
     
     // Ключ для сохранения данных в UserDefaults
     private let fastingDataKey = "fastingDataKey"
     
     init() {
-        print("ifFirstLaunch : \(ifFirstLaunch)")
-         ifFirstLaunch ? loadFastingDataFromFirebase() : loadFastingData()
-            
+        loadFastingData()
         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
     }
-    
-    // Асинхронная загрузка данных из Firebase
-        func loadFastingDataFromFirebase() {
-            DispatchQueue.global(qos: .background).async {
-                FirebaseSaveData.shared.loadFastingDataFromCloud(into: self)
-                print("вызов loadFastingDataFromFirebase , fastingData : \(self.fastingData)")
-                DispatchQueue.main.async {
-                    // Обновление UI или выполнение других операций на главном потоке
-                    self.fastingChartView.setupBars()
-                    self.ifFirstLaunch = false
-                    self.saveFastingData()
-                   //self.loadFastingData()
-                    print("Данные загружены из Firebase")
-                }
-            }
-        }
     
     func addFastingPeriod(start: Date, finish: Date) {
         fastingPeriods.append((start, finish))
         updateChartData()
         saveFastingData()  // Сохраняем данные после изменения
-        print("Данные FastingTracker для сохранения в Firebase: \(fastingData)")
+       // print("Данные FastingTracker для сохранения в Firebase: \(fastingData)")
         FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)
 
         FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)  // Сохраняем в Firebase
@@ -125,7 +106,7 @@ class FastingTracker {
 
     // Сохранение данных в UserDefaults
     private func saveFastingData() {
-        UserDefaults.standard.set(ifFirstLaunch, forKey: "ifFirstLaunch")
+       
         let encodedData = try? JSONEncoder().encode(fastingData)
         UserDefaults.standard.set(encodedData, forKey: fastingDataKey)
     }
@@ -135,9 +116,6 @@ class FastingTracker {
         if let savedData = UserDefaults.standard.data(forKey: fastingDataKey),
            let decodedData = try? JSONDecoder().decode([FastingDataEntry].self, from: savedData) {
             fastingData = decodedData
-        }
-        if let tempIfFirstLaunch = UserDefaults.standard.object(forKey: "ifFirstLaunch") as? Bool {
-            self.ifFirstLaunch = tempIfFirstLaunch
         }
     }
     

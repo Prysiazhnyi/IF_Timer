@@ -41,40 +41,6 @@ class FirebaseSaveData {
         }
     
     }
-
-    // ✅ Загрузка данных
-    func loadDataFromCloud(into viewController: ViewController) {
-        getUserDocument().getDocument { snapshot, error in
-            
-            print("📌 Snapshot Firebase: \(snapshot)")
-            print("📌 Error Firebase: \(error)")
-            
-            guard let data = snapshot?.data(), error == nil else {
-                print("❌ Ошибка загрузки Firebase: \(error?.localizedDescription ?? "Неизвестная ошибка")")
-                return
-            }
-            print("📥 Данные загружены из Firebase")
-            print("data Firebase - \(data)")
-
-            DispatchQueue.main.async {
-                viewController.startDate = Date(timeIntervalSince1970: data["startDate"] as? TimeInterval ?? Date().timeIntervalSince1970)
-                viewController.selectedPlan = ViewController.Plan(rawValue: data["selectedMyPlan"] as? String ?? "default") ?? .basic
-                viewController.timeResting = data["timeResting"] as? Int ?? 0
-                viewController.timeFasting = data["timeFasting"] as? Int ?? 0
-                viewController.isStarvation = data["isStarvation"] as? Bool ?? false
-                viewController.timeWait = data["timeWait"] as? Int ?? 0
-                viewController.endDate = Date(timeIntervalSince1970: data["endDate"] as? TimeInterval ?? Date().timeIntervalSince1970)
-                //viewController.isFirstStartApp = data["isFirstStartApp"] as? Bool ?? false
-                viewController.isFastingTimeExpired = data["isFastingTimeExpired"] as? Bool ?? false
-                viewController.isStarvationTimeExpired = data["isStarvationTimeExpired"] as? Bool ?? false
-                viewController.timeIsUp = data["timeIsUp"] as? Bool ?? false
-                viewController.vcSelectedButtonTag = data["vcSelectedButtonTag"] as? Int ?? 2
-
-                viewController.updateUI()
-                
-            }
-        }
-    }
     
     // MARK: Сохранения в Firebase data FastingTraker
     
@@ -100,42 +66,86 @@ class FirebaseSaveData {
         }
     }
     
-    // Метод для загрузки данных о голодании из Firebase
-    func loadFastingDataFromCloud(into fastingTracker: FastingTracker) {
-        getUserDocument().getDocument { snapshot, error in
-            print("📌 Snapshot Firebase: \(snapshot)")  // Добавляем ключевое слово FastingTracker
-            print("📌 Error Firebase: \(error)")  // Добавляем ключевое слово FastingTracker
-            
-            guard let data = snapshot?.data(), error == nil else {
-                print(" ❌ Ошибка загрузки данных из Firebase для FastingTracker: \(error?.localizedDescription ?? "Неизвестная ошибка")")
-                return
-            }
 
-            // Если данных нет, выводим это в логи
-            if data["fastingData"] == nil {
-                print(" ❌ Нет данных для fastingData в Firebase")
-            }
+//MARK:    // ✅ Загрузка данных
+    
+    func loadAndSaveDataFromFirebase(completion: (() -> Void)? = nil) {
+        DispatchQueue.global(qos: .background).async {
+            // Загрузка данных из Firebase
+            FirebaseSaveData.shared.getUserDocument().getDocument { snapshot, error in
+                if let error = error {
+                    print("Ошибка загрузки данных: \(error.localizedDescription)")
+                    return
+                }
 
-            if let fastingDataArray = data["fastingData"] as? [[String: Any]] {
-                print("Firebase 📥 Данные fastingData: \(fastingDataArray)")  // Выводим данные
+                guard let data = snapshot?.data() else {
+                    print("Нет данных в Firebase")
+                    return
+                }
 
-                var fastingDataEntries: [FastingDataEntry] = []
-                for fastingDataDict in fastingDataArray {
-                    if let date = fastingDataDict["date"] as? String,
-                       let hours = fastingDataDict["hours"] as? CGFloat,
-                       let fullDate = fastingDataDict["fullDate"] as? String {
-                        let entry = FastingDataEntry(date: date, hours: hours, fullDate: fullDate)
-                        fastingDataEntries.append(entry)
+                // Сохранение данных в UserDefaults
+                if let startDate = data["startDate"] as? TimeInterval {
+                    UserDefaults.standard.set(Date(timeIntervalSince1970: startDate), forKey: "startDate")
+                }
+                if let selectedPlanRawValue = data["selectedMyPlan"] as? String {
+                    UserDefaults.standard.set(selectedPlanRawValue, forKey: "selectedMyPlan")
+                }
+                if let timeResting = data["timeResting"] as? Int {
+                    UserDefaults.standard.set(timeResting, forKey: "timeResting")
+                }
+                if let timeFasting = data["timeFasting"] as? Int {
+                    UserDefaults.standard.set(timeFasting, forKey: "timeFasting")
+                }
+                if let isStarvation = data["isStarvation"] as? Bool {
+                    UserDefaults.standard.set(isStarvation, forKey: "isStarvation")
+                }
+                if let timeWait = data["timeWait"] as? Int {
+                    UserDefaults.standard.set(timeWait, forKey: "timeWait")
+                }
+                if let endDate = data["endDate"] as? TimeInterval {
+                    UserDefaults.standard.set(Date(timeIntervalSince1970: endDate), forKey: "endDate")
+                }
+
+                if let isFastingTimeExpired = data["isFastingTimeExpired"] as? Bool {
+                    UserDefaults.standard.set(isFastingTimeExpired, forKey: "isFastingTimeExpired")
+                }
+                if let isStarvationTimeExpired = data["isStarvationTimeExpired"] as? Bool {
+                    UserDefaults.standard.set(isStarvationTimeExpired, forKey: "isStarvationTimeExpired")
+                }
+                if let timeIsUp = data["timeIsUp"] as? Bool {
+                    UserDefaults.standard.set(timeIsUp, forKey: "timeIsUp")
+                }
+                if let vcSelectedButtonTag = data["vcSelectedButtonTag"] as? Int {
+                    UserDefaults.standard.set(vcSelectedButtonTag, forKey: "vcSelectedButtonTag")
+                }
+                if let fastingDataArray = data["fastingData"] as? [[String: Any]] {
+                    
+                    var fastingDataEntries: [FastingDataEntry] = []
+                    for fastingDataDict in fastingDataArray {
+                        if let date = fastingDataDict["date"] as? String,
+                           let hours = fastingDataDict["hours"] as? CGFloat,
+                           let fullDate = fastingDataDict["fullDate"] as? String {
+                            let entry = FastingDataEntry(date: date, hours: hours, fullDate: fullDate)
+                            fastingDataEntries.append(entry)
+                        }
+                    }
+                    // Сохраняем данные о голодании в UserDefaults
+                    if let encodedData = try? JSONEncoder().encode(fastingDataEntries) {
+                        UserDefaults.standard.set(encodedData, forKey: "fastingDataKey")
+                        print("✅ Данные fastingDataKey о голодании успешно сохранены в UserDefaults.")
+                    } else {
+                        print("❌ Не удалось закодировать данные о голодании fastingDataKey.")
                     }
                 }
-                fastingTracker.fastingData = fastingDataEntries
-                print(" ✅ Данные о голодании для FastingTracker успешно загружены из Firebase!")
-                print(" Загрузка из Firebase (FastingTracker): \(fastingDataEntries)")
-            } else {
-                print(" ❌ Невозможно загрузить данные fastingData из Firebase")
+                
+                print("Данные успешно загружены и сохранены в UserDefaults")
+                
+                // 🚀 Вызываем переданный completion (например, обновление SaveData)
+                           DispatchQueue.main.async {
+                               completion?()
+                           }
             }
         }
     }
-
 
 }
