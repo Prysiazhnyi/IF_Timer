@@ -56,6 +56,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         print("Приложение перешло в фон")
            // Ваш код для сохранения данных или остановки задач
         SaveData.shared.saveDateUserDefaults()
+        // Получаем ViewController
+            if let windowScene = scene as? UIWindowScene {
+                let keyWindow = windowScene.windows.first { $0.isKeyWindow }
+                
+                if let navController = keyWindow?.rootViewController as? UINavigationController,
+                   let viewController = navController.visibleViewController as? ViewController {
+                    FirebaseSaveData.shared.saveDataToCloud(from: viewController)
+                } else if let viewController = keyWindow?.rootViewController as? ViewController {
+                    FirebaseSaveData.shared.saveDataToCloud(from: viewController)
+                }
+            }
     }
 
 

@@ -134,14 +134,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-       // print("viewWillAppear triggered")
+        print("viewWillAppear triggered")
         
         if shouldHideRemindeButton {
                 remindeButton.isHidden = true
             }
         SaveData.shared.loadSaveDate() // загрузка данных
-        
-       // FirebaseSaveData.shared.saveDataToCloud(from: self)
     }
     
     func updateUI() {

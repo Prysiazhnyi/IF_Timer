@@ -60,22 +60,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     func checkIfFirstLaunch() {
         let userDefaults = UserDefaults.standard
+        
         if userDefaults.object(forKey: "isFirstStartApp") == nil {
-            // Первый запуск
+            // Первый запуск приложения
             print("🚀 Первый запуск приложения!")
-            userDefaults.set(false, forKey: "isFirstStartApp")
-            
-            FirebaseSaveData.shared.loadAndSaveDataFromFirebase {
-                // После загрузки данных вызываем loadSaveDate
+
+            FirebaseSaveData.shared.loadAndSaveDataFromFirebase { hasData in
+                if hasData {
+                    userDefaults.set(false, forKey: "isFirstStartApp") // Данные есть → не первый запуск
+                    print("✅ Данные найдены в Firebase. isFirstStartApp = false")
+                } else {
+                    userDefaults.set(true, forKey: "isFirstStartApp") // Данных нет → первый запуск
+                    print("❌ Нет данных в Firebase. isFirstStartApp = true")
+                }
+
+                // Загружаем данные в ViewController
                 SaveData.shared.loadSaveDate()
-                
             }
         } else {
-            // Не первый запуск — загружаем данные из UserDefaults
+            // Приложение уже запускалось — загружаем данные из UserDefaults
             print("🔄 Приложение уже запускалось.")
             SaveData.shared.loadSaveDate()
         }
     }
+
 
 
 

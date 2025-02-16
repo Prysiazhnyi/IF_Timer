@@ -69,7 +69,7 @@ class FirebaseSaveData {
 
 //MARK:    // ✅ Загрузка данных
     
-    func loadAndSaveDataFromFirebase(completion: (() -> Void)? = nil) {
+    func loadAndSaveDataFromFirebase(completion: @escaping (Bool) -> Void) {
         DispatchQueue.global(qos: .background).async {
             // Загрузка данных из Firebase
             FirebaseSaveData.shared.getUserDocument().getDocument { snapshot, error in
@@ -142,7 +142,7 @@ class FirebaseSaveData {
                 
                 // 🚀 Вызываем переданный completion (например, обновление SaveData)
                            DispatchQueue.main.async {
-                               completion?()
+                               completion(true)
                            }
             }
         }
