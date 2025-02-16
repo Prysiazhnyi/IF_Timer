@@ -36,7 +36,7 @@ class SelectPlanView: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("selectedButtonTag - \(selectedButtonTag)")
+        //print("selectedButtonTag - \(selectedButtonTag)")
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         view.backgroundColor = backgroundColor
         viewTab.backgroundColor = backgroundColor
@@ -75,7 +75,7 @@ class SelectPlanView: UIViewController {
             if button.tag == selectedButtonTag {
                 buttonSelectTempButton = button
                 selectPlanView(button)
-                print("загрузка button.tag")
+               //print("загрузка button.tag")
                 
             }
         }

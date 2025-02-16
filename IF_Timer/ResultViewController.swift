@@ -130,9 +130,9 @@ class ResultViewController: UIViewController {
         if let start = timeForStartButton, let finish = timeForFinishButton {
             setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
             setButtonTitle.setButtonTitle(for: finishMainContainerButton, date: finish)
-            print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
+           // print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
         } else {
-            print("Даты не инициализированы")
+           // print("Даты не инициализированы")
         }
         
     }
@@ -201,7 +201,7 @@ class ResultViewController: UIViewController {
     }
     
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        print("Тап на кнопку сохранить")
+        //print("Тап на кнопку сохранить")
         viewController?.startDate = timeForFinishButton!
         SaveData.shared.saveDateUserDefaults()
         fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
@@ -212,7 +212,7 @@ class ResultViewController: UIViewController {
     }
     
     @IBAction func cancellButtonTapped(_ sender: UIButton) {
-        print("Тап на кнопку отмена")
+       // print("Тап на кнопку отмена")
         
         //let alertviewController = CustomAlertViewController()
         // Устанавливаем делегат перед презентацией
@@ -228,7 +228,7 @@ class ResultViewController: UIViewController {
     }
     
     @IBAction func  startMainContainerButtonTapped(_ sender: UIButton) {
-        print("Тап на кнопку startMainContainerButton")
+        //print("Тап на кнопку startMainContainerButton")
         
         guard let timeForStartButton = timeForStartButton else { return }
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForStartButton) { [self] selectedDate in
@@ -239,7 +239,7 @@ class ResultViewController: UIViewController {
     }
     
     @IBAction func finishMainContainerButtonTapped(_ sender: UIButton) {
-        print("Тап на кнопку finishMainContainerButton")
+       // print("Тап на кнопку finishMainContainerButton")
         
         guard let timeForFinishButton = timeForFinishButton else { return }
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForFinishButton) { [self] selectedDate in

@@ -44,7 +44,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     var isStarvation: Bool = false // это голодание или окно приема пищи
     var timeIsUp: Bool = false {// время вышло
         didSet {
-            print("shouldHideRemindeButton - \(shouldHideRemindeButton)")
+           // print("shouldHideRemindeButton - \(shouldHideRemindeButton)")
             if !shouldHideRemindeButton {
                 setupRemindeButton()
                 }
@@ -101,7 +101,12 @@ class ViewController: UIViewController, CustomAlertDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-       if isFirstStartApp { FirebaseSaveData.shared.loadDataFromCloud(into: self)}
+        if isFirstStartApp {
+            FirebaseSaveData.shared.loadDataFromCloud(into: self)
+            let fastingTracker = FastingTracker()
+            fastingTracker.loadFastingDataFromFirebase()
+
+        }
         // Устанавливаем viewController перед загрузкой данных
         SaveData.shared.viewController = self
         
@@ -134,7 +139,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("viewWillAppear triggered")
+       // print("viewWillAppear triggered")
         
         if shouldHideRemindeButton {
                 remindeButton.isHidden = true
@@ -145,7 +150,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     func updateUI() {
-        print("Вызов updateUI()")
+       // print("Вызов updateUI()")
         timeIsUp = finishDate < currentTime || endDate < currentTime
         isStarvationTimeExpired = isStarvation && timeIsUp
         
@@ -169,7 +174,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     
     
     func setupFirstStartApp() {
-        print("setupFirstStartApp called")  // Логирование внутри функции
+        //print("setupFirstStartApp called")  // Логирование внутри функции
         if isFirstStartApp {
             //FirebaseSaveData.shared.loadDataFromCloud(into: self)
             isFirstStartApp = false
@@ -319,13 +324,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
     }
     
     @IBAction func remindeButtonTapped(_ sender: Any) {
-        print("Нажата кнопка напоминания позже")
+        //print("Нажата кнопка напоминания позже")
         minutesPickerManager = MinutesPickerManager(parentViewController: self, isStarvation: self.isStarvation)
         minutesPickerManager.showPicker { selectedSeconds in
             DispatchQueue.main.async {
                 self.remindeButton.isHidden = true
             }
-            print("Выбрано время: \(selectedSeconds) секунд")
+            //print("Выбрано время: \(selectedSeconds) секунд")
         }
         
         //NotificationManager.shared.scheduleNotificationReminde(Date(), isStarvation)

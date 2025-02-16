@@ -195,7 +195,7 @@ class FastingChartView: UIView {
     
     
     // MARK: - Отрисовка столбцов
-    private func setupBars() {
+     func setupBars() {
         // Удаляем старые столбцы
         contentView.subviews.forEach { $0.removeFromSuperview() }
         

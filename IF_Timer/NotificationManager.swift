@@ -19,7 +19,7 @@ class NotificationManager {
         let center = UNUserNotificationCenter.current()
         center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
             if let error = error {
-                print("Ошибка при запросе разрешения на уведомления: \(error.localizedDescription)")
+               // print("Ошибка при запросе разрешения на уведомления: \(error.localizedDescription)")
             }
         }
     }
@@ -29,7 +29,7 @@ class NotificationManager {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests() // Удаляем старые уведомления
         
-        print("Запланирован новый пуш-уведомления")
+        //print("Запланирован новый пуш-уведомления")
         
         if !isStarvation {
             // Уведомление за 1 час до начала голодания
@@ -92,7 +92,7 @@ class NotificationManager {
                     date: oneHourBeforeStartReminde,
                     identifier: "oneHourBeforeStartReminde"
                 )
-        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+        //print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         } else {
             scheduleNotification(
                 title: "Час вийшов!",
@@ -100,7 +100,7 @@ class NotificationManager {
                 date: oneHourBeforeStartReminde,
                 identifier: "oneHourBeforeStartRemindeRest"
             )
-            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+           // print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         }
         }
     }
@@ -122,7 +122,7 @@ class NotificationManager {
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         UNUserNotificationCenter.current().add(request) { error in
             if let error = error {
-                print("Ошибка при создании уведомления: \(error.localizedDescription)")
+                //print("Ошибка при создании уведомления: \(error.localizedDescription)")
             }
         }
     }

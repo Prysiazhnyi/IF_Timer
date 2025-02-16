@@ -14,7 +14,7 @@ class SaveData {
     static let shared = SaveData()  // Singleton
 
     func loadSaveDate() {
-        print("Загрузка данных ..........................")
+        print("Загрузка данных UserDefaults ..........................")
         DispatchQueue.global(qos: .userInitiated).async { [weak self] in
             guard let self = self, let viewController = self.viewController else {
                 //print("Error: self or viewController is nil")
@@ -118,7 +118,7 @@ class SaveData {
         UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
         UserDefaults.standard.set(viewController.vcSelectedButtonTag, forKey: "vcSelectedButtonTag")
         
-        print("Сохранение данных !!!!!!!!!!!!!!")
+        print("Сохранение данных UserDefaults !!!!!!!!!!!!!!")
        // print("Сохранениие startDate - \(viewController.startDate)")
        // print("сохранение данных в UserDefaults, isStarvation - \(viewController.isStarvation), timeResting - \(viewController.timeResting / 3600), timeFasting - \(viewController.timeFasting / 3600), timeWait - \(viewController.timeWait / 3600), selectedMyPlan - \(viewController.selectedPlan.selectedMyPlan), startDate - \(viewController.startDate), endDate - \(viewController.endDate) ")
     }

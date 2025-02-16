@@ -105,7 +105,7 @@ class CustomAlertViewController: UIViewController {
     }
 
     @objc private func yesButtonTapped() {
-        print("Нажата кнопка ТАК")
+        //print("Нажата кнопка ТАК")
         
         dismissAlert()
         self.dismiss(animated: true, completion: nil)
@@ -129,7 +129,7 @@ class CustomAlertViewController: UIViewController {
     }
 
     @objc private func noButtonTapped() {
-        print("Нажата кнопка НІ")
+       // print("Нажата кнопка НІ")
         dismissAlert()
         // Если нужно просто закрыть алерт, то достаточно его убрать
         self.dismiss(animated: true, completion: nil)
