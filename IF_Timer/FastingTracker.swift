@@ -17,13 +17,19 @@ struct FastingDataEntry: Codable {
 class FastingTracker {
     private var fastingPeriods: [(start: Date, finish: Date)] = []
     private let calendar = Calendar(identifier: .gregorian)
-    private(set) var fastingData: [FastingDataEntry] = []
+    var fastingData: [FastingDataEntry] = []
+    var ifFirstLaunch: Bool = true // для загрузки данных с Faribase
     
     // Ключ для сохранения данных в UserDefaults
     private let fastingDataKey = "fastingDataKey"
     
     init() {
-        loadFastingData()
+        if ifFirstLaunch {
+           // FirebaseSaveData.shared.loadFastingDataFromCloud(into: self)
+            ifFirstLaunch = false
+        } else {
+            loadFastingData()
+            }
         UserDefaults.standard.setValue(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
     }
     
@@ -31,6 +37,10 @@ class FastingTracker {
         fastingPeriods.append((start, finish))
         updateChartData()
         saveFastingData()  // Сохраняем данные после изменения
+        print("Данные FastingTracker для сохранения в Firebase: \(fastingData)")
+        FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)
+
+        FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)  // Сохраняем в Firebase
     }
     
     private func updateChartData() {
@@ -101,6 +111,7 @@ class FastingTracker {
 
     // Сохранение данных в UserDefaults
     private func saveFastingData() {
+        UserDefaults.standard.set(ifFirstLaunch, forKey: "ifFirstLaunch")
         let encodedData = try? JSONEncoder().encode(fastingData)
         UserDefaults.standard.set(encodedData, forKey: fastingDataKey)
     }
@@ -110,6 +121,9 @@ class FastingTracker {
         if let savedData = UserDefaults.standard.data(forKey: fastingDataKey),
            let decodedData = try? JSONDecoder().decode([FastingDataEntry].self, from: savedData) {
             fastingData = decodedData
+        }
+        if let tempIfFirstLaunch = UserDefaults.standard.object(forKey: "ifFirstLaunch") as? Bool {
+            self.ifFirstLaunch = tempIfFirstLaunch
         }
     }
     
