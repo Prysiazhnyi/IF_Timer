@@ -38,7 +38,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneWillEnterForeground(_ scene: UIScene) {
         print("Приложение возвращается в передний план")
+        UIApplication.shared.applicationIconBadgeNumber = 0
         
+        if let windowScene = scene as? UIWindowScene {
+                let keyWindow = windowScene.windows.first { $0.isKeyWindow }
+                
+                if let navController = keyWindow?.rootViewController as? UINavigationController,
+                   let viewController = navController.visibleViewController as? ViewController {
+                    viewController.shouldHideRemindeButton = false
+                } else if let viewController = keyWindow?.rootViewController as? ViewController {
+                    viewController.shouldHideRemindeButton = false
+                }
+            }
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {

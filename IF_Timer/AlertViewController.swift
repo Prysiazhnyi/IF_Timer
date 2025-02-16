@@ -103,26 +103,6 @@ class CustomAlertViewController: UIViewController {
         ])
         
     }
-    
-//    @objc private func yesButtonTapped() {
-//        print("Нажата кнопка ТАК")
-//        delegate?.didTapYesButton()
-//        dismissAlert()
-//        // Если нужно просто закрыть алерт, то достаточно его убрать
-//        self.dismiss(animated: true, completion: nil)
-//        
-//        // Инициализируем ResultViewController из Storyboard
-//           let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//           if let resultVC = storyboard.instantiateViewController(withIdentifier: "ResultViewController") as? ResultViewController {
-//        //let resultVC = ResultViewController(viewController: parentviewController!)
-//               resultVC.modalPresentationStyle = .overFullScreen
-//               resultVC.viewController = parentviewController!
-//               resultVC.timeForStartButton = parentviewController?.tempStartDateForResult
-//               resultVC.timeForFinishButton = parentviewController?.tempFinishDateForResult
-//               parentviewController?.present(resultVC, animated: true, completion: nil)
-//           }
-//        
-//    }
 
     @objc private func yesButtonTapped() {
         print("Нажата кнопка ТАК")
@@ -160,4 +140,60 @@ class CustomAlertViewController: UIViewController {
             overlayView.removeFromSuperview()
         }
     }
+    
+//MARK: CustomerAllert для отложенного напоминания
+    
+    static func showAlert(on viewController: UIViewController, message: String) {
+            // Создаем контейнер для аллерта
+            let alertView = UIView()
+            let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
+            alertView.backgroundColor = backgroundTab.withAlphaComponent(0.9)
+            alertView.layer.cornerRadius = 10
+            alertView.translatesAutoresizingMaskIntoConstraints = false
+            
+            // Создаем метку с текстом
+            let messageLabel = UILabel()
+            messageLabel.text = message
+            messageLabel.textColor = .black
+            messageLabel.font = UIFont.systemFont(ofSize: 25)
+            messageLabel.textAlignment = .center
+            messageLabel.numberOfLines = 0
+            messageLabel.translatesAutoresizingMaskIntoConstraints = false
+            
+            alertView.addSubview(messageLabel)
+//            viewController.view.addSubview(alertView)
+            
+        // Добавляем алерт на главное окно, а не на текущий viewController
+                guard let window = viewController.view.window else { return }
+                window.addSubview(alertView)
+        
+        // Размещаем алерт в центре экрана
+                NSLayoutConstraint.activate([
+                    alertView.centerYAnchor.constraint(equalTo: window.centerYAnchor, constant: -50),
+                    alertView.centerXAnchor.constraint(equalTo: window.centerXAnchor),
+                    alertView.widthAnchor.constraint(equalTo: window.widthAnchor, multiplier: 0.8),
+                    alertView.heightAnchor.constraint(equalToConstant: 80),  // 150 — это фиксированная высота
+
+                    
+                    messageLabel.topAnchor.constraint(equalTo: alertView.topAnchor, constant: 10),
+                    messageLabel.bottomAnchor.constraint(equalTo: alertView.bottomAnchor, constant: -10),
+                    messageLabel.leadingAnchor.constraint(equalTo: alertView.leadingAnchor, constant: 10),
+                    messageLabel.trailingAnchor.constraint(equalTo: alertView.trailingAnchor, constant: -10)
+                ])
+            
+            // Анимация появления
+            alertView.alpha = 0
+            UIView.animate(withDuration: 0.3) {
+                alertView.alpha = 1
+            }
+            
+            // Через 3 секунды скрываем алерт
+            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                UIView.animate(withDuration: 0.3, animations: {
+                    alertView.alpha = 0
+                }) { _ in
+                    alertView.removeFromSuperview()
+                }
+            }
+        }
 }

@@ -29,7 +29,7 @@ class NotificationManager {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests() // Удаляем старые уведомления
         
-        print("Запланированы новые пуш-уведомления")
+        print("Запланирован новый пуш-уведомления")
         
         if !isStarvation {
             // Уведомление за 1 час до начала голодания
@@ -92,7 +92,7 @@ class NotificationManager {
                     date: oneHourBeforeStartReminde,
                     identifier: "oneHourBeforeStartReminde"
                 )
-        //print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+        print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ГОЛОДАНИИ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         } else {
             scheduleNotification(
                 title: "Час вийшов!",
@@ -100,7 +100,7 @@ class NotificationManager {
                 date: oneHourBeforeStartReminde,
                 identifier: "oneHourBeforeStartRemindeRest"
             )
-           // print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
+            print("Запланирован новый пуш-уведомления по тапу Напомнить позже ПРИ ОТДЫХЕ, oneHourBeforeStart - \(oneHourBeforeStartReminde), remindeSecond - \(remindeSecond), isStarvation - \(isStarvation)")
         }
         }
     }

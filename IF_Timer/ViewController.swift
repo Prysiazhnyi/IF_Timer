@@ -39,11 +39,15 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBOutlet weak var remindeButton: UIButton!
     @IBOutlet weak var myProfilButton: UIButton!
     
+    var shouldHideRemindeButton = false // для скрытия кнопки Нагадати пізніше
     
     var isStarvation: Bool = false // это голодание или окно приема пищи
     var timeIsUp: Bool = false {// время вышло
         didSet {
-            setupRemindeButton()
+            print("shouldHideRemindeButton - \(shouldHideRemindeButton)")
+            if !shouldHideRemindeButton {
+                setupRemindeButton()
+                }
         }
     }
     var isFastingTimeExpired: Bool = false // вышло время приема пищ
@@ -123,13 +127,18 @@ class ViewController: UIViewController, CustomAlertDelegate {
         updateUI()
         
         NotificationManager.shared.requestAuthorization()
-        UIApplication.shared.applicationIconBadgeNumber = 0
+        //UIApplication.shared.applicationIconBadgeNumber = 0
         
+        shouldHideRemindeButton = false
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         print("viewWillAppear triggered")
+        
+        if shouldHideRemindeButton {
+                remindeButton.isHidden = true
+            }
         SaveData.shared.loadSaveDate() // загрузка данных
         
        // FirebaseSaveData.shared.saveDataToCloud(from: self)
@@ -198,6 +207,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         // Обновляем текст метки
         planButton.setTitle(selectedPlan.selectedMyPlan, for: .normal)
         setupIfFastingTimeExpired()
+        
+        //Запланирование Push-сообщение
+        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
         
         SaveData.shared.saveDateUserDefaults()
         
@@ -310,6 +322,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
         print("Нажата кнопка напоминания позже")
         minutesPickerManager = MinutesPickerManager(parentViewController: self, isStarvation: self.isStarvation)
         minutesPickerManager.showPicker { selectedSeconds in
+            DispatchQueue.main.async {
+                self.remindeButton.isHidden = true
+            }
             print("Выбрано время: \(selectedSeconds) секунд")
         }
         
@@ -374,6 +389,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
             setupIfFastingTimeExpired()
             setupButtonsStart()
         }
+        //Запланирование Push-сообщение
+        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -409,6 +426,8 @@ class ViewController: UIViewController, CustomAlertDelegate {
         } else {
             didTapYesButton()
         }
+        //Запланирование Push-сообщение
+        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
     }
     
     func didTapYesButton() {

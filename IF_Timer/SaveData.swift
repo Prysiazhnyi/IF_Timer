@@ -100,8 +100,8 @@ class SaveData {
             print("Error: viewController is nil")
             return
         }
-        //Запланирование Push-сообщение
-        NotificationManager.shared.scheduleNotifications(finishDate: viewController.finishDate, endDate: viewController.endDate, isStarvation: viewController.isStarvation)
+      //Запланирование Push-сообщение
+//        NotificationManager.shared.scheduleNotifications(finishDate: viewController.finishDate, endDate: viewController.endDate, isStarvation: viewController.isStarvation)
         
         UserDefaults.standard.set(viewController.startDate, forKey: "startDate")
         UserDefaults.standard.set(viewController.selectedPlan.rawValue, forKey: "selectedMyPlan")

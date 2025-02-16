@@ -115,6 +115,14 @@ class MinutesPickerManager: NSObject {
         completion?(selectedMinutes * 60) // Преобразуем в секунды
         let selectSecond = selectedMinutes * 60
         NotificationManager.shared.scheduleNotificationReminde(selectSecond, isStarvation)
+        
+        if let parentVC = parentViewController as? ViewController {
+            parentVC.shouldHideRemindeButton = true
+        }
+        
+        // Показать кастомный алерт
+        CustomAlertViewController.showAlert(on: parentViewController!, message: "Час відкладено на \(selectedMinutes) хв.")
+        
         dismissPicker()
     }
 
