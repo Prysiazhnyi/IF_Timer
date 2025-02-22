@@ -42,10 +42,8 @@ class FastingTracker {
         var result: [String: CGFloat] = [:]
         let dateFormatter = DateFormatter()
         
-        // Устанавливаем формат для полной даты (для сортировки)
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        // Получаем все даты, которые необходимо обработать
+
         for (start, finish) in fastingPeriods {
             var current = start
             let end = finish
@@ -56,33 +54,27 @@ class FastingTracker {
 
                 let hours = CGFloat(periodEnd.timeIntervalSince(current) / 3600)
                 let dateKey = dateFormatter.string(from: current)
-                
-                // Добавляем только дни с данными
+
                 result[dateKey, default: 0] += hours
-                result[dateKey] = min(result[dateKey] ?? 0, 24) // Ограничение до 24 часов
+                result[dateKey] = min(result[dateKey] ?? 0, 24) // Ограничиваем до 24 часов
                 current = periodEnd
             }
         }
 
-        // Обновляем данные в fastingData
-        for date in result.keys {
-            if let index = fastingData.firstIndex(where: { $0.date == date }) {
-                // Если дата уже есть в fastingData, добавляем часы
-                fastingData[index].hours += result[date] ?? 0.0
+        for (date, hours) in result {
+            if let index = fastingData.firstIndex(where: { $0.fullDate == date }) {
+                fastingData[index].hours += hours
             } else {
-                // Если дата не найдена, добавляем новый элемент
-                let dateObj = result[date] ?? 0.0
-                // Используем dateFormatter для форматирования даты в "день месяц" (например, "25 С")
-                let dayAndMonth = formatToDayAndMonthFirstLetter(from: dateFormatter.date(from: date)!)
-                fastingData.append(FastingDataEntry(date: dayAndMonth, hours: dateObj, fullDate: date))
+                let formattedDate = formatToDayAndMonthFirstLetter(from: dateFormatter.date(from: date)!)
+                fastingData.append(FastingDataEntry(date: formattedDate, hours: hours, fullDate: date))
             }
         }
 
-        // Сортируем данные по полной дате (сравниваем строковые представления дат)
         fastingData.sort { $0.fullDate < $1.fullDate }
 
-       // print("After appending, fastingData: \(fastingData)")
+        print("After appending, fastingData: \(fastingData)")
     }
+
 
     // Метод для форматирования даты в формат "день первая буква месяца" (например, "25 С")
     private func formatToDayAndMonthFirstLetter(from date: Date) -> String {

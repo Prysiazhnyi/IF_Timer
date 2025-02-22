@@ -78,21 +78,34 @@ class ResultViewController: UIViewController {
         
         //chartView.backgroundColor = .red
         
+        //thirdContainerView.isHidden = fastingTracker.fastingData.isEmpty ? true : false
         
-        thirdContainerView.isHidden = fastingTracker.fastingData.isEmpty ? true : false
-        
-        thirdContainerView.addSubview(chartView)
-        chartView.translatesAutoresizingMaskIntoConstraints = false
-        thirdContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
-        
-        
-        NSLayoutConstraint.activate([
-            chartView.leadingAnchor.constraint(equalTo: thirdContainerView.leadingAnchor, constant: 10),
-            chartView.trailingAnchor.constraint(equalTo: thirdContainerView.trailingAnchor, constant: -10),
-            chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 10),
-            chartView.bottomAnchor.constraint(equalTo: thirdContainerView.bottomAnchor, constant: -10)
-        ])
-        
+        if fastingTracker.fastingData.isEmpty {
+            let emptyImageView = UIImageView(image: UIImage(named: "AppIconFasting"))
+            emptyImageView.contentMode = .scaleAspectFit
+            emptyImageView.translatesAutoresizingMaskIntoConstraints = false
+            thirdContainerView.addSubview(emptyImageView)
+            thirdContainerView.backgroundColor = UIColor(red: 0.89, green: 0.94, blue: 0.91, alpha: 1.0)
+            
+            NSLayoutConstraint.activate([
+                emptyImageView.centerXAnchor.constraint(equalTo: thirdContainerView.centerXAnchor),
+                emptyImageView.centerYAnchor.constraint(equalTo: thirdContainerView.centerYAnchor),
+                emptyImageView.widthAnchor.constraint(equalTo: thirdContainerView.heightAnchor, multiplier: 1),
+                emptyImageView.heightAnchor.constraint(equalTo: thirdContainerView.heightAnchor, multiplier: 0.99)
+            ])
+        } else {
+            thirdContainerView.addSubview(chartView)
+            chartView.translatesAutoresizingMaskIntoConstraints = false
+            thirdContainerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
+            
+            
+            NSLayoutConstraint.activate([
+                chartView.leadingAnchor.constraint(equalTo: thirdContainerView.leadingAnchor, constant: 10),
+                chartView.trailingAnchor.constraint(equalTo: thirdContainerView.trailingAnchor, constant: -10),
+                chartView.topAnchor.constraint(equalTo: thirdContainerView.topAnchor, constant: 10),
+                chartView.bottomAnchor.constraint(equalTo: thirdContainerView.bottomAnchor, constant: -10)
+            ])
+        }
     }
     
     func setupTimeMainLabel() {
@@ -130,9 +143,9 @@ class ResultViewController: UIViewController {
         if let start = timeForStartButton, let finish = timeForFinishButton {
             setButtonTitle.setButtonTitle(for: startMainContainerButton, date: start)
             setButtonTitle.setButtonTitle(for: finishMainContainerButton, date: finish)
-           // print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
+            // print("timeForStartButton - \(start), timeForFinishButton - \(finish)")
         } else {
-           // print("Даты не инициализированы")
+            // print("Даты не инициализированы")
         }
         
     }
@@ -205,14 +218,14 @@ class ResultViewController: UIViewController {
         viewController?.startDate = timeForFinishButton!
         SaveData.shared.saveDateUserDefaults()
         fastingTracker.addFastingPeriod(start: timeForStartButton!, finish: timeForFinishButton!)
-       // dismiss(animated: true, completion: nil)
+        // dismiss(animated: true, completion: nil)
         dismiss(animated: true) { [weak self] in
-                self?.viewController?.viewWillAppear(true) // Принудительный вызов
-            }
+            self?.viewController?.viewWillAppear(true) // Принудительный вызов
+        }
     }
     
     @IBAction func cancellButtonTapped(_ sender: UIButton) {
-       // print("Тап на кнопку отмена")
+        // print("Тап на кнопку отмена")
         
         //let alertviewController = CustomAlertViewController()
         // Устанавливаем делегат перед презентацией
@@ -239,13 +252,13 @@ class ResultViewController: UIViewController {
     }
     
     @IBAction func finishMainContainerButtonTapped(_ sender: UIButton) {
-       // print("Тап на кнопку finishMainContainerButton")
+        // print("Тап на кнопку finishMainContainerButton")
         
         guard let timeForFinishButton = timeForFinishButton else { return }
         datePickerManager.showDatePicker(mode: .dateAndTime, startFromDate: timeForFinishButton) { [self] selectedDate in
             setButtonTitle.setButtonTitle(for: sender, date: selectedDate)
             self.timeForFinishButton = selectedDate
-            self.setupTimeMainLabel() 
+            self.setupTimeMainLabel()
         }
     }
 }
