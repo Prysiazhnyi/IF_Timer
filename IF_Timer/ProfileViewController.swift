@@ -9,6 +9,9 @@ import UIKit
 
 class ProfileViewController: UIViewController {
     
+    let fastingTracker = FastingTracker()
+    let chartView = FastingChartView()
+    
     @IBOutlet weak var viewTab: UIView!
     
     @IBOutlet weak var achievementsView: UIView!
@@ -53,6 +56,8 @@ class ProfileViewController: UIViewController {
         
         setupView()
         setupSettingsButton()
+        
+        setupFastingTrackerView()
     }
     
     func setupView() {
@@ -91,6 +96,36 @@ class ProfileViewController: UIViewController {
         
     }
     
+    func setupFastingTrackerView() {
+        chartView.data = fastingTracker.getFastingData().map { ($0.date, $0.hours) }
+        
+        if fastingTracker.fastingData.isEmpty {
+            let emptyImageView = UIImageView(image: UIImage(named: "AppIconFasting"))
+            emptyImageView.contentMode = .scaleAspectFit
+            emptyImageView.translatesAutoresizingMaskIntoConstraints = false
+            fastingTrackerView.addSubview(emptyImageView)
+            fastingTrackerView.backgroundColor = UIColor(red: 0.89, green: 0.94, blue: 0.91, alpha: 1.0)
+            
+            NSLayoutConstraint.activate([
+                emptyImageView.centerXAnchor.constraint(equalTo: fastingTrackerView.centerXAnchor),
+                emptyImageView.centerYAnchor.constraint(equalTo: fastingTrackerView.centerYAnchor),
+                emptyImageView.widthAnchor.constraint(equalTo: fastingTrackerView.heightAnchor, multiplier: 1),
+                emptyImageView.heightAnchor.constraint(equalTo: fastingTrackerView.heightAnchor, multiplier: 0.99)
+            ])
+        } else {
+            fastingTrackerView.addSubview(chartView)
+            chartView.translatesAutoresizingMaskIntoConstraints = false
+            fastingTrackerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
+            
+            
+            NSLayoutConstraint.activate([
+                chartView.leadingAnchor.constraint(equalTo: fastingTrackerView.leadingAnchor, constant: 10),
+                chartView.trailingAnchor.constraint(equalTo: fastingTrackerView.trailingAnchor, constant: -10),
+                chartView.topAnchor.constraint(equalTo: fastingTrackerView.topAnchor, constant: 10),
+                chartView.bottomAnchor.constraint(equalTo: fastingTrackerView.bottomAnchor, constant: -10)
+            ])
+        }
+    }
     
     
     
