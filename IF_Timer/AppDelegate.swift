@@ -71,6 +71,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     print("✅ Данные найдены в Firebase. isFirstStartApp = false")
                 } else {
                     userDefaults.set(true, forKey: "isFirstStartApp") // Данных нет → первый запуск
+                    userDefaults.set(Date(), forKey: "firstDateUseApp") // Данных нет → первый запуск
                     print("❌ Нет данных в Firebase. isFirstStartApp = true")
                 }
 

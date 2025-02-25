@@ -39,6 +39,7 @@ class ViewController: UIViewController, CustomAlertDelegate {
     @IBOutlet weak var remindeButton: UIButton!
     @IBOutlet weak var myProfilButton: UIButton!
     
+    var firstDateUseApp = Date()
     var shouldHideRemindeButton = false // для скрытия кнопки Нагадати пізніше
     
     var isStarvation: Bool = false // это голодание или окно приема пищи

@@ -89,6 +89,10 @@ class SaveData {
                 viewController.vcSelectedButtonTag = tempVCSelectedButtonTag
             }
             
+            if let tempFirstDateUseApp = UserDefaults.standard.object(forKey: "firstDateUseApp") as? Date {
+                viewController.firstDateUseApp = tempFirstDateUseApp
+            }
+            
             DispatchQueue.main.async {
                            viewController.updateUI() // Обновляем UI на главном потоке
                        }
@@ -117,6 +121,8 @@ class SaveData {
         UserDefaults.standard.set(viewController.isStarvationTimeExpired, forKey: "isStarvationTimeExpired")
         UserDefaults.standard.set(viewController.timeIsUp, forKey: "timeIsUp")
         UserDefaults.standard.set(viewController.vcSelectedButtonTag, forKey: "vcSelectedButtonTag")
+        UserDefaults.standard.set(viewController.firstDateUseApp, forKey: "firstDateUseApp")
+        
         
         print("Сохранение данных UserDefaults !!!!!!!!!!!!!!")
        // print("Сохранениие startDate - \(viewController.startDate)")

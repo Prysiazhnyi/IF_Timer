@@ -27,7 +27,8 @@ class FirebaseSaveData {
             "isFastingTimeExpired": viewController.isFastingTimeExpired,
             "isStarvationTimeExpired": viewController.isStarvationTimeExpired,
             "timeIsUp": viewController.timeIsUp,
-            "vcSelectedButtonTag": viewController.vcSelectedButtonTag
+            "vcSelectedButtonTag": viewController.vcSelectedButtonTag,
+            "firstDateUseApp": viewController.firstDateUseApp
         ]
 
         getUserDocument().setData(userData, merge: true) { error in
@@ -136,6 +137,10 @@ class FirebaseSaveData {
                     } else {
                         print("❌ Не удалось закодировать данные о голодании fastingDataKey.")
                     }
+                }
+                
+                if let firstDateUseApp = data["firstDateUseApp"] as? TimeInterval {
+                    UserDefaults.standard.set(Date(timeIntervalSince1970: firstDateUseApp), forKey: "firstDateUseApp")
                 }
                 
                 print("Данные успешно загружены и сохранены в UserDefaults")
