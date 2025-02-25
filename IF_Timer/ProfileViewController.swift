@@ -8,22 +8,36 @@
 import UIKit
 
 class ProfileViewController: UIViewController {
-
+    
+    let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        
+        self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
+        
+        title = "Профіль"
+        self.view.backgroundColor = backgroundTab
+        
+        let settingsButton = UIBarButtonItem(
+            image: UIImage(systemName: "gearshape.fill")?.withRenderingMode(.alwaysOriginal), // SF Symbol с заливкой
+            style: .plain,
+            target: self,
+            action: #selector(openSettings)
+        )
+        // Устанавливаем оранжевый цвет
+        settingsButton.tintColor = .orange
+        navigationItem.rightBarButtonItem = settingsButton
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    
+    
+    
+    
+    @objc func openSettings() {
+        //        let settingsVC = SettingsViewController() // Замените на ваш класс настроек
+        //        navigationController?.pushViewController(settingsVC, animated: true)
     }
-    */
-
+    
 }

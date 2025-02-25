@@ -491,6 +491,13 @@ class ViewController: UIViewController, CustomAlertDelegate {
         }
     }
     
+    @IBAction func myProfilButton(_ sender: Any) {
+       
+            let profileVC = ProfileViewController() // Замените на ваш контроллер
+            navigationController?.pushViewController(profileVC, animated: true)
+        
+    }
+    
 }
 
 

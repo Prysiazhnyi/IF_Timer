@@ -188,6 +188,9 @@
                                             <fontDescription key="titleFontDescription" type="system" weight="medium" pointSize="17"/>
                                             <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
+                                        <connections>
+                                            <action selector="myProfilButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bVV-xH-Fhj"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                             </stackView>
@@ -703,10 +706,10 @@
             </objects>
             <point key="canvasLocation" x="326" y="4"/>
         </scene>
-        <!--Select Plan View-->
+        <!--Profile View Controller-->
         <scene sceneID="eGx-S4-08I">
             <objects>
-                <viewController id="L30-7o-H00" customClass="SelectPlanView" customModule="IF_Timer" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="L30-7o-H00" customClass="ProfileViewController" customModule="IF_Timer" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eLC-rL-UXA">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="1280"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -738,9 +741,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="myPlanButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="nNa-08-1GN"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -762,9 +762,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="basicButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="c3T-RO-IdE"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -786,9 +783,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="startButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="mhZ-mt-ezb"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -810,9 +804,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="startPlusButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="DDg-si-efo"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -834,9 +825,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="strongButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="wqu-lU-yhX"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -858,9 +846,6 @@
                                                                 </constraints>
                                                                 <state key="normal" title="Button"/>
                                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
-                                                                <connections>
-                                                                    <action selector="strongPlusButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="CcI-5U-NtP"/>
-                                                                </connections>
                                                             </button>
                                                         </subviews>
                                                     </stackView>
@@ -897,21 +882,6 @@
                     </view>
                     <navigationItem key="navigationItem" id="miB-Kp-zPh"/>
                     <size key="freeformSize" width="393" height="1280"/>
-                    <connections>
-                        <outlet property="basicButton" destination="bux-MZ-8ph" id="AtO-eR-OD4"/>
-                        <outlet property="basicLabel" destination="qJr-4Y-TZZ" id="gev-0y-tJG"/>
-                        <outlet property="myPlanButton" destination="WKC-Tw-WQu" id="Iq2-id-R1M"/>
-                        <outlet property="myPlanLabel" destination="kAO-wu-aw6" id="OKT-GY-jAE"/>
-                        <outlet property="startButton" destination="CcQ-LN-LGe" id="7wv-0L-iVm"/>
-                        <outlet property="startLabel" destination="Ytc-Nr-wSw" id="JL6-XG-QmV"/>
-                        <outlet property="startPlusButton" destination="ubT-az-eve" id="MEi-zt-izG"/>
-                        <outlet property="startPlusLabel" destination="mvZ-38-ik8" id="fmr-2B-fSx"/>
-                        <outlet property="strongButton" destination="vPd-sL-mL1" id="QO6-S9-BXp"/>
-                        <outlet property="strongLabel" destination="v9x-XW-V8R" id="fl2-T3-puW"/>
-                        <outlet property="strongPlusButton" destination="jdx-dZ-0Da" id="rFU-J4-Drs"/>
-                        <outlet property="strongPlusLabel" destination="PNh-UC-FHI" id="pZS-tA-qP4"/>
-                        <outlet property="viewTab" destination="fxa-VO-Dqp" id="FMj-H3-AWK"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UUX-ub-euH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
