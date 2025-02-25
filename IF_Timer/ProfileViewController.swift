@@ -38,6 +38,8 @@ class ProfileViewController: UIViewController {
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
+    var profileFastingData: [FastingDataEntry] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -70,7 +72,7 @@ class ProfileViewController: UIViewController {
         
         setupView()
         setupSettingsButton()
-        
+        setupLabelsAchievementsView()
         setupFastingTrackerView()
     }
     
@@ -107,6 +109,55 @@ class ProfileViewController: UIViewController {
         // Настроим отступы между изображением и текстом
         settingsButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)  // отступ для изображения
         settingsButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)  // отступ для текста
+        
+    }
+    
+    func setupLabelsAchievementsView() {
+        
+        mainAchievementLabel.text = "Ваші досягнення"
+        
+        firstLabelAchievementLabel.text = "Днів у додутку"
+        let tempfirstDateUseApp = UserDefaults.standard.object(forKey: "firstDateUseApp") as? Date
+        let firstDateUseApp = tempfirstDateUseApp ?? Date()
+        let currentDate = Date()
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.day], from: firstDateUseApp, to: currentDate)
+        firstValueAchievementLabel.text = "\(components.day ?? 0)"
+        
+        secondLabelAchievementLabel.text = "Загальна кількість годин голодування"
+        if let savedData = UserDefaults.standard.data(forKey: "fastingDataKey"),
+           let decodedData = try? JSONDecoder().decode([FastingDataEntry].self, from: savedData) {
+            profileFastingData = decodedData
+        }
+        var totalHours: CGFloat = 0
+        for entry in profileFastingData {
+            totalHours += entry.hours
+        }
+        // Округляем до целого числа
+        let roundedTotalHours = Int(round(totalHours))
+        secondValueAchievementLabel.text = "\(roundedTotalHours)"
+        
+        thirdLabelAchievementLabel.text = "Поточний план голодування"
+        var valueString: String = ""
+        if let rawValue = UserDefaults.standard.string(forKey: "selectedMyPlan") {
+            valueString = rawValue
+        }
+        thirdValueAchievementLabel.text = valueString
+        
+        fourthLabelAchievementLabel.text = "Днів, коли ви голодували"
+        var uniqueDaysSet = Set<String>()  // Множество для уникальных дат
+        for entry in profileFastingData {
+            if entry.hours > 0 {
+                uniqueDaysSet.insert(entry.date)  // Добавляем дату в множество
+            }
+        }
+        fourthValueAchievementLabel.text = "\(uniqueDaysSet.count)"  // Количество уникальных дней
+        
+        fifthLabelAchievementLabel.text = "Максимальна тривалість голодування"
+        fifthValueAchievementLabel
+        
+        sixthLabelAchievementLabel.text = "Мінімальна тривалість голодування"
+        sixthValueAchievementLabel
         
     }
     

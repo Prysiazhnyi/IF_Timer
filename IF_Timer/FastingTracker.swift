@@ -33,7 +33,6 @@ class FastingTracker {
         updateChartData()
         saveFastingData()  // Сохраняем данные после изменения
        // print("Данные FastingTracker для сохранения в Firebase: \(fastingData)")
-        FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)
 
         FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)  // Сохраняем в Firebase
     }
