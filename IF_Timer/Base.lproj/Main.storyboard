@@ -1013,9 +1013,22 @@
                     <connections>
                         <outlet property="achievementsView" destination="epo-ds-ydA" id="ovl-nb-AeY"/>
                         <outlet property="fastingTrackerView" destination="HVp-Wj-P1L" id="Ni5-Ji-8wD"/>
+                        <outlet property="fifthLabelAchievementLabel" destination="hL1-Bt-yae" id="zzA-yw-DLi"/>
+                        <outlet property="fifthValueAchievementLabel" destination="V8b-WG-uOi" id="DDP-2h-xKS"/>
+                        <outlet property="firstLabelAchievementLabel" destination="nvR-G6-Wxa" id="9KI-9n-Jvg"/>
+                        <outlet property="firstValueAchievementLabel" destination="QiE-Za-4aw" id="Svp-Mh-yk4"/>
+                        <outlet property="fourthLabelAchievementLabel" destination="AQk-x0-grJ" id="yPe-xt-wuy"/>
+                        <outlet property="fourthValueAchievementLabel" destination="hjB-ZZ-3hM" id="e4v-8J-wyX"/>
                         <outlet property="imtView" destination="qHx-cO-wCy" id="ZWJ-OV-6b6"/>
+                        <outlet property="mainAchievementLabel" destination="FhW-ck-kIA" id="oyf-5V-5IW"/>
+                        <outlet property="secondLabelAchievementLabel" destination="YFV-ye-vPG" id="WLc-sM-VtV"/>
+                        <outlet property="secondValueAchievementLabel" destination="WLd-9s-0x7" id="xh1-sM-Ghx"/>
                         <outlet property="settingsButton" destination="mt1-hJ-9f3" id="H4Q-MZ-dLW"/>
+                        <outlet property="sixthLabelAchievementLabel" destination="kNg-oX-J84" id="1oO-i3-Ijo"/>
+                        <outlet property="sixthValueAchievementLabel" destination="ye6-6o-yx6" id="tZT-3e-phC"/>
                         <outlet property="statisticsFastingView" destination="1BB-te-F2C" id="uKu-WM-QoK"/>
+                        <outlet property="thirdLabelAchievementLabel" destination="Yfs-6G-UBy" id="1Zn-3S-2Ej"/>
+                        <outlet property="thirdValueAchievementLabel" destination="mxO-uU-eX2" id="2m3-8d-MFT"/>
                         <outlet property="viewTab" destination="fxa-VO-Dqp" id="nqc-o3-Am7"/>
                         <outlet property="weightView" destination="5xw-gb-rT6" id="P3a-IU-Itu"/>
                     </connections>

@@ -22,6 +22,20 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet weak var settingsButton: UIButton!
     
+    @IBOutlet weak var mainAchievementLabel: UILabel!
+    @IBOutlet weak var firstLabelAchievementLabel: UILabel!
+    @IBOutlet weak var firstValueAchievementLabel: UILabel!
+    @IBOutlet weak var secondLabelAchievementLabel: UILabel!
+    @IBOutlet weak var secondValueAchievementLabel: UILabel!
+    @IBOutlet weak var thirdLabelAchievementLabel: UILabel!
+    @IBOutlet weak var thirdValueAchievementLabel: UILabel!
+    @IBOutlet weak var fourthLabelAchievementLabel: UILabel!
+    @IBOutlet weak var fourthValueAchievementLabel: UILabel!
+    @IBOutlet weak var fifthLabelAchievementLabel: UILabel!
+    @IBOutlet weak var fifthValueAchievementLabel: UILabel!
+    @IBOutlet weak var sixthLabelAchievementLabel: UILabel!
+    @IBOutlet weak var sixthValueAchievementLabel: UILabel!
+    
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     override func viewDidLoad() {
