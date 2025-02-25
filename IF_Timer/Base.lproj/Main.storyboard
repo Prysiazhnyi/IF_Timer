@@ -722,9 +722,191 @@
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epo-ds-ydA">
                                                 <rect key="frame" x="26.666666666666657" y="20" width="340" height="200"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ваші досягнення" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FhW-ck-kIA">
+                                                        <rect key="frame" x="70" y="10" width="200" height="25"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="200" id="fE9-tR-dGo"/>
+                                                            <constraint firstAttribute="height" constant="25" id="rhE-MO-ffP"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Zbd-2Q-fKm">
+                                                        <rect key="frame" x="17.333333333333343" y="45" width="305" height="140"/>
+                                                        <subviews>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="pqz-p1-je8">
+                                                                <rect key="frame" x="0.0" y="0.0" width="305" height="65"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="cF2-FF-BqN">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nvR-G6-Wxa">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="45" id="doa-hH-mU7"/>
+                                                                                    <constraint firstAttribute="width" constant="85" id="fDk-Ki-q8V"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QiE-Za-4aw">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="CZJ-Tv-PQ3"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="VRN-Sm-tIC"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="T7R-DR-tqX">
+                                                                        <rect key="frame" x="110" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YFV-ye-vPG">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="7T6-nV-2SG"/>
+                                                                                    <constraint firstAttribute="height" constant="45" id="IQj-2Q-pMA"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WLd-9s-0x7">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="3Mh-WG-bqb"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="WGn-7d-vad"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="VIe-Re-5bU">
+                                                                        <rect key="frame" x="220" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yfs-6G-UBy">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="height" constant="45" id="1Id-Ds-US6"/>
+                                                                                    <constraint firstAttribute="width" constant="85" id="lXq-rK-Pud"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mxO-uU-eX2">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="Tjo-KQ-cUo"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="cJC-FU-QgZ"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                </subviews>
+                                                            </stackView>
+                                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="25" translatesAutoresizingMaskIntoConstraints="NO" id="1yI-KB-USh">
+                                                                <rect key="frame" x="0.0" y="75" width="305" height="65"/>
+                                                                <subviews>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="4h0-2R-Lgx">
+                                                                        <rect key="frame" x="0.0" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AQk-x0-grJ">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="WAj-To-5NR"/>
+                                                                                    <constraint firstAttribute="height" constant="45" id="jLA-Lv-lb1"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hjB-ZZ-3hM">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="COA-W9-hwh"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="UBF-4B-KRX"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Tav-iI-eXS">
+                                                                        <rect key="frame" x="110" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hL1-Bt-yae">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="TWn-LR-ltP"/>
+                                                                                    <constraint firstAttribute="height" constant="45" id="Zh9-as-gYu"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V8b-WG-uOi">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="J6l-GS-dKV"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="W6K-Zh-RTb"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="eLc-2c-plk">
+                                                                        <rect key="frame" x="220" y="0.0" width="85" height="65"/>
+                                                                        <subviews>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальна тривалість голодування" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kNg-oX-J84">
+                                                                                <rect key="frame" x="0.0" y="0.0" width="85" height="45"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="l1J-eo-WBQ"/>
+                                                                                    <constraint firstAttribute="height" constant="45" id="vVu-z8-do3"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                                <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="283" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ye6-6o-yx6">
+                                                                                <rect key="frame" x="0.0" y="45" width="85" height="20"/>
+                                                                                <constraints>
+                                                                                    <constraint firstAttribute="width" constant="85" id="VHv-b7-bKd"/>
+                                                                                    <constraint firstAttribute="height" constant="20" id="zQW-pm-jAt"/>
+                                                                                </constraints>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                                <nil key="textColor"/>
+                                                                                <nil key="highlightedColor"/>
+                                                                            </label>
+                                                                        </subviews>
+                                                                    </stackView>
+                                                                </subviews>
+                                                            </stackView>
+                                                        </subviews>
+                                                    </stackView>
+                                                </subviews>
                                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
+                                                    <constraint firstItem="Zbd-2Q-fKm" firstAttribute="centerX" secondItem="epo-ds-ydA" secondAttribute="centerX" id="429-Vq-jog"/>
                                                     <constraint firstAttribute="width" constant="340" id="54b-vl-woj"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Zbd-2Q-fKm" secondAttribute="bottom" constant="15" id="5aO-VQ-PjV"/>
+                                                    <constraint firstItem="Zbd-2Q-fKm" firstAttribute="top" secondItem="FhW-ck-kIA" secondAttribute="bottom" constant="10" id="Icl-t7-b1T"/>
+                                                    <constraint firstItem="FhW-ck-kIA" firstAttribute="centerX" secondItem="epo-ds-ydA" secondAttribute="centerX" id="OGg-uw-CB2"/>
+                                                    <constraint firstItem="FhW-ck-kIA" firstAttribute="top" secondItem="epo-ds-ydA" secondAttribute="top" constant="10" id="dPx-9f-OzS"/>
                                                     <constraint firstAttribute="height" constant="200" id="riI-5d-EZ9"/>
                                                 </constraints>
                                             </view>
