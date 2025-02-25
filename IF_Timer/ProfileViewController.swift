@@ -154,10 +154,24 @@ class ProfileViewController: UIViewController {
         fourthValueAchievementLabel.text = "\(uniqueDaysSet.count)"  // Количество уникальных дней
         
         fifthLabelAchievementLabel.text = "Максимальна тривалість голодування"
-        fifthValueAchievementLabel
+        // Массив с часами голодания
+        let hoursArray = profileFastingData.map { $0.hours }
+        // Находим максимальные часы
+        if let maxHours = hoursArray.max() {
+            fifthValueAchievementLabel.text = "\(Int(maxHours))"
+        } else {
+            fifthValueAchievementLabel.text = "0"
+        }
         
         sixthLabelAchievementLabel.text = "Мінімальна тривалість голодування"
-        sixthValueAchievementLabel
+        // Массив с часами голодания
+        //let hoursArray = profileFastingData.map { $0.hours }
+        // Находим минимальные часы
+        if let minHours = hoursArray.min() {
+            sixthValueAchievementLabel.text = "\(Int(minHours))"
+        } else {
+            sixthValueAchievementLabel.text = "0"
+        }
         
     }
     

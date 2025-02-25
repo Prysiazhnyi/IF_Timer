@@ -67,6 +67,28 @@ class FirebaseSaveData {
         }
     }
     
+    // Метод для сохранения данных о голодании в Firebase
+    func saveFastingDataToCloud(fastingDataCycle: [FastingDataCycle]) {
+        let userData: [String: Any] = [
+            "fastingDataCycle": fastingDataCycle.map { entry in
+                [
+                    "startDate": entry.startDate,
+                    "finishDate": entry.finishDate,
+                    "hoursFasting": entry.hoursFasting
+                ]
+            }
+        ]
+
+        getUserDocument().setData(userData, merge: true) { error in
+            if let error = error {
+                print("Ошибка сохранения данных для FastingTracker в Firebase: \(error.localizedDescription)")
+            } else {
+                print("✅ Данные о голодании для FastingTracker успешно сохранены в Firebase!")
+                print("Сохранение userData ( FastingTracker ) в Firebase: \(userData)")
+            }
+        }
+    }
+    
 
 //MARK:    // ✅ Загрузка данных
     
@@ -133,6 +155,26 @@ class FirebaseSaveData {
                     // Сохраняем данные о голодании в UserDefaults
                     if let encodedData = try? JSONEncoder().encode(fastingDataEntries) {
                         UserDefaults.standard.set(encodedData, forKey: "fastingDataKey")
+                        print("✅ Данные fastingDataKey о голодании успешно сохранены в UserDefaults.")
+                    } else {
+                        print("❌ Не удалось закодировать данные о голодании fastingDataKey.")
+                    }
+                }
+                /////////////////
+                if let fastingDataCycleArray = data["fastingDataCycle"] as? [[String: Any]] {
+                    
+                    var fastingDataCycleEntries: [FastingDataCycle] = []
+                    for fastingDataDict in fastingDataCycleArray {
+                        if let startDate = fastingDataDict["startDate"] as? String,
+                           let finishDate = fastingDataDict["finishDate"] as? String,
+                           let hoursFasting = fastingDataDict["hoursFasting"] as? CGFloat {
+                            let entry = FastingDataCycle(startDate: startDate, finishDate: finishDate, hoursFasting: hoursFasting)
+                            fastingDataCycleEntries.append(entry)
+                        }
+                    }
+                    // Сохраняем данные о голодании в UserDefaults
+                    if let encodedData = try? JSONEncoder().encode(fastingDataCycleEntries) {
+                        UserDefaults.standard.set(encodedData, forKey: "fastingDataCycleKey")
                         print("✅ Данные fastingDataKey о голодании успешно сохранены в UserDefaults.")
                     } else {
                         print("❌ Не удалось закодировать данные о голодании fastingDataKey.")

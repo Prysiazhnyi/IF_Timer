@@ -12,16 +12,30 @@ struct FastingDataEntry: Codable {
     let date: String
     var hours: CGFloat
     let fullDate: String  // Сохраняем полную дату в формате "yyyy-MM-dd" для сортировки
+    //let totalFasting: String
+    
+}
+
+struct FastingDataCycle: Codable {
+   // let fullDate: String  // Сохраняем полную дату в формате "yyyy-MM-dd" для сортировки
+    let startDate: String
+    let finishDate: String
+    let hoursFasting: CGFloat
+    
+    //let totalFasting: String
+    
 }
 
 class FastingTracker {
     private var fastingPeriods: [(start: Date, finish: Date)] = []
     private let calendar = Calendar(identifier: .gregorian)
     var fastingData: [FastingDataEntry] = []
+    var fastingDataCycle: [FastingDataCycle] = []
     let fastingChartView = FastingChartView()
     
     // Ключ для сохранения данных в UserDefaults
     private let fastingDataKey = "fastingDataKey"
+    private var fastingDataCycleKey = "fastingDataCycleKey"
     
     init() {
         loadFastingData()
@@ -31,10 +45,23 @@ class FastingTracker {
     func addFastingPeriod(start: Date, finish: Date) {
         fastingPeriods.append((start, finish))
         updateChartData()
+       //print("start - \(start), finish - \(finish)")
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z" // или любой другой формат, который вам нужен
+        
+        let startDateString = dateFormatter.string(from: start)
+        let finishDateString = dateFormatter.string(from: finish)
+        // Получаем количество часов голодания между start и finish
+        let totalFasting = CGFloat(finish.timeIntervalSince(start) / 3600)
+        fastingDataCycle.append(FastingDataCycle(startDate: startDateString, finishDate: finishDateString, hoursFasting: totalFasting))
+        
+        //print("fastingDataCycle - \(fastingDataCycle)")
+        
         saveFastingData()  // Сохраняем данные после изменения
        // print("Данные FastingTracker для сохранения в Firebase: \(fastingData)")
 
         FirebaseSaveData.shared.saveFastingDataToCloud(fastingData: fastingData)  // Сохраняем в Firebase
+        FirebaseSaveData.shared.saveFastingDataToCloud(fastingDataCycle: fastingDataCycle)  // Сохраняем в Firebase
     }
     
     private func updateChartData() {
@@ -100,6 +127,9 @@ class FastingTracker {
        
         let encodedData = try? JSONEncoder().encode(fastingData)
         UserDefaults.standard.set(encodedData, forKey: fastingDataKey)
+        
+        let encodedDataCycle = try? JSONEncoder().encode(fastingDataCycle)
+        UserDefaults.standard.set(encodedDataCycle, forKey: fastingDataCycleKey)
     }
     
     // Загрузка данных из UserDefaults
@@ -107,6 +137,11 @@ class FastingTracker {
         if let savedData = UserDefaults.standard.data(forKey: fastingDataKey),
            let decodedData = try? JSONDecoder().decode([FastingDataEntry].self, from: savedData) {
             fastingData = decodedData
+        }
+        
+        if let savedDataCycle = UserDefaults.standard.data(forKey: fastingDataCycleKey),
+           let decodedDataCycle = try? JSONDecoder().decode([FastingDataCycle].self, from: savedDataCycle) {
+            fastingDataCycle = decodedDataCycle
         }
     }
     
