@@ -39,6 +39,7 @@ class ProfileViewController: UIViewController {
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     var profileFastingData: [FastingDataEntry] = []
+    var profileFastingDataCycle: [FastingDataCycle] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,25 +155,24 @@ class ProfileViewController: UIViewController {
         fourthValueAchievementLabel.text = "\(uniqueDaysSet.count)"  // Количество уникальных дней
         
         fifthLabelAchievementLabel.text = "Максимальна тривалість голодування"
-        // Массив с часами голодания
-        let hoursArray = profileFastingData.map { $0.hours }
-        // Находим максимальные часы
-        if let maxHours = hoursArray.max() {
-            fifthValueAchievementLabel.text = "\(Int(maxHours))"
+        if let savedDataCycle = UserDefaults.standard.data(forKey: "fastingDataCycleKey"),
+           let decodedData = try? JSONDecoder().decode([FastingDataCycle].self, from: savedDataCycle) {
+            profileFastingDataCycle = decodedData
+        }
+        // Находим максимальное значение по hoursFasting
+        if let maxFasting = profileFastingDataCycle.max(by: { $0.hoursFasting < $1.hoursFasting }) {
+            fifthValueAchievementLabel.text = "\(Int(maxFasting.hoursFasting))"
         } else {
             fifthValueAchievementLabel.text = "0"
         }
         
         sixthLabelAchievementLabel.text = "Мінімальна тривалість голодування"
-        // Массив с часами голодания
-        //let hoursArray = profileFastingData.map { $0.hours }
-        // Находим минимальные часы
-        if let minHours = hoursArray.min() {
-            sixthValueAchievementLabel.text = "\(Int(minHours))"
+        // Находим минимальное значение по hoursFasting
+        if let minFasting = profileFastingDataCycle.min(by: { $0.hoursFasting < $1.hoursFasting }) {
+            sixthValueAchievementLabel.text = "\(Int(minFasting.hoursFasting))"
         } else {
             sixthValueAchievementLabel.text = "0"
         }
-        
     }
     
     func setupFastingTrackerView() {
