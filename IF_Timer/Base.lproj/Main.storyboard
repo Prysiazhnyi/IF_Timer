@@ -829,7 +829,13 @@
                     <navigationItem key="navigationItem" id="miB-Kp-zPh"/>
                     <size key="freeformSize" width="393" height="1400"/>
                     <connections>
+                        <outlet property="achievementsView" destination="epo-ds-ydA" id="ovl-nb-AeY"/>
+                        <outlet property="fastingTrackerView" destination="HVp-Wj-P1L" id="Ni5-Ji-8wD"/>
+                        <outlet property="imtView" destination="qHx-cO-wCy" id="ZWJ-OV-6b6"/>
+                        <outlet property="settingsButton" destination="mt1-hJ-9f3" id="H4Q-MZ-dLW"/>
+                        <outlet property="statisticsFastingView" destination="1BB-te-F2C" id="uKu-WM-QoK"/>
                         <outlet property="viewTab" destination="fxa-VO-Dqp" id="nqc-o3-Am7"/>
+                        <outlet property="weightView" destination="5xw-gb-rT6" id="P3a-IU-Itu"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UUX-ub-euH" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
