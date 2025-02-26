@@ -225,9 +225,7 @@ class ProfileViewController: UIViewController {
         statisticsFastingLabel.text = "Загальний час голодування  \(tottalDaysFasting) д."
         
         // Изначальные значения
-        progressStatisticView.progress = 0.60
-        
-        
+        progressStatisticView.progress = 0.40
         
         // Установим цвет прогресс-бара
         progressStatisticView.progressTintColor = .systemGreen // Зеленый для заполненной части
@@ -254,7 +252,9 @@ class ProfileViewController: UIViewController {
         imageView.clipsToBounds = true  // Обрезает изображение по границам
 
         dropMarketView.addSubview(imageView)
-        
+        moveDropMarketView()
+//        dropMarketView.translatesAutoresizingMaskIntoConstraints = false
+//        dropMarketView.frame.origin.x = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress) - dropMarketView.bounds.width / 2
         
         dot1Label.text = "0"
         dot2Label.text = "7"
@@ -267,13 +267,10 @@ class ProfileViewController: UIViewController {
     @objc func progressDidChange() {
         // Убираем старую маску
         progressStatisticView.layer.mask = nil
-        
         // Создаем маску с прозрачностью для правой части
         let maskLayer = CALayer()
         maskLayer.frame = progressStatisticView.bounds
-        
         let progressWidth = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress)
-        
         // Создаем градиент
         let gradient = CAGradientLayer()
         gradient.frame = maskLayer.bounds
@@ -281,11 +278,29 @@ class ProfileViewController: UIViewController {
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
         gradient.locations = [NSNumber(value: 0.9), NSNumber(value: 1.0)]  // Сначала непрозрачная, потом прозрачная часть
-        
         // Применяем маску
         maskLayer.addSublayer(gradient)
         progressStatisticView.layer.mask = maskLayer
     }
+// MARK: Перемещение View за прогрессом
+    @objc func moveDropMarketView() {
+        let progressWidth = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress)
+        // Убираем возможность автогенерации констрейнтов для dropMarketView, чтобы вручную управлять констрейнтами
+        dropMarketView.translatesAutoresizingMaskIntoConstraints = false
+        // Если у вас уже есть старые констрейнты для dropMarketView, находим и удаляем только тот, который отвечает за позицию по X
+        if let existingConstraint = dropMarketView.superview?.constraints.first(where: {
+            $0.firstItem as? UIView == dropMarketView && $0.firstAttribute == .leading
+        }) {
+            dropMarketView.superview?.removeConstraint(existingConstraint)
+        }
+        // Создаем новый констрейнт только для изменения позиции по оси X
+        let leadingConstraint = dropMarketView.leadingAnchor.constraint(equalTo: progressStatisticView.leadingAnchor, constant: progressWidth - dropMarketView.bounds.width / 1.5)
+        leadingConstraint.isActive = true
+        
+        // Применяем обновления для метки
+        dropMarketView.superview?.layoutIfNeeded()
+    }
+
 
 
 
