@@ -225,7 +225,7 @@ class ProfileViewController: UIViewController {
         statisticsFastingLabel.text = "Загальний час голодування  \(tottalDaysFasting) д."
         
         // Изначальные значения
-        progressStatisticView.progress = 0.50
+        progressStatisticView.progress = 0.60
         
         
         
@@ -260,25 +260,36 @@ class ProfileViewController: UIViewController {
         dot2Label.text = "7"
         dot3Label.text = "14"
         
-        applyBlurEffectIfNeeded()
+        progressDidChange()
         
     }
     
-    func applyBlurEffectIfNeeded() {
-        // Проверяем, есть ли уже эффект размытия
-        if progressStatisticView.subviews.first(where: { $0 is UIVisualEffectView }) == nil {
-            let blurEffect = UIBlurEffect(style: .light)
-            let blurView = UIVisualEffectView(effect: blurEffect)
-            
-            // Размытие будет чуть за пределами прогресса
-            let blurStartX = progressStatisticView.frame.width * CGFloat(progressStatisticView.progress) + 10
-            blurView.frame = CGRect(x: blurStartX, y: 0, width: 30, height: progressStatisticView.frame.height)
-            
-            // Добавляем размытие
-            progressStatisticView.addSubview(blurView)
-        }
+    @objc func progressDidChange() {
+        // Убираем старую маску
+        progressStatisticView.layer.mask = nil
+        
+        // Создаем маску с прозрачностью для правой части
+        let maskLayer = CALayer()
+        maskLayer.frame = progressStatisticView.bounds
+        
+        let progressWidth = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress)
+        
+        // Создаем градиент
+        let gradient = CAGradientLayer()
+        gradient.frame = maskLayer.bounds
+        gradient.colors = [UIColor.gray.cgColor, UIColor.clear.cgColor]
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        gradient.locations = [NSNumber(value: 0.9), NSNumber(value: 1.0)]  // Сначала непрозрачная, потом прозрачная часть
+        
+        // Применяем маску
+        maskLayer.addSublayer(gradient)
+        progressStatisticView.layer.mask = maskLayer
     }
-    
+
+
+
+
     
     
     @objc func openSettings() {
