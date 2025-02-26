@@ -45,6 +45,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var dot2Label: UILabel!
     @IBOutlet weak var dot3Label: UILabel!
     @IBOutlet weak var dropMarketView: UIView!
+    var dot2LabelText = "7"
+    var dot3LabelText = "14"
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
@@ -305,22 +307,21 @@ class ProfileViewController: UIViewController {
     }
 
     func setupProgressStatics() {
+        var tempTottalDaysFasting : Int
+        tempTottalDaysFasting = tottalDaysFasting == 0 ? 1 : tottalDaysFasting
+
+        let constFactor = tempTottalDaysFasting % 7
         
-        if tottalDaysFasting < 7 {
-            progressStatisticView.progress = 0.4583 / Float(tottalDaysFasting)
+        dot2LabelText  = "\(constFactor * 7)"
+        dot3LabelText = "\(constFactor * 14)"
+        
+        if tottalDaysFasting < 15 {
+            progressStatisticView.progress = 0.06181 * Float(tempTottalDaysFasting)
         } else {
-            
-            
+            progressStatisticView.progress = 0.06181 * Float(tempTottalDaysFasting - 7 * (constFactor - 1))
         }
-        
-        
     }
-
-
-
-
-    
-    
+ 
     @objc func openSettings() {
         //        let settingsVC = SettingsViewController() // Замените на ваш класс настроек
         //        navigationController?.pushViewController(settingsVC, animated: true)
