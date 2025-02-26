@@ -248,8 +248,8 @@ class ProfileViewController: UIViewController {
         let progressWidth = progressStatisticView.frame.width
         let progress = progressStatisticView.progress
         dot1.backgroundColor = .systemGreen
-        dot2.backgroundColor = progress >= 0.4583 ? .systemGreen : .gray
-        dot3.backgroundColor = progress >= 0.75 ? .systemGreen : .gray
+        dot2.backgroundColor = progress >= 0.43 ? .systemGreen : .gray // 0.4327
+        dot3.backgroundColor = progress >= 0.86 ? .systemGreen : .gray // 0.8655
         
         let imageView = UIImageView(image: UIImage(named: "dropMarketLabel"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -258,8 +258,6 @@ class ProfileViewController: UIViewController {
 
         dropMarketView.addSubview(imageView)
         moveDropMarketView()
-//        dropMarketView.translatesAutoresizingMaskIntoConstraints = false
-//        dropMarketView.frame.origin.x = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress) - dropMarketView.bounds.width / 2
         
         dot1Label.text = "0"
         dot2Label.text = "7"

@@ -980,7 +980,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPj-fy-bll">
-                                                        <rect key="frame" x="180" y="80" width="20" height="30"/>
+                                                        <rect key="frame" x="180" y="78" width="20" height="30"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="90I-aQ-xfW"/>
@@ -1012,7 +1012,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="gxr-0T-vNm"/>
                                                     <constraint firstItem="ujg-m2-u2x" firstAttribute="centerX" secondItem="1BB-te-F2C" secondAttribute="centerX" id="iQj-ce-JiK"/>
                                                     <constraint firstItem="4CM-I4-Uv8" firstAttribute="top" secondItem="SxG-gv-WXT" secondAttribute="bottom" constant="15" id="jmm-Mz-BXd"/>
-                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="xPj-fy-bll" secondAttribute="bottom" constant="15" id="pgs-3w-Wb1"/>
+                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="xPj-fy-bll" secondAttribute="bottom" constant="17" id="pgs-3w-Wb1"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="centerX" secondItem="yXP-RF-XF0" secondAttribute="centerX" id="qys-Fe-DSV"/>
                                                     <constraint firstItem="xPj-fy-bll" firstAttribute="leading" secondItem="1BB-te-F2C" secondAttribute="leading" constant="180" id="uwI-18-MrG"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="top" secondItem="yXP-RF-XF0" secondAttribute="bottom" constant="15" id="vs8-M4-2H9"/>
