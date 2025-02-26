@@ -924,7 +924,7 @@
                                                 <rect key="frame" x="26.666666666666657" y="480" width="340" height="200"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Загальний час голодування 10д." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ujg-m2-u2x">
-                                                        <rect key="frame" x="10" y="40" width="320" height="25"/>
+                                                        <rect key="frame" x="10" y="30" width="320" height="25"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="25" id="8en-6a-hhO"/>
                                                             <constraint firstAttribute="width" constant="320" id="QIV-At-40r"/>
@@ -934,13 +934,13 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.40000000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="VnG-id-hrk">
-                                                        <rect key="frame" x="32.333333333333314" y="125" width="275" height="5"/>
+                                                        <rect key="frame" x="32.333333333333314" y="125" width="275" height="4"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="275" id="00L-Xa-azb"/>
                                                         </constraints>
                                                     </progressView>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SxG-gv-WXT">
-                                                        <rect key="frame" x="20" y="115" width="25" height="25"/>
+                                                        <rect key="frame" x="20" y="114" width="25" height="26"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gKx-YO-o0k">
@@ -980,7 +980,7 @@
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPj-fy-bll">
-                                                        <rect key="frame" x="180" y="78" width="20" height="30"/>
+                                                        <rect key="frame" x="180" y="77" width="20" height="30"/>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="20" id="90I-aQ-xfW"/>
@@ -991,15 +991,13 @@
                                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
                                                     <constraint firstItem="3Uj-og-HdY" firstAttribute="centerX" secondItem="gKx-YO-o0k" secondAttribute="centerX" id="0pl-6A-h61"/>
-                                                    <constraint firstAttribute="bottom" secondItem="SxG-gv-WXT" secondAttribute="bottom" constant="60" id="1Iz-kP-JhD"/>
                                                     <constraint firstAttribute="trailing" secondItem="SxG-gv-WXT" secondAttribute="trailing" constant="295" id="1h5-qZ-MDt"/>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="2eh-WC-WgJ"/>
                                                     <constraint firstItem="SxG-gv-WXT" firstAttribute="leading" secondItem="1BB-te-F2C" secondAttribute="leading" constant="20" id="5v2-n9-LtW"/>
-                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="ujg-m2-u2x" secondAttribute="bottom" constant="60" id="8Yo-zY-zxB"/>
+                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="ujg-m2-u2x" secondAttribute="bottom" constant="70" id="8Yo-zY-zxB"/>
                                                     <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="gKx-YO-o0k" secondAttribute="bottom" constant="-14" id="AGx-4x-zQ7"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="340" id="F2K-jP-fri"/>
-                                                    <constraint firstItem="ujg-m2-u2x" firstAttribute="top" secondItem="1BB-te-F2C" secondAttribute="top" constant="40" id="FLd-ew-65A"/>
-                                                    <constraint firstItem="SxG-gv-WXT" firstAttribute="top" secondItem="ujg-m2-u2x" secondAttribute="bottom" constant="50" id="Hcd-rO-Zyo"/>
+                                                    <constraint firstItem="ujg-m2-u2x" firstAttribute="top" secondItem="1BB-te-F2C" secondAttribute="top" constant="30" id="FLd-ew-65A"/>
                                                     <constraint firstAttribute="width" constant="340" id="Jv0-Q8-CWu"/>
                                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="200" id="KiW-0B-Wca"/>
                                                     <constraint firstAttribute="height" constant="200" id="NMe-zx-A2M"/>
@@ -1012,7 +1010,7 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="gxr-0T-vNm"/>
                                                     <constraint firstItem="ujg-m2-u2x" firstAttribute="centerX" secondItem="1BB-te-F2C" secondAttribute="centerX" id="iQj-ce-JiK"/>
                                                     <constraint firstItem="4CM-I4-Uv8" firstAttribute="top" secondItem="SxG-gv-WXT" secondAttribute="bottom" constant="15" id="jmm-Mz-BXd"/>
-                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="xPj-fy-bll" secondAttribute="bottom" constant="17" id="pgs-3w-Wb1"/>
+                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="xPj-fy-bll" secondAttribute="bottom" constant="18" id="pgs-3w-Wb1"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="centerX" secondItem="yXP-RF-XF0" secondAttribute="centerX" id="qys-Fe-DSV"/>
                                                     <constraint firstItem="xPj-fy-bll" firstAttribute="leading" secondItem="1BB-te-F2C" secondAttribute="leading" constant="180" id="uwI-18-MrG"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="top" secondItem="yXP-RF-XF0" secondAttribute="bottom" constant="15" id="vs8-M4-2H9"/>
