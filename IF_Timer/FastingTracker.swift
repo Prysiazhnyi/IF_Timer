@@ -67,7 +67,6 @@ class FastingTracker {
     private func updateChartData() {
         var result: [String: CGFloat] = [:]
         let dateFormatter = DateFormatter()
-        
         dateFormatter.dateFormat = "yyyy-MM-dd"
 
         for (start, finish) in fastingPeriods {
@@ -87,19 +86,41 @@ class FastingTracker {
             }
         }
 
-        for (date, hours) in result {
-            if let index = fastingData.firstIndex(where: { $0.fullDate == date }) {
-                fastingData[index].hours += hours
-            } else {
-                let formattedDate = formatToDayAndMonthFirstLetter(from: dateFormatter.date(from: date)!)
-                fastingData.append(FastingDataEntry(date: formattedDate, hours: hours, fullDate: date))
+        var lastDate = fastingData.last?.fullDate
+        let existingDates = Set(fastingData.map { $0.fullDate })
+        let sortedDates = result.keys.sorted()
+
+        for date in sortedDates {
+            guard let currentDate = dateFormatter.date(from: date) else { continue }
+
+            // Заполнение пропущенных дней с hours: 0
+            while let last = lastDate, let lastDateValue = dateFormatter.date(from: last),
+                  let missingDate = calendar.date(byAdding: .day, value: 1, to: lastDateValue),
+                  missingDate < currentDate {
+
+                let missingDateString = dateFormatter.string(from: missingDate)
+                if !existingDates.contains(missingDateString) {
+                    let formattedDate = formatToDayAndMonthFirstLetter(from: missingDate)
+                    fastingData.append(FastingDataEntry(date: formattedDate, hours: 0, fullDate: missingDateString))
+                }
+                lastDate = missingDateString
             }
+
+            // Добавление новой записи или обновление существующей
+            if let index = fastingData.firstIndex(where: { $0.fullDate == date }) {
+                fastingData[index].hours += result[date] ?? 0
+            } else {
+                let formattedDate = formatToDayAndMonthFirstLetter(from: currentDate)
+                fastingData.append(FastingDataEntry(date: formattedDate, hours: result[date] ?? 0, fullDate: date))
+            }
+
+            lastDate = date
         }
 
         fastingData.sort { $0.fullDate < $1.fullDate }
-
-        print("After appending, fastingData: \(fastingData)")
+       // print("Updated fastingData: \(fastingData)")
     }
+
 
 
     // Метод для форматирования даты в формат "день первая буква месяца" (например, "25 С")

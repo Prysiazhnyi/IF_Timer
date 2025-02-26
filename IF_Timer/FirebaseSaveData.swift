@@ -38,7 +38,7 @@ class FirebaseSaveData {
                 print("Ошибка сохранения в Firebase: \(error.localizedDescription)")
             } else {
                 print("✅ Данные успешно сохранены в Firebase!")
-                print("✅ Данные успешно сохранены в Firebase! - saveDataToCloud userData - \(userData)")
+               // print("✅ Данные успешно сохранены в Firebase! - saveDataToCloud userData - \(userData)")
                
             }
         }
@@ -64,7 +64,7 @@ class FirebaseSaveData {
                 print("Ошибка сохранения данных для FastingTracker в Firebase: \(error.localizedDescription)")
             } else {
                 print("✅ Данные о голодании для FastingTracker успешно сохранены в Firebase!")
-                print("Сохранение userData ( FastingTracker ) в Firebase: \(userData)")
+              // print("Сохранение userData ( FastingTracker ) в Firebase: \(userData)")
             }
         }
     }
@@ -86,7 +86,7 @@ class FirebaseSaveData {
                 print("Ошибка сохранения данных для FastingTracker в Firebase: \(error.localizedDescription)")
             } else {
                 print("✅ Данные о голодании для FastingTracker успешно сохранены в Firebase!")
-                print("Сохранение userData ( FastingTracker ) в Firebase: \(userData)")
+                //print("Сохранение userData ( FastingTracker ) в Firebase: \(userData)")
             }
         }
     }

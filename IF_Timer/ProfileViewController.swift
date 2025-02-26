@@ -83,6 +83,9 @@ class ProfileViewController: UIViewController {
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
         
+        // Изначальные значения
+        progressStatisticView.progress = 0.00
+        
         setupView()
         setupSettingsButton()
         setupLabelsAchievementsView()
@@ -161,11 +164,12 @@ class ProfileViewController: UIViewController {
         fourthLabelAchievementLabel.text = "Днів, коли ви голодували"
         var uniqueDaysSet = Set<String>()  // Множество для уникальных дат
         for entry in profileFastingData {
-            if entry.hours > 0 {
+            if entry.hours > 1 {
                 uniqueDaysSet.insert(entry.date)  // Добавляем дату в множество
             }
         }
-        fourthValueAchievementLabel.text = "\(uniqueDaysSet.count)"  // Количество уникальных дней
+        tottalDaysFasting = uniqueDaysSet.count
+        fourthValueAchievementLabel.text = "\(tottalDaysFasting)"  // Количество уникальных дней
         
         fifthLabelAchievementLabel.text = "Максимальна тривалість голодування"
         if let savedDataCycle = UserDefaults.standard.data(forKey: "fastingDataCycleKey"),
@@ -224,9 +228,8 @@ class ProfileViewController: UIViewController {
         statisticsFastingLabel.textColor = .black
         statisticsFastingLabel.text = "Загальний час голодування  \(tottalDaysFasting) д."
         
-        // Изначальные значения
-        progressStatisticView.progress = 0.40
         
+        setupProgressStatics()
         // Установим цвет прогресс-бара
         progressStatisticView.progressTintColor = .systemGreen // Зеленый для заполненной части
         // Устанавливаем цвет не заполненной части прогресс-бара
@@ -301,6 +304,17 @@ class ProfileViewController: UIViewController {
         dropMarketView.superview?.layoutIfNeeded()
     }
 
+    func setupProgressStatics() {
+        
+        if tottalDaysFasting < 7 {
+            progressStatisticView.progress = 0.4583 / Float(tottalDaysFasting)
+        } else {
+            
+            
+        }
+        
+        
+    }
 
 
 
