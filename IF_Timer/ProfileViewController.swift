@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var dot1Label: UILabel!
     @IBOutlet weak var dot2Label: UILabel!
     @IBOutlet weak var dot3Label: UILabel!
-    
+    @IBOutlet weak var dropMarketView: UIView!
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
@@ -247,6 +247,14 @@ class ProfileViewController: UIViewController {
         dot1.backgroundColor = .systemGreen
         dot2.backgroundColor = progress >= 0.4583 ? .systemGreen : .gray
         dot3.backgroundColor = progress >= 0.75 ? .systemGreen : .gray
+        
+        let imageView = UIImageView(image: UIImage(named: "dropMarketLabel"))
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.contentMode = .scaleAspectFit  // Сохраняет пропорции изображения
+        imageView.clipsToBounds = true  // Обрезает изображение по границам
+
+        dropMarketView.addSubview(imageView)
+        
         
         dot1Label.text = "0"
         dot2Label.text = "7"

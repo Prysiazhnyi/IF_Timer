@@ -983,6 +983,14 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xPj-fy-bll">
+                                                        <rect key="frame" x="180" y="82" width="20" height="30"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="20" id="90I-aQ-xfW"/>
+                                                            <constraint firstAttribute="height" constant="30" id="DZn-Bs-DXi"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
@@ -1006,8 +1014,10 @@
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="200" id="gxr-0T-vNm"/>
                                                     <constraint firstItem="gKx-YO-o0k" firstAttribute="top" secondItem="VnG-id-hrk" secondAttribute="bottom" constant="-15" id="i8b-Bn-aPp"/>
                                                     <constraint firstItem="ujg-m2-u2x" firstAttribute="centerX" secondItem="1BB-te-F2C" secondAttribute="centerX" id="iQj-ce-JiK"/>
+                                                    <constraint firstItem="VnG-id-hrk" firstAttribute="top" secondItem="xPj-fy-bll" secondAttribute="bottom" constant="13" id="pgs-3w-Wb1"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="centerX" secondItem="yXP-RF-XF0" secondAttribute="centerX" id="qys-Fe-DSV"/>
                                                     <constraint firstItem="SxG-gv-WXT" firstAttribute="leading" secondItem="VnG-id-hrk" secondAttribute="leading" id="sKX-Kf-UGh"/>
+                                                    <constraint firstItem="xPj-fy-bll" firstAttribute="leading" secondItem="1BB-te-F2C" secondAttribute="leading" constant="180" id="uwI-18-MrG"/>
                                                     <constraint firstItem="vjI-v4-Mrf" firstAttribute="top" secondItem="yXP-RF-XF0" secondAttribute="bottom" constant="15" id="vs8-M4-2H9"/>
                                                     <constraint firstItem="VnG-id-hrk" firstAttribute="centerX" secondItem="1BB-te-F2C" secondAttribute="centerX" id="yCf-fx-EGh"/>
                                                     <constraint firstItem="yXP-RF-XF0" firstAttribute="leading" secondItem="gKx-YO-o0k" secondAttribute="trailing" constant="100" id="zo8-6l-1ef"/>
@@ -1099,6 +1109,7 @@
                         <outlet property="dot2Label" destination="3Uj-og-HdY" id="Y2N-gE-cGg"/>
                         <outlet property="dot3" destination="yXP-RF-XF0" id="7IR-Bb-0vH"/>
                         <outlet property="dot3Label" destination="vjI-v4-Mrf" id="svm-K5-PmE"/>
+                        <outlet property="dropMarketView" destination="xPj-fy-bll" id="XNv-Rd-0Ib"/>
                         <outlet property="fastingTrackerView" destination="HVp-Wj-P1L" id="Ni5-Ji-8wD"/>
                         <outlet property="fifthLabelAchievementLabel" destination="hL1-Bt-yae" id="zzA-yw-DLi"/>
                         <outlet property="fifthValueAchievementLabel" destination="V8b-WG-uOi" id="DDP-2h-xKS"/>
