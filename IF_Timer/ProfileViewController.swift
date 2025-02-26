@@ -305,18 +305,16 @@ class ProfileViewController: UIViewController {
     }
 
     func setupProgressStatics() {
-        var tempTottalDaysFasting : Int
-        tempTottalDaysFasting = tottalDaysFasting == 0 ? 1 : tottalDaysFasting
-
-        let constFactor = tempTottalDaysFasting % 7
+      
+        let constFactor = tottalDaysFasting % 7
         
         dot2LabelText  = "\(constFactor * 7)"
         dot3LabelText = "\(constFactor * 14)"
         
         if tottalDaysFasting < 15 {
-            progressStatisticView.progress = 0.06181 * Float(tempTottalDaysFasting)
+            progressStatisticView.progress = 0.06181 * Float(tottalDaysFasting)
         } else {
-            progressStatisticView.progress = 0.06181 * Float(tempTottalDaysFasting - 7 * (constFactor - 1))
+            progressStatisticView.progress = 0.06181 * Float(tottalDaysFasting - 7 * (constFactor - 1))
         }
     }
  

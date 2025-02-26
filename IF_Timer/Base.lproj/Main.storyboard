@@ -729,7 +729,7 @@
                                                             <constraint firstAttribute="width" constant="200" id="fE9-tR-dGo"/>
                                                             <constraint firstAttribute="height" constant="25" id="rhE-MO-ffP"/>
                                                         </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
                                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
