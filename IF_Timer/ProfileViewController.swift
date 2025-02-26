@@ -21,7 +21,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var imtView: UIView!
     
     @IBOutlet weak var settingsButton: UIButton!
-    
+    //  для первого View achievementsView
     @IBOutlet weak var mainAchievementLabel: UILabel!
     @IBOutlet weak var firstLabelAchievementLabel: UILabel!
     @IBOutlet weak var firstValueAchievementLabel: UILabel!
@@ -35,11 +35,23 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var fifthValueAchievementLabel: UILabel!
     @IBOutlet weak var sixthLabelAchievementLabel: UILabel!
     @IBOutlet weak var sixthValueAchievementLabel: UILabel!
+    //  для третего View statisticsFastingView
+    @IBOutlet weak var statisticsFastingLabel: UILabel!
+    @IBOutlet weak var progressStatisticView: UIProgressView!
+    @IBOutlet weak var dot1: UIView!
+    @IBOutlet weak var dot2: UIView!
+    @IBOutlet weak var dot3: UIView!
+    @IBOutlet weak var dot1Label: UILabel!
+    @IBOutlet weak var dot2Label: UILabel!
+    @IBOutlet weak var dot3Label: UILabel!
+    
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     
     var profileFastingData: [FastingDataEntry] = []
     var profileFastingDataCycle: [FastingDataCycle] = []
+    
+    var tottalDaysFasting: Int = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +87,7 @@ class ProfileViewController: UIViewController {
         setupSettingsButton()
         setupLabelsAchievementsView()
         setupFastingTrackerView()
+        setupStatisticsFastingView()
     }
     
     func setupView() {
@@ -203,6 +216,58 @@ class ProfileViewController: UIViewController {
                 chartView.topAnchor.constraint(equalTo: fastingTrackerView.topAnchor, constant: 10),
                 chartView.bottomAnchor.constraint(equalTo: fastingTrackerView.bottomAnchor, constant: -10)
             ])
+        }
+    }
+    
+    func setupStatisticsFastingView() {
+        statisticsFastingLabel.font = UIFont.systemFont(ofSize: 19, weight: .regular)
+        statisticsFastingLabel.textColor = .black
+        statisticsFastingLabel.text = "Загальний час голодування  \(tottalDaysFasting) д."
+        
+        // Изначальные значения
+        progressStatisticView.progress = 0.50
+        
+        
+        
+        // Установим цвет прогресс-бара
+        progressStatisticView.progressTintColor = .systemGreen // Зеленый для заполненной части
+        // Устанавливаем цвет не заполненной части прогресс-бара
+        progressStatisticView.trackTintColor = .gray // Серый для не заполненной части
+        progressStatisticView.transform = CGAffineTransform(scaleX: 1.0, y: 1.0) // Толщина в 3 раза больше стандартной
+        
+        dot1.layer.cornerRadius = dot1.frame.size.width / 2
+        dot2.layer.cornerRadius = dot2.frame.size.width / 2
+        dot3.layer.cornerRadius = dot3.frame.size.width / 2
+        
+        
+        // Изменяем цвет точек в зависимости от прогресса
+        // Рассчитаем позицию точек на основе текущего прогресса
+        let progressWidth = progressStatisticView.frame.width
+        let progress = progressStatisticView.progress
+        dot1.backgroundColor = .systemGreen
+        dot2.backgroundColor = progress >= 0.4583 ? .systemGreen : .gray
+        dot3.backgroundColor = progress >= 0.75 ? .systemGreen : .gray
+        
+        dot1Label.text = "0"
+        dot2Label.text = "7"
+        dot3Label.text = "14"
+        
+        applyBlurEffectIfNeeded()
+        
+    }
+    
+    func applyBlurEffectIfNeeded() {
+        // Проверяем, есть ли уже эффект размытия
+        if progressStatisticView.subviews.first(where: { $0 is UIVisualEffectView }) == nil {
+            let blurEffect = UIBlurEffect(style: .light)
+            let blurView = UIVisualEffectView(effect: blurEffect)
+            
+            // Размытие будет чуть за пределами прогресса
+            let blurStartX = progressStatisticView.frame.width * CGFloat(progressStatisticView.progress) + 10
+            blurView.frame = CGRect(x: blurStartX, y: 0, width: 30, height: progressStatisticView.frame.height)
+            
+            // Добавляем размытие
+            progressStatisticView.addSubview(blurView)
         }
     }
     

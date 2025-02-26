@@ -9,7 +9,9 @@ class FirebaseSaveData {
 
     // Получение документа пользователя
     private func getUserDocument() -> DocumentReference {
-        let userID = "lZpudjonPmsWukuoA2k9" // Это ваш реальный ID документа
+        let userID =
+        "test_document_Firebase_Database" // для тестов
+        //"lZpudjonPmsWukuoA2k9" // Это ваш реальный ID документа
         return db.collection("myProfileIFTimer").document(userID)
     }
 
