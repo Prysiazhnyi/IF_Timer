@@ -56,8 +56,15 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionImtView: UILabel!
     @IBOutlet weak var progressImtView: UIProgressView!
     @IBOutlet weak var markerImtView: UIView!
-    var imageView: UIImageView!
-
+    var imtCount = 15.0
+    let text15Imt  = "Недостатня маса тіла"
+    let text16Imt  = "Недостатня маса тіла"
+    let text18Imt  = "Нормальна маса тіла"
+    let text25Imt  = "Зайва маса тіла"
+    let text30Imt  = "Ожиріння першого ступеня"
+    let text35Imt  = "Ожиріння другого ступеня"
+    let text40Imt  = "Ожиріння третього ступеня"
+   
     
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
@@ -109,6 +116,7 @@ class ProfileViewController: UIViewController {
         setupStatisticsFastingView()
         setupWeightAccountingView()
         setupImtView()
+        addBlackTriangle(to: markerImtView)
     }
     
     func setupView() {
@@ -357,6 +365,28 @@ class ProfileViewController: UIViewController {
         changeWeightImtViewButton.imageEdgeInsets = .zero
 
         
+        countImtView.text = "\(imtCount)"
+        updateImtMarker(for: imtCount) // Пример для ИМТ 30.9
+        
+        switch imtCount {
+        case ..<16:
+            descriptionImtView.text = text15Imt
+        case 16..<18:
+            descriptionImtView.text = text16Imt
+        case 18..<25:
+            descriptionImtView.text = text18Imt
+        case 25..<30:
+            descriptionImtView.text = text25Imt
+        case 30..<35:
+            descriptionImtView.text = text30Imt
+        case 35..<40:
+            descriptionImtView.text = text35Imt
+        default:
+            descriptionImtView.text = text40Imt
+        }
+
+
+    
     }
     
     func setupProgressImt() {
@@ -412,12 +442,9 @@ class ProfileViewController: UIViewController {
             // Обновляем текущую позицию для следующего сегмента
             currentX += segmentWidth + 0.02 * totalWidth
         }
-
         // Маска с закруглениями
         let maskLayer = createRoundedSegmentsMask()
         progressImtView.layer.mask = maskLayer
-
-        updateImtMarker(for: 30.9) // Пример для ИМТ 30.9
     }
 
     // ✅ Маска с правильными закруглениями
@@ -482,12 +509,33 @@ class ProfileViewController: UIViewController {
         }
 
         // Создаем новый констрейнт только для изменения позиции по оси X
-        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 1.5)
+        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 5)
         leadingConstraint.isActive = true
 
         // Применяем обновления для маркера
         markerImtView.superview?.layoutIfNeeded()
     }
+    
+    func addBlackTriangle(to view: UIView) {
+        view.backgroundColor = .clear  // Устанавливаем прозрачный фон
+        view.layer.sublayers?.removeAll()  // Убираем все старые слои
+        // Создаем слой для треугольника
+        let trianglePath = UIBezierPath()
+        trianglePath.move(to: CGPoint(x: view.bounds.width / 2, y: view.bounds.height))  // Вершина треугольника вниз
+        trianglePath.addLine(to: CGPoint(x: 0, y: 0))  // Левый верхний угол
+        trianglePath.addLine(to: CGPoint(x: view.bounds.width, y: 0))  // Правый верхний угол
+        trianglePath.close()  // Закрываем путь
+        
+        // Настроим слой с треугольником
+        let triangleLayer = CAShapeLayer()
+        triangleLayer.path = trianglePath.cgPath
+        triangleLayer.fillColor = UIColor.black.cgColor  // Чёрный цвет
+        
+        // Добавляем слой в вью
+        view.layer.addSublayer(triangleLayer)
+    }
+
+
 
 
  
