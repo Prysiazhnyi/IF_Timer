@@ -1053,8 +1053,8 @@
                                                         <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="X0d-GT-XSI">
-                                                        <rect key="frame" x="20" y="140" width="300" height="6"/>
+                                                    <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progressViewStyle="bar" progress="0.29999999999999999" translatesAutoresizingMaskIntoConstraints="NO" id="X0d-GT-XSI">
+                                                        <rect key="frame" x="20" y="140" width="300" height="7"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="6" id="aSS-cj-lVZ"/>
                                                             <constraint firstAttribute="width" constant="300" id="yTA-4f-bsK"/>
@@ -1070,6 +1070,14 @@
                                                         <color key="textColor" systemColor="systemOrangeColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
+                                                    <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1a1-aq-NSW">
+                                                        <rect key="frame" x="96" y="120" width="10" height="10"/>
+                                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="10" id="ibA-oR-0I1"/>
+                                                            <constraint firstAttribute="height" constant="10" id="pq2-iB-PJh"/>
+                                                        </constraints>
+                                                    </view>
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="opaqueSeparatorColor"/>
                                                 <constraints>
@@ -1089,6 +1097,7 @@
                                                     <constraint firstItem="ZAJ-Gl-jMf" firstAttribute="top" secondItem="qHx-cO-wCy" secondAttribute="top" constant="10" id="cHg-1K-fe8"/>
                                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="j7n-V5-Asv"/>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="340" id="mQF-F2-aIG"/>
+                                                    <constraint firstItem="X0d-GT-XSI" firstAttribute="top" secondItem="1a1-aq-NSW" secondAttribute="bottom" constant="10" id="mt5-Ph-MdR"/>
                                                     <constraint firstItem="Had-Wp-eg6" firstAttribute="leading" secondItem="qHx-cO-wCy" secondAttribute="leading" constant="20" id="rsh-De-n02"/>
                                                     <constraint firstItem="Had-Wp-eg6" firstAttribute="top" secondItem="qHx-cO-wCy" secondAttribute="top" constant="30" id="tTw-JV-wBr"/>
                                                 </constraints>
@@ -1178,6 +1187,7 @@
                         <outlet property="fourthValueAchievementLabel" destination="hjB-ZZ-3hM" id="e4v-8J-wyX"/>
                         <outlet property="imtView" destination="qHx-cO-wCy" id="ZWJ-OV-6b6"/>
                         <outlet property="mainAchievementLabel" destination="FhW-ck-kIA" id="oyf-5V-5IW"/>
+                        <outlet property="markerImtView" destination="1a1-aq-NSW" id="NsZ-e0-BT1"/>
                         <outlet property="progressImtView" destination="X0d-GT-XSI" id="HhD-xU-RfQ"/>
                         <outlet property="progressStatisticView" destination="VnG-id-hrk" id="zCK-RC-gtF"/>
                         <outlet property="secondLabelAchievementLabel" destination="YFV-ye-vPG" id="WLc-sM-VtV"/>

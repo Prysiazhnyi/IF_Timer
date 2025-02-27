@@ -55,6 +55,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var countImtView: UILabel!
     @IBOutlet weak var descriptionImtView: UILabel!
     @IBOutlet weak var progressImtView: UIProgressView!
+    @IBOutlet weak var markerImtView: UIView!
+
     
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
@@ -341,8 +343,115 @@ class ProfileViewController: UIViewController {
     }
     
     func setupImtView() {
-        imageWhenViewIsEmpty(imtView)
+        //imageWhenViewIsEmpty(imtView)
+        setupProgressImt()
+        
     }
+    
+    func setupProgressImt() {
+        guard progressImtView.bounds.width > 0 else { return } // Защита от краша
+
+        progressImtView.layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Очищаем старые слои
+        progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5) // Толщина
+
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = progressImtView.bounds
+
+        // Цвета для диапазонов
+        gradientLayer.colors = [
+            UIColor.blue.cgColor,        // <16
+            UIColor.systemBlue.cgColor,  // 16-18.5
+            UIColor.green.cgColor,       // 18.5-25
+            UIColor.yellow.cgColor,      // 25-30
+            UIColor.orange.cgColor,      // 30-35
+            UIColor.red.cgColor          // >35
+        ]
+        
+        // Пропорции шкалы от 15 до 40 (25 делений)
+        let scale: CGFloat = 1.0 / 25.0
+        gradientLayer.locations = [
+            0.0,        // 15
+            scale,      // 16
+            scale * 3.5, // 18.5
+            scale * 10, // 25
+            scale * 15, // 30
+            scale * 20, // 35
+            1.0         // 40
+        ].map { NSNumber(value: Float($0)) } // Приведение к NSNumber
+
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+
+        // Маска с закруглениями
+        let maskLayer = createRoundedSegmentsMask()
+        gradientLayer.mask = maskLayer
+
+        progressImtView.layer.insertSublayer(gradientLayer, at: 0)
+
+        updateImtMarker(for: 30.9) // Пример для ИМТ 30.9
+    }
+
+    // ✅ Исправленная маска с правильными ширинами
+    func createRoundedSegmentsMask() -> CAShapeLayer {
+        let maskLayer = CAShapeLayer()
+        let path = UIBezierPath()
+
+        let totalWidth = progressImtView.bounds.width
+        let segmentWidths = [
+            1.0 / 25.0,  // 15-16
+            2.5 / 25.0,  // 16-18.5
+            6.5 / 25.0,  // 18.5-25
+            5.0 / 25.0,  // 25-30
+            5.0 / 25.0,  // 30-35
+            5.0 / 25.0   // 35-40
+        ].map { $0 * totalWidth } // Пропорциональный расчет ширины
+
+        var currentX: CGFloat = 0
+        for segmentWidth in segmentWidths {
+            let rect = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
+            let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: progressImtView.bounds.height / 2)
+            path.append(roundedRect)
+            currentX += segmentWidth
+        }
+
+        maskLayer.path = path.cgPath
+        return maskLayer
+    }
+
+
+
+
+    
+     func updateImtMarker(for imt: CGFloat) {
+        let minIMT: CGFloat = 15
+        let maxIMT: CGFloat = 40
+        let progress = (imt - minIMT) / (maxIMT - minIMT)
+        let progressWidth = progressImtView.bounds.width
+
+        // Проверка на нулевую ширину
+        if progressWidth == 0 { return }
+
+        let markerX = progress * progressWidth
+
+        // Убираем возможность автогенерации констрейнтов для markerImtView, чтобы вручную управлять констрейнтами
+        markerImtView.translatesAutoresizingMaskIntoConstraints = false
+
+        // Если у вас уже есть старые констрейнты для markerImtView, находим и удаляем только тот, который отвечает за позицию по X
+        if let existingConstraint = markerImtView.superview?.constraints.first(where: {
+            $0.firstItem as? UIView == markerImtView && $0.firstAttribute == .leading
+        }) {
+            markerImtView.superview?.removeConstraint(existingConstraint)
+        }
+
+        // Создаем новый констрейнт только для изменения позиции по оси X
+        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 1.5)
+        leadingConstraint.isActive = true
+
+        // Применяем обновления для маркера
+        markerImtView.superview?.layoutIfNeeded()
+    }
+
+
  
     @objc func openSettings() {
         //        let settingsVC = SettingsViewController() // Замените на ваш класс настроек
