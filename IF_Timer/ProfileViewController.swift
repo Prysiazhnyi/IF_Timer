@@ -511,7 +511,7 @@ class ProfileViewController: UIViewController {
         }
 
         // Создаем новый констрейнт только для изменения позиции по оси X
-        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 10)
+        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 8)
         leadingConstraint.isActive = true
 
         // Применяем обновления для маркера
