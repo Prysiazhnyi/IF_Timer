@@ -49,6 +49,8 @@ class ProfileViewController: UIViewController {
     var dot3LabelText = "14"
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
+    let backgroundView = UIColor(red: 234/255, green: 254/255, blue: 255/255, alpha: 1)
+
     
     var profileFastingData: [FastingDataEntry] = []
     var profileFastingDataCycle: [FastingDataCycle] = []
@@ -102,7 +104,7 @@ class ProfileViewController: UIViewController {
         for view in arrayViews {
             view.translatesAutoresizingMaskIntoConstraints = false
             // Настройка контейнера с информацией
-            view.backgroundColor = UIColor.white
+            view.backgroundColor = backgroundView
             view.layer.cornerRadius = 25
             view.layer.shadowColor = UIColor.black.cgColor
             view.layer.shadowOpacity = 0.1
@@ -114,7 +116,7 @@ class ProfileViewController: UIViewController {
     }
     
     func setupSettingsButton() {
-        settingsButton.backgroundColor = UIColor.white
+        settingsButton.backgroundColor = backgroundView
         settingsButton.layer.cornerRadius = 15
         settingsButton.layer.masksToBounds = true
         settingsButton.setTitleColor(.darkGray, for: .normal)

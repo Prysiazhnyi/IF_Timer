@@ -711,14 +711,14 @@
             <objects>
                 <viewController storyboardIdentifier="ProfileViewController" id="L30-7o-H00" customClass="ProfileViewController" customModule="IF_Timer" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="eLC-rL-UXA">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="1400"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="1410"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qYZ-tR-0sv">
-                                <rect key="frame" x="0.0" y="59" width="393" height="1336.6666666666667"/>
+                                <rect key="frame" x="0.0" y="59" width="393" height="1346.6666666666667"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fxa-VO-Dqp">
-                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1330"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="393" height="1340"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epo-ds-ydA">
                                                 <rect key="frame" x="26.666666666666657" y="20" width="340" height="200"/>
@@ -1044,11 +1044,11 @@
                                                 </constraints>
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mt1-hJ-9f3">
-                                                <rect key="frame" x="26.666666666666657" y="1270" width="340" height="40"/>
+                                                <rect key="frame" x="26.666666666666657" y="1270" width="340" height="50"/>
                                                 <color key="backgroundColor" red="0.42022540650000001" green="0.84889914769999997" blue="0.74871421380000003" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="340" id="Aer-z3-ACo"/>
-                                                    <constraint firstAttribute="height" constant="40" id="gtT-w5-dJz"/>
+                                                    <constraint firstAttribute="height" constant="50" id="gtT-w5-dJz"/>
                                                 </constraints>
                                                 <state key="normal" title="Button"/>
                                                 <buttonConfiguration key="configuration" style="plain" title="Button"/>
@@ -1056,7 +1056,7 @@
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="1330" id="3AI-2h-4vf"/>
+                                            <constraint firstAttribute="height" constant="1340" id="3AI-2h-4vf"/>
                                             <constraint firstItem="5xw-gb-rT6" firstAttribute="top" secondItem="1BB-te-F2C" secondAttribute="bottom" constant="30" id="7Tz-IX-RYN"/>
                                             <constraint firstItem="1BB-te-F2C" firstAttribute="centerX" secondItem="fxa-VO-Dqp" secondAttribute="centerX" id="FKi-ff-f9X"/>
                                             <constraint firstItem="epo-ds-ydA" firstAttribute="centerX" secondItem="fxa-VO-Dqp" secondAttribute="centerX" id="FOo-yV-k8o"/>
@@ -1095,7 +1095,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="miB-Kp-zPh"/>
-                    <size key="freeformSize" width="393" height="1400"/>
+                    <size key="freeformSize" width="393" height="1410"/>
                     <connections>
                         <outlet property="achievementsView" destination="epo-ds-ydA" id="ovl-nb-AeY"/>
                         <outlet property="dot1" destination="SxG-gv-WXT" id="IMZ-6D-g1y"/>
