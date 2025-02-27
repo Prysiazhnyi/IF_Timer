@@ -136,11 +136,12 @@ class ProfileViewController: UIViewController {
         mainAchievementLabel.text = "Ваші досягнення"
         
         firstLabelAchievementLabel.text = "Днів у додутку"
+        let calendar = Calendar.current
         let tempfirstDateUseApp = UserDefaults.standard.object(forKey: "firstDateUseApp") as? Date
         let firstDateUseApp = tempfirstDateUseApp ?? Date()
-        let currentDate = Date()
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: firstDateUseApp, to: currentDate)
+        let startOfFirstDate = calendar.startOfDay(for: firstDateUseApp)
+        let startOfCurrentDate = calendar.startOfDay(for: Date())
+        let components = calendar.dateComponents([.day], from: startOfFirstDate, to: startOfCurrentDate)
         firstValueAchievementLabel.text = "\(components.day ?? 0)"
         
         secondLabelAchievementLabel.text = "Загальна кількість годин голодування"
