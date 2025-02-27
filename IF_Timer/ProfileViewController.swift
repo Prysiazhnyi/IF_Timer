@@ -56,6 +56,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionImtView: UILabel!
     @IBOutlet weak var progressImtView: UIProgressView!
     @IBOutlet weak var markerImtView: UIView!
+    var imageView: UIImageView!
 
     
     
@@ -345,6 +346,16 @@ class ProfileViewController: UIViewController {
     func setupImtView() {
         //imageWhenViewIsEmpty(imtView)
         setupProgressImt()
+        
+        changeWeightImtViewButton.layer.cornerRadius = 20
+        changeWeightImtViewButton.layer.masksToBounds = true
+        changeWeightImtViewButton.backgroundColor = .lightGray
+        let originalImage = UIImage(named: "iconPencil")
+        let scaledImage = originalImage?.resized(to: CGSize(width: 25, height: 25))
+        changeWeightImtViewButton.setImage(scaledImage, for: .normal) // Устанавливаем уменьшенное изображение на кнопку
+        changeWeightImtViewButton.contentMode = .center // Центрируем изображение на кнопке
+        changeWeightImtViewButton.imageEdgeInsets = .zero
+
         
     }
     
