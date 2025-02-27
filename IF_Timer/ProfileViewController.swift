@@ -398,25 +398,26 @@ class ProfileViewController: UIViewController {
 
         let totalWidth = progressImtView.bounds.width
         let segmentWidths = [
-            1.0 / 25.0,  // 15-16
-            2.5 / 25.0,  // 16-18.5
-            6.5 / 25.0,  // 18.5-25
-            5.0 / 25.0,  // 25-30
-            5.0 / 25.0,  // 30-35
-            5.0 / 25.0   // 35-40
-        ].map { $0 * totalWidth } // Пропорциональный расчет ширины
+            (1.0 / 25.0) + 0.02,  // 15-16
+            (2.5 / 25.0) + 0.02,  // 16-18.5
+            (6.5 / 25.0) + 0.02,  // 18.5-25
+            (5.0 / 25.0) + 0.02,  // 25-30
+            (5.0 / 25.0) + 0.02,  // 30-35
+            (5.0 / 25.0) + 0.02   // 35-40
+        ].map { $0 * totalWidth } // Пропорциональный расчет ширины с добавлением отступа
 
         var currentX: CGFloat = 0
         for segmentWidth in segmentWidths {
             let rect = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
             let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: progressImtView.bounds.height / 2)
             path.append(roundedRect)
-            currentX += segmentWidth
+            currentX += segmentWidth + 0.02 * totalWidth // Добавляем отступ между сегментами
         }
 
         maskLayer.path = path.cgPath
         return maskLayer
     }
+
 
 
 
