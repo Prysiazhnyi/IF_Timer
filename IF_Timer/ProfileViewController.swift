@@ -93,6 +93,8 @@ class ProfileViewController: UIViewController {
         setupLabelsAchievementsView()
         setupFastingTrackerView()
         setupStatisticsFastingView()
+        setupWeightAccountingView()
+        setupImtView()
     }
     
     func setupView() {
@@ -199,18 +201,7 @@ class ProfileViewController: UIViewController {
         chartView.data = fastingTracker.getFastingData().map { ($0.date, $0.hours) }
         
         if fastingTracker.fastingData.isEmpty {
-            let emptyImageView = UIImageView(image: UIImage(named: "AppIconFasting"))
-            emptyImageView.contentMode = .scaleAspectFit
-            emptyImageView.translatesAutoresizingMaskIntoConstraints = false
-            fastingTrackerView.addSubview(emptyImageView)
-            fastingTrackerView.backgroundColor = UIColor(red: 0.89, green: 0.94, blue: 0.91, alpha: 1.0)
-            
-            NSLayoutConstraint.activate([
-                emptyImageView.centerXAnchor.constraint(equalTo: fastingTrackerView.centerXAnchor),
-                emptyImageView.centerYAnchor.constraint(equalTo: fastingTrackerView.centerYAnchor),
-                emptyImageView.widthAnchor.constraint(equalTo: fastingTrackerView.heightAnchor, multiplier: 1),
-                emptyImageView.heightAnchor.constraint(equalTo: fastingTrackerView.heightAnchor, multiplier: 0.99)
-            ])
+            imageWhenViewIsEmpty(fastingTrackerView)
         } else {
             fastingTrackerView.addSubview(chartView)
             chartView.translatesAutoresizingMaskIntoConstraints = false
@@ -317,6 +308,29 @@ class ProfileViewController: UIViewController {
         } else {
             progressStatisticView.progress = 0.06181 * Float(tottalDaysFasting - 7 * (constFactor - 1))
         }
+    }
+    
+    func imageWhenViewIsEmpty(_ view: UIView) {
+        let emptyImageView = UIImageView(image: UIImage(named: "AppIconFasting"))
+        emptyImageView.contentMode = .scaleAspectFit
+        emptyImageView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(emptyImageView)
+        view.backgroundColor = UIColor(red: 0.89, green: 0.94, blue: 0.91, alpha: 1.0)
+        
+        NSLayoutConstraint.activate([
+            emptyImageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyImageView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyImageView.widthAnchor.constraint(equalTo: view.heightAnchor, multiplier: 1),
+            emptyImageView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.99)
+        ])
+    }
+    
+    func setupWeightAccountingView() {
+        imageWhenViewIsEmpty(weightView)
+    }
+    
+    func setupImtView() {
+        imageWhenViewIsEmpty(imtView)
     }
  
     @objc func openSettings() {
