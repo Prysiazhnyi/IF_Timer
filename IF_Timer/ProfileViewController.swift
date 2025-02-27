@@ -354,72 +354,98 @@ class ProfileViewController: UIViewController {
         progressImtView.layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Очищаем старые слои
         progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5) // Толщина
 
-        let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = progressImtView.bounds
+        // Ширина всей шкалы
+        let totalWidth: CGFloat = 300
+        let totalMargins: CGFloat = 0.02 * totalWidth * 5 // 5 отступов между сегментами
+        let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
 
-        // Цвета для диапазонов
-        gradientLayer.colors = [
-            UIColor.blue.cgColor,        // <16
-            UIColor.systemBlue.cgColor,  // 16-18.5
-            UIColor.green.cgColor,       // 18.5-25
-            UIColor.yellow.cgColor,      // 25-30
-            UIColor.orange.cgColor,      // 30-35
-            UIColor.red.cgColor          // >35
+        // Распределяем доступную ширину между сегментами
+        let segmentWidths = [
+            (1.0 / 25.0),  // 15-16
+            (2.5 / 25.0),  // 16-18.5
+            (6.5 / 25.0),  // 18.5-25
+            (5.0 / 25.0),  // 25-30
+            (5.0 / 25.0),  // 30-35
+            (5.0 / 25.0)   // 35-40
+        ].map { $0 * availableWidth }
+
+        // Теперь масштабируем их так, чтобы в сумме они дали доступную ширину
+        let totalSegmentWidth = segmentWidths.reduce(0, +)
+        let scaleFactor = availableWidth / totalSegmentWidth
+        let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
+
+        // Массив цветов для каждого сегмента
+        let colors: [UIColor] = [
+            .blue,        // <16
+            .systemBlue,  // 16-18.5
+            .green,       // 18.5-25
+            .yellow,      // 25-30
+            .orange,      // 30-35
+            .red          // >35
         ]
-        
-        // Пропорции шкалы от 15 до 40 (25 делений)
-        let scale: CGFloat = 1.0 / 25.0
-        gradientLayer.locations = [
-            0.0,        // 15
-            scale,      // 16
-            scale * 3.5, // 18.5
-            scale * 10, // 25
-            scale * 15, // 30
-            scale * 20, // 35
-            1.0         // 40
-        ].map { NSNumber(value: Float($0)) } // Приведение к NSNumber
 
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0.5)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 0.5)
+        var currentX: CGFloat = 0
+        for (index, segmentWidth) in scaledSegmentWidths.enumerated() {
+            // Сегмент с заданным цветом
+            let segmentLayer = CALayer()
+            segmentLayer.frame = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
+            segmentLayer.backgroundColor = colors[index].cgColor
+            
+            // Добавляем закругления
+            segmentLayer.cornerRadius = progressImtView.bounds.height / 2
+            segmentLayer.masksToBounds = true
+
+            // Добавляем сегмент на шкалу
+            progressImtView.layer.addSublayer(segmentLayer)
+
+            // Обновляем текущую позицию для следующего сегмента
+            currentX += segmentWidth + 0.02 * totalWidth
+        }
 
         // Маска с закруглениями
         let maskLayer = createRoundedSegmentsMask()
-        gradientLayer.mask = maskLayer
-
-        progressImtView.layer.insertSublayer(gradientLayer, at: 0)
+        progressImtView.layer.mask = maskLayer
 
         updateImtMarker(for: 30.9) // Пример для ИМТ 30.9
     }
 
-    // ✅ Исправленная маска с правильными ширинами
+    // ✅ Маска с правильными закруглениями
     func createRoundedSegmentsMask() -> CAShapeLayer {
         let maskLayer = CAShapeLayer()
         let path = UIBezierPath()
 
-        let totalWidth = progressImtView.bounds.width
+        let totalWidth: CGFloat = 300 // Ширина всей шкалы
+        let totalMargins: CGFloat = 0.02 * totalWidth * 5 // 5 отступов между сегментами
+        let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
+
+        // Распределяем доступную ширину между сегментами
         let segmentWidths = [
-            (1.0 / 25.0) + 0.02,  // 15-16
-            (2.5 / 25.0) + 0.02,  // 16-18.5
-            (6.5 / 25.0) + 0.02,  // 18.5-25
-            (5.0 / 25.0) + 0.02,  // 25-30
-            (5.0 / 25.0) + 0.02,  // 30-35
-            (5.0 / 25.0) + 0.02   // 35-40
-        ].map { $0 * totalWidth } // Пропорциональный расчет ширины с добавлением отступа
+            (1.0 / 25.0),  // 15-16
+            (2.5 / 25.0),  // 16-18.5
+            (6.5 / 25.0),  // 18.5-25
+            (5.0 / 25.0),  // 25-30
+            (5.0 / 25.0),  // 30-35
+            (5.0 / 25.0)   // 35-40
+        ].map { $0 * availableWidth }
+
+        // Теперь масштабируем их так, чтобы в сумме они дали доступную ширину
+        let totalSegmentWidth = segmentWidths.reduce(0, +)
+        let scaleFactor = availableWidth / totalSegmentWidth
+        let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
 
         var currentX: CGFloat = 0
-        for segmentWidth in segmentWidths {
+        for segmentWidth in scaledSegmentWidths {
             let rect = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
             let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: progressImtView.bounds.height / 2)
             path.append(roundedRect)
-            currentX += segmentWidth + 0.02 * totalWidth // Добавляем отступ между сегментами
+
+            // Добавляем отступ между сегментами
+            currentX += segmentWidth + 0.02 * totalWidth
         }
 
         maskLayer.path = path.cgPath
         return maskLayer
     }
-
-
-
 
 
     
