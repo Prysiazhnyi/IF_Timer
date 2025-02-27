@@ -47,6 +47,15 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var dropMarketView: UIView!
     var dot2LabelText = "7"
     var dot3LabelText = "14"
+    // для четвертого View weightView
+    
+    // для пятого View imtView
+    @IBOutlet weak var changeWeightImtViewButton: UIButton!
+    @IBOutlet weak var titleImtView: UILabel!
+    @IBOutlet weak var countImtView: UILabel!
+    @IBOutlet weak var descriptionImtView: UILabel!
+    @IBOutlet weak var progressImtView: UIProgressView!
+    
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     let backgroundView = UIColor(red: 234/255, green: 254/255, blue: 255/255, alpha: 1)
