@@ -56,7 +56,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionImtView: UILabel!
     @IBOutlet weak var progressImtView: UIProgressView!
     @IBOutlet weak var markerImtView: UIView!
-    var imtCount = 15.0
+    var imtCount = 30.0
     let text15Imt  = "Недостатня маса тіла"
     let text16Imt  = "Недостатня маса тіла"
     let text18Imt  = "Нормальна маса тіла"
@@ -397,7 +397,7 @@ class ProfileViewController: UIViewController {
 
         // Ширина всей шкалы
         let totalWidth: CGFloat = 300
-        let totalMargins: CGFloat = 0.02 * totalWidth * 5 // 5 отступов между сегментами
+        let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Уменьшили отступы между сегментами
         let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
 
         // Распределяем доступную ширину между сегментами
@@ -410,7 +410,7 @@ class ProfileViewController: UIViewController {
             (5.0 / 25.0)   // 35-40
         ].map { $0 * availableWidth }
 
-        // Теперь масштабируем их так, чтобы в сумме они дали доступную ширину
+        // Масштабируем так, чтобы в сумме они дали доступную ширину
         let totalSegmentWidth = segmentWidths.reduce(0, +)
         let scaleFactor = availableWidth / totalSegmentWidth
         let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
@@ -440,8 +440,9 @@ class ProfileViewController: UIViewController {
             progressImtView.layer.addSublayer(segmentLayer)
 
             // Обновляем текущую позицию для следующего сегмента
-            currentX += segmentWidth + 0.02 * totalWidth
+            currentX += segmentWidth + 0.01 * totalWidth  // Уменьшенные отступы
         }
+        
         // Маска с закруглениями
         let maskLayer = createRoundedSegmentsMask()
         progressImtView.layer.mask = maskLayer
@@ -453,7 +454,7 @@ class ProfileViewController: UIViewController {
         let path = UIBezierPath()
 
         let totalWidth: CGFloat = 300 // Ширина всей шкалы
-        let totalMargins: CGFloat = 0.02 * totalWidth * 5 // 5 отступов между сегментами
+        let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Уменьшенные отступы между сегментами
         let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
 
         // Распределяем доступную ширину между сегментами
@@ -466,7 +467,7 @@ class ProfileViewController: UIViewController {
             (5.0 / 25.0)   // 35-40
         ].map { $0 * availableWidth }
 
-        // Теперь масштабируем их так, чтобы в сумме они дали доступную ширину
+        // Масштабируем так, чтобы в сумме они дали доступную ширину
         let totalSegmentWidth = segmentWidths.reduce(0, +)
         let scaleFactor = availableWidth / totalSegmentWidth
         let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
@@ -478,12 +479,13 @@ class ProfileViewController: UIViewController {
             path.append(roundedRect)
 
             // Добавляем отступ между сегментами
-            currentX += segmentWidth + 0.02 * totalWidth
+            currentX += segmentWidth + 0.01 * totalWidth  // Уменьшенные отступы
         }
 
         maskLayer.path = path.cgPath
         return maskLayer
     }
+
 
 
     
@@ -509,7 +511,7 @@ class ProfileViewController: UIViewController {
         }
 
         // Создаем новый констрейнт только для изменения позиции по оси X
-        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 5)
+        let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 10)
         leadingConstraint.isActive = true
 
         // Применяем обновления для маркера
