@@ -8,7 +8,7 @@ class WeightChartView: UIView {
     private let pointColor = UIColor(red: 181/255, green: 228/255, blue: 217/255, alpha: 1) // Цвет точек
     private let pointBorderColor = UIColor.black // Черная обводка точек
     
-    private let scrollView = UIScrollView() // Для скроллинга, если больше 6 точек
+    private let scrollView = UIScrollView() // Для скроллинга, если больше 5 точек
     private let graphContentView = UIView() // Контейнер для графика внутри scrollView
     private let yAxisView = UIView() // Фиксированная шкала Y вне scrollView
     
@@ -87,7 +87,9 @@ class WeightChartView: UIView {
             "2025-02-26T00:00:00Z": 116.8,
             "2025-02-27T00:00:00Z": 115.9,
             "2025-02-28T00:00:00Z": 114.3,
-            "2025-03-01T00:00:00Z": 114.3
+            "2025-03-01T00:00:00Z": 114.3,
+            "2025-03-02T00:00:00Z": 110.3,
+            "2025-03-03T00:00:00Z": 112.3
         ]
     }
     
@@ -135,20 +137,22 @@ class WeightChartView: UIView {
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
         
-        // Ограничиваем до 6 точек для отображения, если больше
-        let displayDates = Array(sortedDates.prefix(6))
-        let minY = weightData.values.min() ?? 57 // Минимальное значение веса (57 кг)
-        let maxY = weightData.values.max() ?? 99 // Максимальное значение веса (99 кг)
+        // Ограничиваем до 5 точек для отображения, если больше
+        //let displayDates = Array(sortedDates.prefix())
+        let tempMinY = weightData.values.min() ?? 50 // Минимальное значение веса (57 кг)
+        let temoMaxY = weightData.values.max() ?? 120 // Максимальное значение веса (99 кг)
+        let minY = tempMinY - 1
+        let maxY = temoMaxY + 1
         
         // Фиксированные размеры графика
         let graphHeight = fixedHeight - 40 // Учитываем отступы сверху и снизу (20 + 20)
         let graphWidth: CGFloat
-        let totalPoints = displayDates.count
+        let totalPoints = sortedDates.count
         
         if totalPoints <= 5 {
-            graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–6 точек с учетом шкалы Y и отступов
+            graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–5 точек с учетом шкалы Y и отступов
         } else {
-            graphWidth = CGFloat(totalPoints) * 60 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
+            graphWidth = CGFloat(totalPoints) * 61 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
         }
         
         // Устанавливаем ширину contentView
@@ -164,10 +168,9 @@ class WeightChartView: UIView {
         } else {
             xSpacing = graphWidth / 2 // Одна точка по центру
         }
-
         
         // Рисуем ось X (даты)
-        for (index, dateString) in displayDates.enumerated() {
+        for (index, dateString) in sortedDates.enumerated() {
             let x = totalPoints == 1 ? (graphWidth + padding) / 2 : CGFloat(index) * xSpacing + padding
             guard let date = dateFormatter.date(from: dateString) else { continue }
             let dateLabel = UILabel()
@@ -207,7 +210,7 @@ class WeightChartView: UIView {
         let path = UIBezierPath()
         var firstPoint = true
         
-        for (index, dateString) in displayDates.enumerated() {
+        for (index, dateString) in sortedDates.enumerated() {
             guard let weight = weightData[dateString] else { continue }
             let x = totalPoints == 1 ? (graphWidth + padding) / 2 : CGFloat(index) * xSpacing + padding
             let yRange = maxY - minY == 0 ? 1 : maxY - minY
@@ -246,6 +249,14 @@ class WeightChartView: UIView {
         shapeLayer.fillColor = UIColor.clear.cgColor
         shapeLayer.lineWidth = 2
         graphContentView.layer.addSublayer(shapeLayer)
+        
+        // Скроллим к концу, если точек больше 5
+        if totalPoints > 5 {
+            let contentWidth = scrollView.contentSize.width
+            let scrollViewWidth = scrollView.bounds.width
+            let offsetX = max(0, contentWidth - scrollViewWidth) // Прокрутка к правому краю
+            scrollView.setContentOffset(CGPoint(x: offsetX, y: 0), animated: false) // Без анимации для немедленного скроллинга
+        }
     }
 }
 
