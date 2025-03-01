@@ -10,7 +10,7 @@ class WeightInputManager: NSObject {
     private var selectedWhole = 75
     private var selectedDecimal = 0.0
 
-    private let wholeNumbers = Array(50...150)
+    private let wholeNumbers = Array(30...180)
     private let decimalParts = [0.0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
 
     init(parentViewController: UIViewController) {
@@ -77,8 +77,8 @@ class WeightInputManager: NSObject {
             doneButton.centerYAnchor.constraint(equalTo: toolbar.centerYAnchor),
 
             pickerView.topAnchor.constraint(equalTo: toolbar.bottomAnchor),
-            pickerView.leadingAnchor.constraint(equalTo: pickerContainerView.leadingAnchor),
-            pickerView.trailingAnchor.constraint(equalTo: pickerContainerView.trailingAnchor),
+            pickerView.leadingAnchor.constraint(equalTo: pickerContainerView.leadingAnchor, constant: 120), // Добавляем отступ для центра
+           pickerView.trailingAnchor.constraint(equalTo: pickerContainerView.trailingAnchor, constant: -120), // Добавляем отступ для центра
             pickerView.bottomAnchor.constraint(equalTo: pickerContainerView.bottomAnchor)
         ])
     }
@@ -132,14 +132,22 @@ class WeightInputManager: NSObject {
 
 // MARK: - UIPickerViewDelegate & UIPickerViewDataSource
 extension WeightInputManager: UIPickerViewDelegate, UIPickerViewDataSource {
-    func numberOfComponents(in pickerView: UIPickerView) -> Int { 2 }
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 2
+    }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         return component == 0 ? wholeNumbers.count : decimalParts.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return component == 0 ? "\(wholeNumbers[row])" : String(format: "%.1f", decimalParts[row])
+        if component == 0 {
+            return "\(wholeNumbers[row])" // Показываем только целое число
+        } else {
+            // Для десятичных частей убираем ведущий 0
+            let decimalString = String(format: "%.1f", decimalParts[row])
+            return decimalString.hasPrefix("0") ? String(decimalString.dropFirst()) : decimalString
+        }
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -149,5 +157,32 @@ extension WeightInputManager: UIPickerViewDelegate, UIPickerViewDataSource {
             selectedDecimal = decimalParts[row]
         }
     }
+//    func pickerView(_ pickerView: UIPickerView, widthForComponent component: Int) -> CGFloat {
+//            if component == 0 { // Левый барабан (целые числа) — шире, чтобы "прижать" его к правой стороне
+//                return 150 // Увеличиваем ширину первого компонента
+//            } else { // Правый барабан (десятичные части) — уже, чтобы "прижать" его к левой стороне
+//                return 50 // Уменьшаем ширину второго компонента
+//            }
+//        }
+    func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+            var label: UILabel
+            if let reusedLabel = view as? UILabel {
+                label = reusedLabel
+            } else {
+                label = UILabel()
+            }
+
+            if component == 0 { // Левый барабан (целые числа)
+                label.font = UIFont.systemFont(ofSize: 27, weight: .regular) // Увеличиваем шрифт
+                label.textAlignment = .right // Выравниваем текст вправо, чтобы "прижать" к правой стороне компонента
+            } else { // Правый барабан (десятичные части)
+                label.font = UIFont.systemFont(ofSize: 27, weight: .regular) // Стандартный или меньший шрифт
+                label.textAlignment = .left // Выравниваем текст влево, чтобы "прижать" к левой стороне компонента
+            }
+
+            label.text = self.pickerView(pickerView, titleForRow: row, forComponent: component)
+            label.textColor = .black
+            return label
+        }
 }
 
