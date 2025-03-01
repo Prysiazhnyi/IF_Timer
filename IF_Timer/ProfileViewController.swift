@@ -354,7 +354,7 @@ class ProfileViewController: UIViewController {
             weightView.addSubview(weightChartView)
             
             NSLayoutConstraint.activate([
-                weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 80), // Отступ сверху для меток
+                weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 90), // Отступ сверху для меток
                 weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
                 weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
                 weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)

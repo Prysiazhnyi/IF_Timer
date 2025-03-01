@@ -33,7 +33,8 @@ class WeightChartView: UIView {
         // Устанавливаем фиксированные размеры
         frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: fixedWidth, height: fixedHeight)
         
-        backgroundColor = .white
+        //backgroundColor = .white
+        backgroundColor = .clear
         layer.cornerRadius = 25
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.1
@@ -149,7 +150,7 @@ class WeightChartView: UIView {
         if totalPoints <= 5 {
             graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–5 точек с учетом шкалы Y и отступов
         } else {
-            graphWidth = CGFloat(totalPoints) * 61 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
+            graphWidth = CGFloat(totalPoints) * 62 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
         }
         
         // Устанавливаем ширину contentView
@@ -175,12 +176,12 @@ class WeightChartView: UIView {
             let dateLabel = UILabel()
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
             dateLabel.text = date.toString(format: "dd MMM") // Формат даты, например, "24 фев"
-            dateLabel.font = .systemFont(ofSize: 12, weight: .regular)
+            dateLabel.font = .systemFont(ofSize: 14, weight: .regular)
             dateLabel.textColor = .gray
             graphContentView.addSubview(dateLabel)
             
             NSLayoutConstraint.activate([
-                dateLabel.bottomAnchor.constraint(equalTo: graphContentView.bottomAnchor, constant: 5),
+                dateLabel.bottomAnchor.constraint(equalTo: graphContentView.bottomAnchor, constant: 1),
                 dateLabel.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth) // Сдвиг для избежания наложения на шкалу Y
             ])
         }
@@ -190,7 +191,7 @@ class WeightChartView: UIView {
         let ySpacing = graphHeight / CGFloat(ySteps)
         for i in 0...ySteps {
             let yValue = maxY - (CGFloat(i) * (maxY - minY) / CGFloat(ySteps))
-            let y = CGFloat(i) * ySpacing + 20 // Сдвиг для верхнего отступа
+            let y = CGFloat(i) * ySpacing + 15 // Сдвиг для верхнего отступа
         
             let yLabel = UILabel()
             yLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -207,7 +208,7 @@ class WeightChartView: UIView {
         
         // Рисуем линии разметки по оси Y в graphContentView с отступами
         let gridLines: [CAShapeLayer] = (0...ySteps).map { i in
-            let y = CGFloat(i) * ySpacing + 20 // Позиция Y соответствует меткам
+            let y = CGFloat(i) * ySpacing + 15 // Позиция Y соответствует меткам
             let path = UIBezierPath()
             let leftPadding = padding // Отступ слева (используем padding, чтобы совпадало с отступами точек)
             let rightPadding = padding // Отступ справа (также используем padding для симметрии)

@@ -1241,7 +1241,6 @@
                                                     <constraint firstItem="Y7F-mT-BYL" firstAttribute="leading" secondItem="5xw-gb-rT6" secondAttribute="leading" constant="10" id="fag-8N-SsN"/>
                                                     <constraint firstItem="R9R-Bb-Hmb" firstAttribute="centerY" secondItem="Y7F-mT-BYL" secondAttribute="centerY" id="lYi-cB-AVa"/>
                                                     <constraint firstItem="R9R-Bb-Hmb" firstAttribute="leading" secondItem="Y7F-mT-BYL" secondAttribute="trailing" constant="15" id="mX9-Uj-5ST"/>
-                                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="340" id="nIU-jL-kKL"/>
                                                     <constraint firstAttribute="trailing" secondItem="101-PN-674" secondAttribute="trailing" constant="10" id="ujD-dA-Vv6"/>
                                                 </constraints>
                                             </view>
