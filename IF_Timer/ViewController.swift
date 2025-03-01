@@ -387,9 +387,9 @@ class ViewController: UIViewController, CustomAlertDelegate {
             SaveData.shared.saveDateUserDefaults()
             setupIfFastingTimeExpired()
             setupButtonsStart()
+            //Запланирование Push-сообщение
+            NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
         }
-        //Запланирование Push-сообщение
-        NotificationManager.shared.scheduleNotifications(finishDate: finishDate, endDate: endDate, isStarvation: isStarvation)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
