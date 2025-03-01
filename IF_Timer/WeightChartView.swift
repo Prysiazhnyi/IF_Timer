@@ -166,9 +166,11 @@ class WeightChartView: UIView {
             xSpacing = graphWidth / 2 // Одна точка по центру
         }
         
+        print("totalPoints - \(totalPoints), xSpacing - \(xSpacing)")
+        
         // Рисуем ось X (даты)
         for (index, dateString) in sortedDates.enumerated() {
-            let x = totalPoints == 1 ? (graphWidth + padding) / 2 : CGFloat(index) * xSpacing + padding
+            let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
             guard let date = dateFormatter.date(from: dateString) else { continue }
             let dateLabel = UILabel()
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -229,7 +231,7 @@ class WeightChartView: UIView {
         
         for (index, dateString) in sortedDates.enumerated() {
             guard let weight = weightData[dateString] else { continue }
-            let x = totalPoints == 1 ? (graphWidth + padding) / 2 : CGFloat(index) * xSpacing + padding
+            let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
             let yRange = maxY - minY == 0 ? 1 : maxY - minY
             let normalizedY = (maxY - weight) / yRange * graphHeight + 20 // Сдвиг для верхнего отступа
             
