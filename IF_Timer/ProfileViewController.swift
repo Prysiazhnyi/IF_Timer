@@ -64,12 +64,9 @@ class ProfileViewController: UIViewController {
     let text30Imt  = "Ожиріння першого ступеня"
     let text35Imt  = "Ожиріння другого ступеня"
     let text40Imt  = "Ожиріння третього ступеня"
-   
-    
     
     let backgroundTab = UIColor(red: 230/255, green: 245/255, blue: 255/255, alpha: 1)
     let backgroundView = UIColor(red: 234/255, green: 254/255, blue: 255/255, alpha: 1)
-
     
     var profileFastingData: [FastingDataEntry] = []
     var profileFastingDataCycle: [FastingDataCycle] = []
@@ -116,6 +113,7 @@ class ProfileViewController: UIViewController {
         setupStatisticsFastingView()
         setupWeightAccountingView()
         setupImtView()
+        setupProgressImt()
         addBlackTriangle(to: markerImtView)
     }
     
@@ -152,11 +150,11 @@ class ProfileViewController: UIViewController {
         // Настроим отступы между изображением и текстом
         settingsButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 5)  // отступ для изображения
         settingsButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: -5)  // отступ для текста
-        
     }
     
+    //MARK: Code block - achievementsView
+    
     func setupLabelsAchievementsView() {
-        
         mainAchievementLabel.text = "Ваші досягнення"
         
         firstLabelAchievementLabel.text = "Днів у додутку"
@@ -219,6 +217,8 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    //MARK: Code block - fastingTrackerView
+    
     func setupFastingTrackerView() {
         chartView.data = fastingTracker.getFastingData().map { ($0.date, $0.hours) }
         
@@ -229,7 +229,6 @@ class ProfileViewController: UIViewController {
             chartView.translatesAutoresizingMaskIntoConstraints = false
             fastingTrackerView.heightAnchor.constraint(equalToConstant: 200).isActive = true // Задай нужную высоту
             
-            
             NSLayoutConstraint.activate([
                 chartView.leadingAnchor.constraint(equalTo: fastingTrackerView.leadingAnchor, constant: 10),
                 chartView.trailingAnchor.constraint(equalTo: fastingTrackerView.trailingAnchor, constant: -10),
@@ -239,12 +238,12 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    //MARK: Code block - statisticsFastingView
+    
     func setupStatisticsFastingView() {
         statisticsFastingLabel.font = UIFont.systemFont(ofSize: 19, weight: .regular)
         statisticsFastingLabel.textColor = .black
         statisticsFastingLabel.text = "Загальний час голодування  \(tottalDaysFasting) д."
-        
-        
         setupProgressStatics()
         // Установим цвет прогресс-бара
         progressStatisticView.progressTintColor = .systemGreen // Зеленый для заполненной части
@@ -255,8 +254,6 @@ class ProfileViewController: UIViewController {
         dot1.layer.cornerRadius = dot1.frame.size.width / 2
         dot2.layer.cornerRadius = dot2.frame.size.width / 2
         dot3.layer.cornerRadius = dot3.frame.size.width / 2
-        
-        
         // Изменяем цвет точек в зависимости от прогресса
         // Рассчитаем позицию точек на основе текущего прогресса
         let progressWidth = progressStatisticView.frame.width
@@ -269,7 +266,7 @@ class ProfileViewController: UIViewController {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit  // Сохраняет пропорции изображения
         imageView.clipsToBounds = true  // Обрезает изображение по границам
-
+        
         dropMarketView.addSubview(imageView)
         moveDropMarketView()
         
@@ -278,7 +275,6 @@ class ProfileViewController: UIViewController {
         dot3Label.text = "14"
         
         progressDidChange()
-        
     }
     
     @objc func progressDidChange() {
@@ -299,7 +295,7 @@ class ProfileViewController: UIViewController {
         maskLayer.addSublayer(gradient)
         progressStatisticView.layer.mask = maskLayer
     }
-// MARK: Перемещение View за прогрессом
+    // Перемещение View за прогрессом
     @objc func moveDropMarketView() {
         let progressWidth = progressStatisticView.bounds.width * CGFloat(progressStatisticView.progress)
         // Убираем возможность автогенерации констрейнтов для dropMarketView, чтобы вручную управлять констрейнтами
@@ -317,11 +313,9 @@ class ProfileViewController: UIViewController {
         // Применяем обновления для метки
         dropMarketView.superview?.layoutIfNeeded()
     }
-
+    
     func setupProgressStatics() {
-      
         let constFactor = tottalDaysFasting % 7
-        
         dot2LabelText  = "\(constFactor * 7)"
         dot3LabelText = "\(constFactor * 14)"
         
@@ -351,10 +345,13 @@ class ProfileViewController: UIViewController {
         imageWhenViewIsEmpty(weightView)
     }
     
+    //MARK: Code block - weightView
+    
+    
+    
+    //MARK: Code block - imtView
+    
     func setupImtView() {
-        //imageWhenViewIsEmpty(imtView)
-        setupProgressImt()
-        
         changeWeightImtViewButton.layer.cornerRadius = 20
         changeWeightImtViewButton.layer.masksToBounds = true
         changeWeightImtViewButton.backgroundColor = .lightGray
@@ -363,7 +360,6 @@ class ProfileViewController: UIViewController {
         changeWeightImtViewButton.setImage(scaledImage, for: .normal) // Устанавливаем уменьшенное изображение на кнопку
         changeWeightImtViewButton.contentMode = .center // Центрируем изображение на кнопке
         changeWeightImtViewButton.imageEdgeInsets = .zero
-
         
         countImtView.text = "\(imtCount)"
         updateImtMarker(for: imtCount) // Пример для ИМТ 30.9
@@ -385,29 +381,26 @@ class ProfileViewController: UIViewController {
             descriptionImtView.text = text40Imt
         }
 
-
-    
     }
     
     func setupProgressImt() {
         guard let progressImtView = progressImtView else {
             print("setupProgressImt failed: progressImtView is nil")
+            imageWhenViewIsEmpty(imtView)
             return
         }
-        
         // Очищаем существующие подслои и субвью
         progressImtView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         progressImtView.subviews.forEach { $0.removeFromSuperview() }
         
         // Устанавливаем высоту через transform (если нужно)
-        progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5)
+        progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 1.5)
         
         // Проверяем ширину
         guard progressImtView.bounds.width > 0 else {
             print("setupProgressImt failed: progressImtView.bounds.width <= 0")
             return
         }
-        
         // Ширина всей шкалы
         let totalWidth: CGFloat = 300
         let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Отступы между сегментами
@@ -440,19 +433,19 @@ class ProfileViewController: UIViewController {
             currentX += width + (0.01 * totalWidth) // Добавляем отступ
         }
         // Маска с закруглениями
-                let maskLayer = createRoundedSegmentsMask()
-                progressImtView.layer.mask = maskLayer
+        let maskLayer = createRoundedSegmentsMask()
+        progressImtView.layer.mask = maskLayer
     }
     
     // Маска с правильными закруглениями
     func createRoundedSegmentsMask() -> CAShapeLayer {
         let maskLayer = CAShapeLayer()
         let path = UIBezierPath()
-
+        
         let totalWidth: CGFloat = 300 // Ширина всей шкалы
         let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Уменьшенные отступы между сегментами
         let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
-
+        
         // Распределяем доступную ширину между сегментами
         let segmentWidths = [
             (1.0 / 25.0),  // 15-16
@@ -462,54 +455,49 @@ class ProfileViewController: UIViewController {
             (5.0 / 25.0),  // 30-35
             (5.0 / 25.0)   // 35-40
         ].map { $0 * availableWidth }
-
+        
         // Масштабируем так, чтобы в сумме они дали доступную ширину
         let totalSegmentWidth = segmentWidths.reduce(0, +)
         let scaleFactor = availableWidth / totalSegmentWidth
         let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
-
+        
         var currentX: CGFloat = 0
         for segmentWidth in scaledSegmentWidths {
             let rect = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
             let roundedRect = UIBezierPath(roundedRect: rect, cornerRadius: progressImtView.bounds.height / 2)
             path.append(roundedRect)
-
+            
             // Добавляем отступ между сегментами
             currentX += segmentWidth + 0.01 * totalWidth  // Уменьшенные отступы
         }
-
+        
         maskLayer.path = path.cgPath
         return maskLayer
     }
-
-
-
-    
-     func updateImtMarker(for imt: CGFloat) {
+  
+    func updateImtMarker(for imt: CGFloat) {
         let minIMT: CGFloat = 15
         let maxIMT: CGFloat = 40
         let progress = (imt - minIMT) / (maxIMT - minIMT)
         let progressWidth = progressImtView.bounds.width
-
+        
         // Проверка на нулевую ширину
         if progressWidth == 0 { return }
-
+        
         let markerX = progress * progressWidth
-
+        
         // Убираем возможность автогенерации констрейнтов для markerImtView, чтобы вручную управлять констрейнтами
         markerImtView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         // Если у вас уже есть старые констрейнты для markerImtView, находим и удаляем только тот, который отвечает за позицию по X
         if let existingConstraint = markerImtView.superview?.constraints.first(where: {
             $0.firstItem as? UIView == markerImtView && $0.firstAttribute == .leading
         }) {
             markerImtView.superview?.removeConstraint(existingConstraint)
         }
-
         // Создаем новый констрейнт только для изменения позиции по оси X
         let leadingConstraint = markerImtView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: markerX - markerImtView.bounds.width / 8)
         leadingConstraint.isActive = true
-
         // Применяем обновления для маркера
         markerImtView.superview?.layoutIfNeeded()
     }
@@ -523,20 +511,16 @@ class ProfileViewController: UIViewController {
         trianglePath.addLine(to: CGPoint(x: 0, y: 0))  // Левый верхний угол
         trianglePath.addLine(to: CGPoint(x: view.bounds.width, y: 0))  // Правый верхний угол
         trianglePath.close()  // Закрываем путь
-        
         // Настроим слой с треугольником
         let triangleLayer = CAShapeLayer()
         triangleLayer.path = trianglePath.cgPath
         triangleLayer.fillColor = UIColor.black.cgColor  // Чёрный цвет
-        
         // Добавляем слой в вью
         view.layer.addSublayer(triangleLayer)
     }
-
-
-
-
- 
+    
+    //MARK: Code block - Other
+    
     @objc func openSettings() {
         //        let settingsVC = SettingsViewController() // Замените на ваш класс настроек
         //        navigationController?.pushViewController(settingsVC, animated: true)
