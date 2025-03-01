@@ -116,7 +116,8 @@ class WeightChartView: UIView {
         graphContentView.subviews.forEach { $0.removeFromSuperview() }
         graphContentView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
         yAxisView.subviews.forEach { $0.removeFromSuperview() }
-        
+        yAxisView.layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Очищаем слои yAxisView
+
         // Если данных нет, показываем пустой график
         guard !weightData.isEmpty else {
             let noDataLabel = UILabel()
@@ -282,3 +283,5 @@ extension Date {
         return formatter.string(from: self)
     }
 }
+
+

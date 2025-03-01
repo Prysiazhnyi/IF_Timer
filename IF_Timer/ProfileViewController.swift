@@ -416,10 +416,10 @@ class ProfileViewController: UIViewController {
         self.setupWeightAccountingView()
         
         // Убедимся, что график обновляется в WeightChartView
-        if let weightChartView = self.weightView as? WeightChartView {
-            weightChartView.weightData = self.weightDataProfile
-                    weightChartView.updateChart()
-                }
+//        if let weightChartView = self.weightView as? WeightChartView {
+//            weightChartView.weightData = self.weightDataProfile
+//                    weightChartView.updateChart()
+//                }
             }
     }
     
