@@ -378,29 +378,23 @@ class ProfileViewController: UIViewController {
         startWeightLabel.text = "Початковий: \(startWeightValue.toOneDecimalString()) kg"
         targetWeightLabel.text = "Ціль: \(targetWeightValue.toOneDecimalString()) kg"
         
+        differentSymbolWeightLabel.layer.cornerRadius = 12
+        differentSymbolWeightLabel.clipsToBounds = true
+        differentSymbolWeightLabel.textColor = .white // Цвет текста
+        differentSymbolWeightLabel.font = .systemFont(ofSize: 21, weight: .regular) // Шрифт
+        differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
         
         if differentValue < 0 {
             differentWeightLabel.textColor = .systemGreen
             differentSymbolWeightLabel.backgroundColor = .systemGreen
-            differentSymbolWeightLabel.layer.cornerRadius = 12
             differentSymbolWeightLabel.clipsToBounds = true
             differentSymbolWeightLabel.text = "-"
-            differentSymbolWeightLabel.textColor = .white // Цвет текста
-            differentSymbolWeightLabel.font = .systemFont(ofSize: 24, weight: .regular) // Шрифт
-            differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
-           
         } else {
             differentWeightLabel.textColor = .systemRed
             differentSymbolWeightLabel.backgroundColor = .systemRed
-            differentSymbolWeightLabel.layer.cornerRadius = 12
             differentSymbolWeightLabel.clipsToBounds = true
             differentSymbolWeightLabel.text = "+"
-            differentSymbolWeightLabel.textColor = .white // Цвет текста
-            differentSymbolWeightLabel.font = .systemFont(ofSize: 24, weight: .regular) // Шрифт
-            differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
-            differentSymbolWeightLabel.baselineAdjustment = .alignCenters
         }
-        
     }
     
     
