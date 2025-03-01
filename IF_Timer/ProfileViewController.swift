@@ -390,65 +390,61 @@ class ProfileViewController: UIViewController {
     }
     
     func setupProgressImt() {
-        guard progressImtView.bounds.width > 0 else { return } // Защита от краша
-
-        progressImtView.layer.sublayers?.forEach { $0.removeFromSuperlayer() } // Очищаем старые слои
-        progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5) // Толщина
-
-        // Ширина всей шкалы
-        let totalWidth: CGFloat = 300
-        let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Уменьшили отступы между сегментами
-        let availableWidth: CGFloat = totalWidth - totalMargins // Доступная ширина для сегментов
-
-        // Распределяем доступную ширину между сегментами
-        let segmentWidths = [
-            (1.0 / 25.0),  // 15-16
-            (2.5 / 25.0),  // 16-18.5
-            (6.5 / 25.0),  // 18.5-25
-            (5.0 / 25.0),  // 25-30
-            (5.0 / 25.0),  // 30-35
-            (5.0 / 25.0)   // 35-40
-        ].map { $0 * availableWidth }
-
-        // Масштабируем так, чтобы в сумме они дали доступную ширину
-        let totalSegmentWidth = segmentWidths.reduce(0, +)
-        let scaleFactor = availableWidth / totalSegmentWidth
-        let scaledSegmentWidths = segmentWidths.map { $0 * scaleFactor }
-
-        // Массив цветов для каждого сегмента
-        let colors: [UIColor] = [
-            .blue,        // <16
-            .systemBlue,  // 16-18.5
-            .green,       // 18.5-25
-            .yellow,      // 25-30
-            .orange,      // 30-35
-            .red          // >35
-        ]
-
-        var currentX: CGFloat = 0
-        for (index, segmentWidth) in scaledSegmentWidths.enumerated() {
-            // Сегмент с заданным цветом
-            let segmentLayer = CALayer()
-            segmentLayer.frame = CGRect(x: currentX, y: 0, width: segmentWidth, height: progressImtView.bounds.height)
-            segmentLayer.backgroundColor = colors[index].cgColor
-            
-            // Добавляем закругления
-            segmentLayer.cornerRadius = progressImtView.bounds.height / 2
-            segmentLayer.masksToBounds = true
-
-            // Добавляем сегмент на шкалу
-            progressImtView.layer.addSublayer(segmentLayer)
-
-            // Обновляем текущую позицию для следующего сегмента
-            currentX += segmentWidth + 0.01 * totalWidth  // Уменьшенные отступы
+        guard let progressImtView = progressImtView else {
+            print("setupProgressImt failed: progressImtView is nil")
+            return
         }
         
+        // Очищаем существующие подслои и субвью
+        progressImtView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
+        progressImtView.subviews.forEach { $0.removeFromSuperview() }
+        
+        // Устанавливаем высоту через transform (если нужно)
+        progressImtView.transform = CGAffineTransform(scaleX: 1.0, y: 2.5)
+        
+        // Проверяем ширину
+        guard progressImtView.bounds.width > 0 else {
+            print("setupProgressImt failed: progressImtView.bounds.width <= 0")
+            return
+        }
+        
+        // Ширина всей шкалы
+        let totalWidth: CGFloat = 300
+        let totalMargins: CGFloat = 0.01 * totalWidth * 5 // Отступы между сегментами
+        let availableWidth: CGFloat = totalWidth - totalMargins
+        
+        // Пропорции сегментов
+        let segmentProportions: [CGFloat] = [1.0 / 25.0, 2.5 / 25.0, 6.5 / 25.0, 5.0 / 25.0, 5.0 / 25.0, 5.0 / 25.0]
+        let segmentWidths = segmentProportions.map { $0 * availableWidth }
+        
+        // Цвета сегментов
+        let colors: [UIColor] = [.blue, .systemBlue, .green, .yellow, .orange, .red]
+        
+        var currentX: CGFloat = 0
+        for (index, width) in segmentWidths.enumerated() {
+            let segmentView = UIView()
+            segmentView.translatesAutoresizingMaskIntoConstraints = false
+            segmentView.backgroundColor = colors[index]
+            segmentView.layer.cornerRadius = progressImtView.bounds.height / 2
+            segmentView.clipsToBounds = true
+            
+            progressImtView.addSubview(segmentView)
+            
+            NSLayoutConstraint.activate([
+                segmentView.leadingAnchor.constraint(equalTo: progressImtView.leadingAnchor, constant: currentX),
+                segmentView.topAnchor.constraint(equalTo: progressImtView.topAnchor),
+                segmentView.bottomAnchor.constraint(equalTo: progressImtView.bottomAnchor),
+                segmentView.widthAnchor.constraint(equalToConstant: width)
+            ])
+            
+            currentX += width + (0.01 * totalWidth) // Добавляем отступ
+        }
         // Маска с закруглениями
-        let maskLayer = createRoundedSegmentsMask()
-        progressImtView.layer.mask = maskLayer
+                let maskLayer = createRoundedSegmentsMask()
+                progressImtView.layer.mask = maskLayer
     }
-
-    // ✅ Маска с правильными закруглениями
+    
+    // Маска с правильными закруглениями
     func createRoundedSegmentsMask() -> CAShapeLayer {
         let maskLayer = CAShapeLayer()
         let path = UIBezierPath()
