@@ -191,7 +191,7 @@ class WeightChartView: UIView {
         let ySpacing = graphHeight / CGFloat(ySteps)
         for i in 0...ySteps {
             let yValue = maxY - (CGFloat(i) * (maxY - minY) / CGFloat(ySteps))
-            let y = CGFloat(i) * ySpacing + 20 // Сдвиг для верхнего отступа
+            let y = CGFloat(i) * ySpacing + 15 // Сдвиг для верхнего отступа
         
             let yLabel = UILabel()
             yLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -205,6 +205,24 @@ class WeightChartView: UIView {
                 yLabel.centerYAnchor.constraint(equalTo: yAxisView.topAnchor, constant: y)
             ])
         }
+        
+        // Рисуем линии разметки по оси Y в graphContentView
+        let gridLines: [CAShapeLayer] = (0...ySteps).map { i in
+            let y = CGFloat(i) * ySpacing + 15 // Позиция Y соответствует меткам
+            let path = UIBezierPath()
+            path.move(to: CGPoint(x: 0, y: y)) // Начало линии от левого края graphContentView
+            path.addLine(to: CGPoint(x: graphWidth, y: y)) // Конец линии до правого края graphContentView
+            
+            let shapeLayer = CAShapeLayer()
+            shapeLayer.path = path.cgPath
+            shapeLayer.strokeColor = UIColor.gray.withAlphaComponent(0.3).cgColor // Цвет линий разметки
+            shapeLayer.lineWidth = 0.5 // Тонкие линии для разметки
+            //shapeLayer.lineDashPattern = [2, 2] // Пунктирные линии (опционально, для легкости восприятия)
+            return shapeLayer
+        }
+
+        // Добавляем линии в graphContentView
+        gridLines.forEach { graphContentView.layer.addSublayer($0) }
         
         // Рисуем график
         let path = UIBezierPath()
