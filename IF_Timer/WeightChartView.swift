@@ -145,7 +145,7 @@ class WeightChartView: UIView {
         let graphWidth: CGFloat
         let totalPoints = displayDates.count
         
-        if totalPoints <= 6 {
+        if totalPoints <= 5 {
             graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–6 точек с учетом шкалы Y и отступов
         } else {
             graphWidth = CGFloat(totalPoints) * 60 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
@@ -159,11 +159,12 @@ class WeightChartView: UIView {
         
         // Распределяем точки
         let xSpacing: CGFloat
-        if totalPoints == 1 {
-            xSpacing = 0 // Одна точка — посередине
+        if totalPoints > 1 {
+            xSpacing = (graphWidth - padding * 2) / CGFloat(totalPoints) // Равномерное распределение от 0 до graphWidth - padding
         } else {
-            xSpacing = (graphWidth - padding * 2) / CGFloat(max(1, totalPoints - 1)) // Равномерное распределение с учетом отступов
+            xSpacing = graphWidth / 2 // Одна точка по центру
         }
+
         
         // Рисуем ось X (даты)
         for (index, dateString) in displayDates.enumerated() {
