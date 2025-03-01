@@ -4,9 +4,6 @@ import UIKit
 class WeightChartView: UIView {
     // MARK: - Properties
     private var weightData: [String: Double] = [:] // Хранение данных веса в формате ISO 8601
-    private let lineColor = UIColor(red: 181/255, green: 228/255, blue: 217/255, alpha: 1) // Светло-зеленый
-    private let pointColor = UIColor(red: 181/255, green: 228/255, blue: 217/255, alpha: 1) // Цвет точек
-    private let pointBorderColor = UIColor.black // Черная обводка точек
     
     private let scrollView = UIScrollView() // Для скроллинга, если больше 5 точек
     private let graphContentView = UIView() // Контейнер для графика внутри scrollView
@@ -15,8 +12,8 @@ class WeightChartView: UIView {
     // Фиксированные размеры
     private let fixedWidth: CGFloat = 340
     private let fixedHeight: CGFloat = 200
-    private let yAxisWidth: CGFloat = 30 // Ширина шкалы Y
-    private let padding: CGFloat = 5 // Отступы слева и справа для графика
+    private let yAxisWidth: CGFloat = 35 // Ширина шкалы Y
+    private let padding: CGFloat = 10 // Отступы слева и справа для графика
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -196,28 +193,30 @@ class WeightChartView: UIView {
             let yLabel = UILabel()
             yLabel.translatesAutoresizingMaskIntoConstraints = false
             yLabel.text = String(Int(yValue))
-            yLabel.font = .systemFont(ofSize: 12, weight: .regular)
+            yLabel.font = .systemFont(ofSize: 14, weight: .regular)
             yLabel.textColor = .gray
             yAxisView.addSubview(yLabel)
             
             NSLayoutConstraint.activate([
-                yLabel.trailingAnchor.constraint(equalTo: yAxisView.trailingAnchor), // Привязка к правому краю шкалы Y
+                yLabel.trailingAnchor.constraint(equalTo: yAxisView.trailingAnchor, constant: -2), // Привязка к правому краю шкалы Y
                 yLabel.centerYAnchor.constraint(equalTo: yAxisView.topAnchor, constant: y)
             ])
         }
         
-        // Рисуем линии разметки по оси Y в graphContentView
+        // Рисуем линии разметки по оси Y в graphContentView с отступами
         let gridLines: [CAShapeLayer] = (0...ySteps).map { i in
             let y = CGFloat(i) * ySpacing + 20 // Позиция Y соответствует меткам
             let path = UIBezierPath()
-            path.move(to: CGPoint(x: 0, y: y)) // Начало линии от левого края graphContentView
-            path.addLine(to: CGPoint(x: graphWidth, y: y)) // Конец линии до правого края graphContentView
+            let leftPadding = padding // Отступ слева (используем padding, чтобы совпадало с отступами точек)
+            let rightPadding = padding // Отступ справа (также используем padding для симметрии)
+            path.move(to: CGPoint(x: leftPadding, y: y)) // Начало линии с отступом слева
+            path.addLine(to: CGPoint(x: graphWidth - rightPadding, y: y)) // Конец линии с отступом справа
             
             let shapeLayer = CAShapeLayer()
             shapeLayer.path = path.cgPath
             shapeLayer.strokeColor = UIColor.gray.withAlphaComponent(0.3).cgColor // Цвет линий разметки
             shapeLayer.lineWidth = 0.5 // Тонкие линии для разметки
-            //shapeLayer.lineDashPattern = [2, 2] // Пунктирные линии (опционально, для легкости восприятия)
+            // shapeLayer.lineDashPattern = [2, 2] // Пунктирные линии (опционально, для легкости восприятия)
             return shapeLayer
         }
 
@@ -246,26 +245,24 @@ class WeightChartView: UIView {
             // Точка
             let pointView = UIView()
             pointView.translatesAutoresizingMaskIntoConstraints = false
-            pointView.backgroundColor = pointColor
-            pointView.layer.cornerRadius = 4
-            pointView.layer.borderWidth = 1
-            pointView.layer.borderColor = pointBorderColor.cgColor
+            pointView.backgroundColor = .systemGreen
+            pointView.layer.cornerRadius = 9
             graphContentView.addSubview(pointView)
             
             NSLayoutConstraint.activate([
                 pointView.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth),
                 pointView.centerYAnchor.constraint(equalTo: graphContentView.topAnchor, constant: normalizedY),
-                pointView.widthAnchor.constraint(equalToConstant: 8),
-                pointView.heightAnchor.constraint(equalToConstant: 8)
+                pointView.widthAnchor.constraint(equalToConstant: 18),
+                pointView.heightAnchor.constraint(equalToConstant: 18)
             ])
         }
         
         // Рисуем линию графика
         let shapeLayer = CAShapeLayer()
         shapeLayer.path = path.cgPath
-        shapeLayer.strokeColor = lineColor.cgColor
+        shapeLayer.strokeColor = UIColor.systemGreen.cgColor
         shapeLayer.fillColor = UIColor.clear.cgColor
-        shapeLayer.lineWidth = 2
+        shapeLayer.lineWidth = 5
         graphContentView.layer.addSublayer(shapeLayer)
         
         // Скроллим к концу, если точек больше 5
