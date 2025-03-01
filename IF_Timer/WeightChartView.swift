@@ -16,7 +16,7 @@ class WeightChartView: UIView {
     private let fixedWidth: CGFloat = 340
     private let fixedHeight: CGFloat = 200
     private let yAxisWidth: CGFloat = 30 // Ширина шкалы Y
-    private let padding: CGFloat = 20 // Отступы слева и справа для графика
+    private let padding: CGFloat = 5 // Отступы слева и справа для графика
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -87,6 +87,7 @@ class WeightChartView: UIView {
             "2025-02-26T00:00:00Z": 116.8,
             "2025-02-27T00:00:00Z": 115.9,
             "2025-02-28T00:00:00Z": 114.3
+            "2025-03-01T00:00:00Z": 114.3
         ]
     }
     
