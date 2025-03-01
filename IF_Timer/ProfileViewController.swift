@@ -48,7 +48,16 @@ class ProfileViewController: UIViewController {
     var dot2LabelText = "7"
     var dot3LabelText = "14"
     // для четвертого View weightView
-    
+    @IBOutlet weak var titleWeightLabel: UILabel!
+    @IBOutlet weak var differentWeightLabel: UILabel!
+    @IBOutlet weak var startWeightLabel: UILabel!
+    @IBOutlet weak var targetWeightLabel: UILabel!
+    @IBOutlet weak var differentSymbolWeightLabel: UILabel!
+    @IBOutlet weak var lineWeightView: UIView!
+    @IBOutlet weak var changeWeightButton: UIButton!
+    var startWeightValue: Double = 70.0
+    var targetWeightValue: Double = 60.0
+    var lastWeightValue: Double = 75.0
     // для пятого View imtView
     @IBOutlet weak var changeWeightImtViewButton: UIButton!
     @IBOutlet weak var titleImtView: UILabel!
@@ -360,6 +369,38 @@ class ProfileViewController: UIViewController {
                 weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
             ])
         }
+        
+        lineWeightView.layer.cornerRadius = 5
+        lineWeightView.backgroundColor = backgroundTab
+        titleWeightLabel.text = "Вага: \(lastWeightValue.toOneDecimalString()) kg"
+        let differentValue: Double = (lastWeightValue - startWeightValue)
+        differentWeightLabel.text = "\(abs(differentValue).toOneDecimalString()) kg"
+        startWeightLabel.text = "Початковий: \(startWeightValue.toOneDecimalString()) kg"
+        targetWeightLabel.text = "Ціль: \(targetWeightValue.toOneDecimalString()) kg"
+        
+        
+        if differentValue < 0 {
+            differentWeightLabel.textColor = .systemGreen
+            differentSymbolWeightLabel.backgroundColor = .systemGreen
+            differentSymbolWeightLabel.layer.cornerRadius = 12
+            differentSymbolWeightLabel.clipsToBounds = true
+            differentSymbolWeightLabel.text = "-"
+            differentSymbolWeightLabel.textColor = .white // Цвет текста
+            differentSymbolWeightLabel.font = .systemFont(ofSize: 24, weight: .regular) // Шрифт
+            differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
+           
+        } else {
+            differentWeightLabel.textColor = .systemRed
+            differentSymbolWeightLabel.backgroundColor = .systemRed
+            differentSymbolWeightLabel.layer.cornerRadius = 12
+            differentSymbolWeightLabel.clipsToBounds = true
+            differentSymbolWeightLabel.text = "+"
+            differentSymbolWeightLabel.textColor = .white // Цвет текста
+            differentSymbolWeightLabel.font = .systemFont(ofSize: 24, weight: .regular) // Шрифт
+            differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
+            differentSymbolWeightLabel.baselineAdjustment = .alignCenters
+        }
+        
     }
     
     
@@ -540,4 +581,10 @@ class ProfileViewController: UIViewController {
         //        navigationController?.pushViewController(settingsVC, animated: true)
     }
     
+}
+
+extension Double {
+    func toOneDecimalString() -> String {
+        String(format: "%.1f", self)
+    }
 }
