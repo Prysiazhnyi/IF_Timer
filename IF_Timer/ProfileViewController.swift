@@ -4,10 +4,12 @@
 //
 //  Created by Serhii Prysiazhnyi on 25.02.2025.
 //
-
+import Foundation
 import UIKit
 
 class ProfileViewController: UIViewController {
+    
+    var weightInputManager: WeightInputManager!
     
     let fastingTracker = FastingTracker()
     let chartView = FastingChartView()
@@ -57,7 +59,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var changeWeightButton: UIButton!
     var startWeightValue: Double = 70.0
     var targetWeightValue: Double = 60.0
-    var lastWeightValue: Double = 175.0
+    var lastWeightValue: Double = 75.0
     // для пятого View imtView
     @IBOutlet weak var changeWeightImtViewButton: UIButton!
     @IBOutlet weak var titleImtView: UILabel!
@@ -84,6 +86,8 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        weightInputManager = WeightInputManager(parentViewController: self)
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         viewTab.backgroundColor = .clear
@@ -398,6 +402,14 @@ class ProfileViewController: UIViewController {
             differentSymbolWeightLabel.clipsToBounds = true
             differentSymbolWeightLabel.text = "+"
         }
+    }
+    
+    @IBAction func changeWeightButtonTapped(_ sender: Any) {
+            
+    weightInputManager.showWeightPicker(startWeight: 75.0) { weight in
+                print("Выбранный вес: \(weight) кг")
+                // Обновление UI, например, изменение текста на кнопке
+            }
     }
     
     //MARK: Code block - imtView

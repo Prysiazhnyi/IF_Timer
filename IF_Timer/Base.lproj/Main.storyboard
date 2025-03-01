@@ -1172,6 +1172,9 @@
                                                         <buttonConfiguration key="configuration" style="plain">
                                                             <backgroundConfiguration key="background"/>
                                                         </buttonConfiguration>
+                                                        <connections>
+                                                            <action selector="changeWeightButtonTapped:" destination="L30-7o-H00" eventType="touchUpInside" id="gyn-Yx-R7s"/>
+                                                        </connections>
                                                     </button>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Вага: 118.6 kg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y7F-mT-BYL">
                                                         <rect key="frame" x="10" y="15" width="145" height="25"/>
