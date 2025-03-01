@@ -57,7 +57,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var changeWeightButton: UIButton!
     var startWeightValue: Double = 70.0
     var targetWeightValue: Double = 60.0
-    var lastWeightValue: Double = 75.0
+    var lastWeightValue: Double = 175.0
     // для пятого View imtView
     @IBOutlet weak var changeWeightImtViewButton: UIButton!
     @IBOutlet weak var titleImtView: UILabel!
@@ -373,10 +373,13 @@ class ProfileViewController: UIViewController {
         lineWeightView.layer.cornerRadius = 5
         lineWeightView.backgroundColor = backgroundTab
         titleWeightLabel.text = "Вага: \(lastWeightValue.toOneDecimalString()) kg"
+        titleWeightLabel.font = .systemFont(ofSize: 21, weight: .bold) // Шрифт
         let differentValue: Double = (lastWeightValue - startWeightValue)
         differentWeightLabel.text = "\(abs(differentValue).toOneDecimalString()) kg"
+        differentWeightLabel.font = .systemFont(ofSize: 19, weight: .regular) // Шрифт
         startWeightLabel.text = "Початковий: \(startWeightValue.toOneDecimalString()) kg"
         targetWeightLabel.text = "Ціль: \(targetWeightValue.toOneDecimalString()) kg"
+        addIconToButton(changeWeightButton)
         
         differentSymbolWeightLabel.layer.cornerRadius = 12
         differentSymbolWeightLabel.clipsToBounds = true
@@ -397,19 +400,10 @@ class ProfileViewController: UIViewController {
         }
     }
     
-    
     //MARK: Code block - imtView
     
     func setupImtView() {
-        changeWeightImtViewButton.layer.cornerRadius = 20
-        changeWeightImtViewButton.layer.masksToBounds = true
-        changeWeightImtViewButton.backgroundColor = .lightGray
-        let originalImage = UIImage(named: "iconPencil")
-        let scaledImage = originalImage?.resized(to: CGSize(width: 25, height: 25))
-        changeWeightImtViewButton.setImage(scaledImage, for: .normal) // Устанавливаем уменьшенное изображение на кнопку
-        changeWeightImtViewButton.contentMode = .center // Центрируем изображение на кнопке
-        changeWeightImtViewButton.imageEdgeInsets = .zero
-        
+        addIconToButton(changeWeightImtViewButton)
         countImtView.text = "\(imtCount)"
         updateImtMarker(for: imtCount) // Пример для ИМТ 30.9
         
@@ -569,6 +563,17 @@ class ProfileViewController: UIViewController {
     }
     
     //MARK: Code block - Other
+    
+    func addIconToButton(_ button: UIButton) {
+        button.layer.cornerRadius = 15
+        button.layer.masksToBounds = true
+        button.backgroundColor = .lightGray
+        let originalImage = UIImage(named: "iconPencil")
+        let scaledImage = originalImage?.resized(to: CGSize(width: 20, height: 20))
+        button.setImage(scaledImage, for: .normal) // Устанавливаем уменьшенное изображение на кнопку
+        button.contentMode = .center // Центрируем изображение на кнопке
+        button.imageEdgeInsets = .zero
+    }
     
     @objc func openSettings() {
         //        let settingsVC = SettingsViewController() // Замените на ваш класс настроек
