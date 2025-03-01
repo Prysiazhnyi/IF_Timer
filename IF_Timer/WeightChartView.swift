@@ -181,7 +181,7 @@ class WeightChartView: UIView {
             graphContentView.addSubview(dateLabel)
             
             NSLayoutConstraint.activate([
-                dateLabel.bottomAnchor.constraint(equalTo: graphContentView.bottomAnchor, constant: -5),
+                dateLabel.bottomAnchor.constraint(equalTo: graphContentView.bottomAnchor, constant: 5),
                 dateLabel.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth) // Сдвиг для избежания наложения на шкалу Y
             ])
         }
@@ -191,7 +191,7 @@ class WeightChartView: UIView {
         let ySpacing = graphHeight / CGFloat(ySteps)
         for i in 0...ySteps {
             let yValue = maxY - (CGFloat(i) * (maxY - minY) / CGFloat(ySteps))
-            let y = CGFloat(i) * ySpacing + 15 // Сдвиг для верхнего отступа
+            let y = CGFloat(i) * ySpacing + 20 // Сдвиг для верхнего отступа
         
             let yLabel = UILabel()
             yLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -208,7 +208,7 @@ class WeightChartView: UIView {
         
         // Рисуем линии разметки по оси Y в graphContentView
         let gridLines: [CAShapeLayer] = (0...ySteps).map { i in
-            let y = CGFloat(i) * ySpacing + 15 // Позиция Y соответствует меткам
+            let y = CGFloat(i) * ySpacing + 20 // Позиция Y соответствует меткам
             let path = UIBezierPath()
             path.move(to: CGPoint(x: 0, y: y)) // Начало линии от левого края graphContentView
             path.addLine(to: CGPoint(x: graphWidth, y: y)) // Конец линии до правого края graphContentView
