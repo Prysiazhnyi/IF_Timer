@@ -29,7 +29,7 @@ class NotificationManager {
         let center = UNUserNotificationCenter.current()
         center.removeAllPendingNotificationRequests() // Удаляем старые уведомления
         
-        print("Запланирован новый пуш-уведомления finishDate - \(finishDate), endDate - \(endDate), isStarvation - \(isStarvation)")
+        //print("Запланирован новый пуш-уведомления finishDate - \(finishDate), endDate - \(endDate), isStarvation - \(isStarvation)")
         
         if !isStarvation {
             // Уведомление за 1 час до начала голодания

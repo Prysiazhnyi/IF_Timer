@@ -341,12 +341,26 @@ class ProfileViewController: UIViewController {
         ])
     }
     
-    func setupWeightAccountingView() {
-        imageWhenViewIsEmpty(weightView)
-    }
-    
     //MARK: Code block - weightView
     
+    func setupWeightAccountingView() {
+        //imageWhenViewIsEmpty(weightView)
+        // Настройка weightView
+        if let weightChartView = weightView as? WeightChartView {
+            weightChartView.backgroundColor = backgroundView
+        } else {
+            let weightChartView = WeightChartView()
+            weightChartView.translatesAutoresizingMaskIntoConstraints = false
+            weightView.addSubview(weightChartView)
+            
+            NSLayoutConstraint.activate([
+                weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 80), // Отступ сверху для меток
+                weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
+                weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
+                weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
+            ])
+        }
+    }
     
     
     //MARK: Code block - imtView
@@ -380,7 +394,7 @@ class ProfileViewController: UIViewController {
         default:
             descriptionImtView.text = text40Imt
         }
-
+        
     }
     
     func setupProgressImt() {
@@ -474,7 +488,7 @@ class ProfileViewController: UIViewController {
         maskLayer.path = path.cgPath
         return maskLayer
     }
-  
+    
     func updateImtMarker(for imt: CGFloat) {
         let minIMT: CGFloat = 15
         let maxIMT: CGFloat = 40
