@@ -1,10 +1,8 @@
-// WeightChartView.swift
 import UIKit
 
 class WeightChartView: UIView {
     // MARK: - Properties
-    private var weightData: [String: Double] = [:] // Хранение данных веса в формате ISO 8601
-    
+    var weightData: [(date: Date, weight: Double)] = [] // Массив кортежей для даты и веса
     private let scrollView = UIScrollView() // Для скроллинга, если больше 5 точек
     private let graphContentView = UIView() // Контейнер для графика внутри scrollView
     private let yAxisView = UIView() // Фиксированная шкала Y вне scrollView
@@ -28,12 +26,28 @@ class WeightChartView: UIView {
         loadWeightData()
     }
     
+    // Восстановление данных из UserDefaults
+    func loadWeightData() {
+        if let savedData = UserDefaults.standard.array(forKey: "weightDataArray") as? [[String: Any]] {
+            weightData = savedData.compactMap { dict in
+                guard let dateString = dict["date"] as? String,
+                      let weight = dict["weight"] as? Double,
+                      let date = ISO8601DateFormatter().date(from: dateString) else {
+                    return nil
+                }
+                return (date: date, weight: weight)
+            }
+         updateChart()
+    } else {
+        updateChart() // Отобразить тестовые данные, если данных нет
+    }
+    }
+    
     // MARK: - Setup
     private func setupView() {
         // Устанавливаем фиксированные размеры
         frame = CGRect(x: frame.origin.x, y: frame.origin.y, width: fixedWidth, height: fixedHeight)
         
-        //backgroundColor = .white
         backgroundColor = .clear
         layer.cornerRadius = 25
         layer.shadowColor = UIColor.black.cgColor
@@ -78,35 +92,26 @@ class WeightChartView: UIView {
             graphContentView.heightAnchor.constraint(equalToConstant: fixedHeight)
         ])
         
-        // Инициализация данных (пример с датой и временем)
-        weightData = [
-            "2025-02-24T00:00:00Z": 118.6,
-            "2025-02-25T00:00:00Z": 117.5,
-            "2025-02-26T00:00:00Z": 116.8,
-            "2025-02-27T00:00:00Z": 115.9,
-            "2025-02-28T00:00:00Z": 114.3,
-            "2025-03-01T00:00:00Z": 114.3,
-            "2025-03-02T00:00:00Z": 110.3,
-            "2025-03-03T00:00:00Z": 112.3
-        ]
-    }
-    
-    // MARK: - Data Management
-    private func loadWeightData() {
-        if let savedData = UserDefaults.standard.dictionary(forKey: "weightDataString") as? [String: Double] {
-            weightData = savedData
-            updateChart()
-        } else {
-            updateChart() // Отобразить пустой график, если данных нет
-        }
-    }
-    
-    private func saveWeightData() {
-        UserDefaults.standard.set(weightData, forKey: "weightDataString")
+        if weightData.isEmpty {
+                let dateFormatter = ISO8601DateFormatter()
+                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
+                weightData = [
+                    (date: dateFormatter.date(from: "2025-02-24T00:00:00Z")!, weight: 118.6),
+                    (date: dateFormatter.date(from: "2025-02-25T00:00:00Z")!, weight: 117.5),
+                    (date: dateFormatter.date(from: "2025-02-26T00:00:00Z")!, weight: 116.8),
+                    (date: dateFormatter.date(from: "2025-02-27T00:00:00Z")!, weight: 115.9),
+                    (date: dateFormatter.date(from: "2025-02-28T00:00:00Z")!, weight: 114.3),
+                    (date: dateFormatter.date(from: "2025-03-01T00:00:00Z")!, weight: 114.3),
+                    (date: dateFormatter.date(from: "2025-03-02T00:00:00Z")!, weight: 110.3),
+                    (date: dateFormatter.date(from: "2025-03-03T00:00:00Z")!, weight: 112.3)
+                ]
+            }
     }
     
     // MARK: - Chart Drawing
-    private func updateChart() {
+     func updateChart() {
+        print("weightData - updateChart - updateChart  \(weightData)")
+        
         // Очистка графика
         graphContentView.subviews.forEach { $0.removeFromSuperview() }
         graphContentView.layer.sublayers?.forEach { $0.removeFromSuperlayer() }
@@ -122,35 +127,30 @@ class WeightChartView: UIView {
             graphContentView.addSubview(noDataLabel)
             
             NSLayoutConstraint.activate([
-                noDataLabel.centerXAnchor.constraint(equalTo: graphContentView.centerXAnchor),
+                noDataLabel.rightAnchor.constraint(equalTo: graphContentView.rightAnchor, constant: 205),
+               // noDataLabel.centerXAnchor.constraint(equalTo: graphContentView.centerXAnchor, constant: 50),
                 noDataLabel.centerYAnchor.constraint(equalTo: graphContentView.centerYAnchor)
             ])
             return
         }
         
-        // Сортируем даты
-        let sortedDates = weightData.keys.sorted()
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        // Сортируем данные по дате
+        let sortedData = weightData.sorted { $0.date < $1.date }
         
         // Ограничиваем до 5 точек для отображения, если больше
-        //let displayDates = Array(sortedDates.prefix())
-        let tempMinY = weightData.values.min() ?? 50 // Минимальное значение веса (57 кг)
-        let temoMaxY = weightData.values.max() ?? 120 // Максимальное значение веса (99 кг)
-        let minY = tempMinY - 1
-        let maxY = temoMaxY + 1
+        let displayData = Array(sortedData.prefix(5))
+        let minY = displayData.map { $0.weight }.min() ?? 50 - 1
+        let maxY = displayData.map { $0.weight }.max() ?? 120 + 1
         
         // Фиксированные размеры графика
         let graphHeight = fixedHeight - 40 // Учитываем отступы сверху и снизу (20 + 20)
         let graphWidth: CGFloat
-        let totalPoints = sortedDates.count
+        let totalPoints = displayData.count
         
         if totalPoints <= 5 {
-            graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–5 точек с учетом шкалы Y и отступов
+            graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–5 точек
         } else {
-            graphWidth = CGFloat(totalPoints) * 62 // Динамическая ширина для скроллинга (60 — ширина точки + отступы)
+            graphWidth = CGFloat(totalPoints) * 62 // Динамическая ширина для скроллинга
         }
         
         // Устанавливаем ширину contentView
@@ -162,27 +162,24 @@ class WeightChartView: UIView {
         // Распределяем точки
         let xSpacing: CGFloat
         if totalPoints > 1 {
-            xSpacing = (graphWidth - padding * 2) / CGFloat(totalPoints) // Равномерное распределение от 0 до graphWidth - padding
+            xSpacing = (graphWidth - padding * 2) / CGFloat(totalPoints)
         } else {
-            xSpacing = graphWidth / 2 // Одна точка по центру
+            xSpacing = graphWidth / 2
         }
         
-        print("totalPoints - \(totalPoints), xSpacing - \(xSpacing)")
-        
         // Рисуем ось X (даты)
-        for (index, dateString) in sortedDates.enumerated() {
+        for (index, entry) in displayData.enumerated() {
             let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
-            guard let date = dateFormatter.date(from: dateString) else { continue }
             let dateLabel = UILabel()
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
-            dateLabel.text = date.toString(format: "dd MMM") // Формат даты, например, "24 фев"
+            dateLabel.text = entry.date.toString(format: "dd MMM") // Формат даты, например, "24 фев"
             dateLabel.font = .systemFont(ofSize: 14, weight: .regular)
             dateLabel.textColor = .gray
             graphContentView.addSubview(dateLabel)
             
             NSLayoutConstraint.activate([
                 dateLabel.bottomAnchor.constraint(equalTo: graphContentView.bottomAnchor, constant: 1),
-                dateLabel.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth) // Сдвиг для избежания наложения на шкалу Y
+                dateLabel.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth)
             ])
         }
         
@@ -219,7 +216,6 @@ class WeightChartView: UIView {
             shapeLayer.path = path.cgPath
             shapeLayer.strokeColor = UIColor.gray.withAlphaComponent(0.3).cgColor // Цвет линий разметки
             shapeLayer.lineWidth = 0.5 // Тонкие линии для разметки
-            // shapeLayer.lineDashPattern = [2, 2] // Пунктирные линии (опционально, для легкости восприятия)
             return shapeLayer
         }
 
@@ -230,11 +226,10 @@ class WeightChartView: UIView {
         let path = UIBezierPath()
         var firstPoint = true
         
-        for (index, dateString) in sortedDates.enumerated() {
-            guard let weight = weightData[dateString] else { continue }
+        for (index, entry) in displayData.enumerated() {
             let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
             let yRange = maxY - minY == 0 ? 1 : maxY - minY
-            let normalizedY = (maxY - weight) / yRange * graphHeight + 20 // Сдвиг для верхнего отступа
+            let normalizedY = (maxY - entry.weight) / yRange * graphHeight + 20 // Сдвиг для верхнего отступа
             
             let point = CGPoint(x: x + yAxisWidth, y: normalizedY) // Сдвиг для избежания наложения на шкалу Y
             

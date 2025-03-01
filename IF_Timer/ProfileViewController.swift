@@ -57,9 +57,10 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var differentSymbolWeightLabel: UILabel!
     @IBOutlet weak var lineWeightView: UIView!
     @IBOutlet weak var changeWeightButton: UIButton!
-    var startWeightValue: Double = 70.0
-    var targetWeightValue: Double = 60.0
+    var startWeightValue: Double = 75.0
+    var targetWeightValue: Double = 75.0
     var lastWeightValue: Double = 75.0
+    var weightDataProfile: [(date: Date, weight: Double)] = [] // Массив кортежей для даты и веса
     // для пятого View imtView
     @IBOutlet weak var changeWeightImtViewButton: UIButton!
     @IBOutlet weak var titleImtView: UILabel!
@@ -86,7 +87,7 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        loadWeightData()
         weightInputManager = WeightInputManager(parentViewController: self)
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
@@ -364,6 +365,7 @@ class ProfileViewController: UIViewController {
         } else {
             let weightChartView = WeightChartView()
             weightChartView.translatesAutoresizingMaskIntoConstraints = false
+            //weightChartView.weightData = weightDataProfile // Передаем данные
             weightView.addSubview(weightChartView)
             
             NSLayoutConstraint.activate([
@@ -409,9 +411,41 @@ class ProfileViewController: UIViewController {
     weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight in
                 print("Выбранный вес: \(weight) кг")
         self.lastWeightValue = weight
+        self.weightDataProfile.append((date: Date(), weight: weight))
+        self.saveWeightData()
         self.setupWeightAccountingView()
         
+        // Убедимся, что график обновляется в WeightChartView
+        if let weightChartView = self.weightView as? WeightChartView {
+            weightChartView.weightData = self.weightDataProfile
+                    weightChartView.updateChart()
+                }
             }
+    }
+    
+    func saveWeightData() {
+        let savedData = weightDataProfile.map { entry in
+            [
+                "date": ISO8601DateFormatter().string(from: entry.date),
+                "weight": entry.weight
+            ]
+        }
+        print("weightData - \(savedData)")
+        UserDefaults.standard.set(savedData, forKey: "weightDataArray")
+    }
+
+    // Восстановление данных из UserDefaults
+    func loadWeightData() {
+        if let savedData = UserDefaults.standard.array(forKey: "weightDataArray") as? [[String: Any]] {
+            weightDataProfile = savedData.compactMap { dict in
+                guard let dateString = dict["date"] as? String,
+                      let weight = dict["weight"] as? Double,
+                      let date = ISO8601DateFormatter().date(from: dateString) else {
+                    return nil
+                }
+                return (date: date, weight: weight)
+            }
+        }
     }
     
     //MARK: Code block - imtView
@@ -601,3 +635,5 @@ extension Double {
         String(format: "%.1f", self)
     }
 }
+
+
