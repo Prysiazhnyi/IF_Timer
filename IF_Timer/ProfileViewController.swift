@@ -406,9 +406,11 @@ class ProfileViewController: UIViewController {
     
     @IBAction func changeWeightButtonTapped(_ sender: Any) {
             
-    weightInputManager.showWeightPicker(startWeight: 75.0) { weight in
+    weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight in
                 print("Выбранный вес: \(weight) кг")
-                // Обновление UI, например, изменение текста на кнопке
+        self.lastWeightValue = weight
+        self.setupWeightAccountingView()
+        
             }
     }
     
