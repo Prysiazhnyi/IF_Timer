@@ -57,9 +57,9 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var differentSymbolWeightLabel: UILabel!
     @IBOutlet weak var lineWeightView: UIView!
     @IBOutlet weak var changeWeightButton: UIButton!
-    var startWeightValue: Double = 75.0
-    var targetWeightValue: Double = 75.0
-    var lastWeightValue: Double = 75.0
+    var startWeightValue: Double = 118.0
+    var targetWeightValue: Double = 110.0
+    var lastWeightValue: Double = 0.0
     var weightDataProfile: [(date: Date, weight: Double)] = [] // Массив кортежей для даты и веса
     // для пятого View imtView
     @IBOutlet weak var changeWeightImtViewButton: UIButton!
@@ -68,6 +68,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var descriptionImtView: UILabel!
     @IBOutlet weak var progressImtView: UIProgressView!
     @IBOutlet weak var markerImtView: UIView!
+    var height = 196.0
     var imtCount = 30.0
     let text15Imt  = "Недостатня маса тіла"
     let text16Imt  = "Недостатня маса тіла"
@@ -89,6 +90,10 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         loadWeightData()
         weightInputManager = WeightInputManager(parentViewController: self)
+        
+        if lastWeightValue == 0.0 {
+            lastWeightValue = startWeightValue
+        }
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         viewTab.backgroundColor = .clear
@@ -425,6 +430,7 @@ class ProfileViewController: UIViewController {
             }
             self.saveWeightData()
             self.setupWeightAccountingView()
+            self.setupImtView()
             
             // Убедимся, что график обновляется в WeightChartView
             //        if let weightChartView = self.weightView as? WeightChartView {
@@ -462,10 +468,15 @@ class ProfileViewController: UIViewController {
     //MARK: Code block - imtView
     
     func setupImtView() {
+        let heightInMeters = height / 100.0 // Рост в метрах (196.0 см → 1.96 м)
+        let imt = lastWeightValue / (heightInMeters * heightInMeters)
+        imtCount = min(max(imt, 15), 40) // Ограничиваем между 15 и 40
+        imtCount = round(imtCount * 10) / 10.0  // Ограничиваем imtCount до одной цифры после точки
+        
         addIconToButton(changeWeightImtViewButton)
         countImtView.text = "\(imtCount)"
         updateImtMarker(for: imtCount) // Пример для ИМТ 30.9
-        
+        print("imtCount - \(imtCount)")
         switch imtCount {
         case ..<16:
             descriptionImtView.text = text15Imt
