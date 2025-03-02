@@ -92,20 +92,20 @@ class WeightChartView: UIView {
             graphContentView.heightAnchor.constraint(equalToConstant: fixedHeight)
         ])
         
-        if weightData.isEmpty {
-                let dateFormatter = ISO8601DateFormatter()
-                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
-                weightData = [
-                    (date: dateFormatter.date(from: "2025-02-24T00:00:00Z")!, weight: 118.6),
-                    (date: dateFormatter.date(from: "2025-02-25T00:00:00Z")!, weight: 117.5),
-                    (date: dateFormatter.date(from: "2025-02-26T00:00:00Z")!, weight: 116.8),
-                    (date: dateFormatter.date(from: "2025-02-27T00:00:00Z")!, weight: 115.9),
-                    (date: dateFormatter.date(from: "2025-02-28T00:00:00Z")!, weight: 114.3),
-                    (date: dateFormatter.date(from: "2025-03-01T00:00:00Z")!, weight: 114.3),
-                    (date: dateFormatter.date(from: "2025-03-02T00:00:00Z")!, weight: 110.3),
-                    (date: dateFormatter.date(from: "2025-03-03T00:00:00Z")!, weight: 112.3)
-                ]
-            }
+//        if weightData.isEmpty {
+//                let dateFormatter = ISO8601DateFormatter()
+//                dateFormatter.timeZone = TimeZone(secondsFromGMT: 0) // UTC
+//                weightData = [
+//                    (date: dateFormatter.date(from: "2025-02-24T00:00:00Z")!, weight: 118.6),
+//                    (date: dateFormatter.date(from: "2025-02-25T00:00:00Z")!, weight: 117.5),
+//                    (date: dateFormatter.date(from: "2025-02-26T00:00:00Z")!, weight: 116.8),
+//                    (date: dateFormatter.date(from: "2025-02-27T00:00:00Z")!, weight: 115.9),
+//                    (date: dateFormatter.date(from: "2025-02-28T00:00:00Z")!, weight: 114.3),
+//                    (date: dateFormatter.date(from: "2025-03-01T00:00:00Z")!, weight: 114.3),
+//                    (date: dateFormatter.date(from: "2025-03-02T00:00:00Z")!, weight: 110.3),
+//                    (date: dateFormatter.date(from: "2025-03-03T00:00:00Z")!, weight: 112.3)
+//                ]
+//            }
     }
     
     // MARK: - Chart Drawing
@@ -122,7 +122,7 @@ class WeightChartView: UIView {
         guard !weightData.isEmpty else {
             let noDataLabel = UILabel()
             noDataLabel.translatesAutoresizingMaskIntoConstraints = false
-            noDataLabel.text = "Нет данных о весе"
+            noDataLabel.text = "Немає даних про вагу"
             noDataLabel.textColor = .gray
             noDataLabel.font = .systemFont(ofSize: 16, weight: .regular)
             graphContentView.addSubview(noDataLabel)
@@ -135,18 +135,39 @@ class WeightChartView: UIView {
             return
         }
         
-        // Сортируем данные по дате
+//        // Сортируем данные по дате
         let sortedData = weightData.sorted { $0.date < $1.date }
+//        
+//        // Ограничиваем до 5 точек для отображения, если больше
+//        //let displayData = Array(sortedData.prefix(5))
+//         let minY = sortedData.map { $0.weight }.min()!  - 1
+//        let maxY = sortedData.map { $0.weight }.max()! + 1
         
-        // Ограничиваем до 5 точек для отображения, если больше
-        let displayData = Array(sortedData.prefix(5))
-        let minY = displayData.map { $0.weight }.min() ?? 50 - 1
-        let maxY = displayData.map { $0.weight }.max() ?? 120 + 1
-        
+         
+         // Получаем веса для анализа
+         let weights = sortedData.map { $0.weight }
+         let minWeight = weights.min()!
+         let maxWeight = weights.max()!
+         let weightRange = maxWeight - minWeight
+
+         var minY: Double
+         var maxY: Double
+
+         // Используем вашу логику для minY и maxY
+         if weightRange <= 1 {
+             let centerValue = round((minWeight + maxWeight) / 2) // Округляем центральное значение до целого
+             minY = centerValue - 3 // Например, 72 для значения около 75
+             maxY = centerValue + 2 // Например, 77 для значения около 75
+         } else {
+             // Для большего диапазона, минимум -1, максимум +1, округляем до целых
+             minY = floor(minWeight) - 1 // Округляем вниз до целого и вычитаем 1
+             maxY = ceil(maxWeight) + 1  // Округляем вверх до целого и добавляем 1
+         }
+         
         // Фиксированные размеры графика
         let graphHeight = fixedHeight - 40 // Учитываем отступы сверху и снизу (20 + 20)
         let graphWidth: CGFloat
-        let totalPoints = displayData.count
+        let totalPoints = sortedData.count
         
         if totalPoints <= 5 {
             graphWidth = fixedWidth - yAxisWidth - (padding * 2) // Фиксированная ширина для 1–5 точек
@@ -169,7 +190,7 @@ class WeightChartView: UIView {
         }
         
         // Рисуем ось X (даты)
-        for (index, entry) in displayData.enumerated() {
+        for (index, entry) in sortedData.enumerated() {
             let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
             let dateLabel = UILabel()
             dateLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -184,25 +205,50 @@ class WeightChartView: UIView {
             ])
         }
         
-        // Рисуем фиксированную ось Y (значения веса) вне scrollView
-        let ySteps = 5 // Количество отметок на оси Y
-        let ySpacing = graphHeight / CGFloat(ySteps)
-        for i in 0...ySteps {
-            let yValue = maxY - (CGFloat(i) * (maxY - minY) / CGFloat(ySteps))
-            let y = CGFloat(i) * ySpacing + 15 // Сдвиг для верхнего отступа
-        
-            let yLabel = UILabel()
-            yLabel.translatesAutoresizingMaskIntoConstraints = false
-            yLabel.text = String(Int(yValue))
-            yLabel.font = .systemFont(ofSize: 14, weight: .regular)
-            yLabel.textColor = .gray
-            yAxisView.addSubview(yLabel)
-            
-            NSLayoutConstraint.activate([
-                yLabel.trailingAnchor.constraint(equalTo: yAxisView.trailingAnchor, constant: -2), // Привязка к правому краю шкалы Y
-                yLabel.centerYAnchor.constraint(equalTo: yAxisView.topAnchor, constant: y)
-            ])
-        }
+         // Рисуем фиксированную ось Y (значения веса) вне scrollView с уникальными целыми значениями
+         var yValues: [Double] = []
+         var currentValue = ceil(minY) // Начинаем с округленного вверх minY
+         while currentValue <= floor(maxY) { // Продолжаем до округленного вниз maxY
+             yValues.append(currentValue)
+             currentValue += 1 // Шаг 1 для уникальных целых значений
+         }
+
+         // Если диапазон меньше 6 значений, добавляем значения вверх или вниз, сохраняя уникальность
+         while yValues.count < 6 {
+             if yValues.count < 3 {
+                 let newValue = yValues.first! - 1
+                 if newValue >= floor(minY) - 3 && !yValues.contains(newValue) { // Проверяем уникальность и предел
+                     yValues.insert(newValue, at: 0)
+                 }
+             } else {
+                 let newValue = yValues.last! + 1
+                 if newValue <= ceil(maxY) + 3 && !yValues.contains(newValue) { // Проверяем уникальность и предел
+                     yValues.append(newValue)
+                 }
+             }
+         }
+
+         // Рисуем фиксированную ось Y (значения веса) вне scrollView с уникальными целыми значениями
+         let ySteps = yValues.count - 1 // Устанавливаем количество шагов на основе уникальных значений
+         let ySpacing = graphHeight / CGFloat(ySteps)
+
+         // Рисуем метки снизу вверх (большие значения вверху, меньшие внизу)
+         for (i, yValue) in yValues.enumerated().reversed() {
+             let y = CGFloat((ySteps - i)) * ySpacing + 15 // Позиция Y от верхней части вниз
+             
+             let yLabel = UILabel()
+             yLabel.translatesAutoresizingMaskIntoConstraints = false
+             yLabel.text = String(format: "%.0f", yValue) // Форматируем как целое число
+             yLabel.font = .systemFont(ofSize: 14, weight: .regular)
+             yLabel.textColor = .gray
+             yAxisView.addSubview(yLabel)
+             
+             NSLayoutConstraint.activate([
+                 yLabel.trailingAnchor.constraint(equalTo: yAxisView.trailingAnchor, constant: -2), // Привязка к правому краю шкалы Y
+                 yLabel.centerYAnchor.constraint(equalTo: yAxisView.topAnchor, constant: y)
+             ])
+         }
+         
         
         // Рисуем линии разметки по оси Y в graphContentView с отступами
         let gridLines: [CAShapeLayer] = (0...ySteps).map { i in
@@ -224,37 +270,37 @@ class WeightChartView: UIView {
         gridLines.forEach { graphContentView.layer.addSublayer($0) }
         
         // Рисуем график
-        let path = UIBezierPath()
-        var firstPoint = true
-        
-        for (index, entry) in displayData.enumerated() {
-            let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
-            let yRange = maxY - minY == 0 ? 1 : maxY - minY
-            let normalizedY = (maxY - entry.weight) / yRange * graphHeight + 20 // Сдвиг для верхнего отступа
-            
-            let point = CGPoint(x: x + yAxisWidth, y: normalizedY) // Сдвиг для избежания наложения на шкалу Y
-            
-            if firstPoint {
-                path.move(to: point)
-                firstPoint = false
-            } else {
-                path.addLine(to: point)
-            }
-            
-            // Точка
-            let pointView = UIView()
-            pointView.translatesAutoresizingMaskIntoConstraints = false
-            pointView.backgroundColor = .systemGreen
-            pointView.layer.cornerRadius = 9
-            graphContentView.addSubview(pointView)
-            
-            NSLayoutConstraint.activate([
-                pointView.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth),
-                pointView.centerYAnchor.constraint(equalTo: graphContentView.topAnchor, constant: normalizedY),
-                pointView.widthAnchor.constraint(equalToConstant: 18),
-                pointView.heightAnchor.constraint(equalToConstant: 18)
-            ])
-        }
+         let path = UIBezierPath()
+         var firstPoint = true
+
+         for (index, entry) in sortedData.enumerated() {
+             let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
+             let yRange = maxY - minY == 0 ? 1 : maxY - minY
+             let normalizedY = ((maxY - entry.weight) / yRange) * graphHeight + 15 // Упрощаем нормализацию для целых значений
+             
+             let point = CGPoint(x: x + yAxisWidth, y: normalizedY) // Сдвиг для избежания наложения на шкалу Y
+             
+             if firstPoint {
+                 path.move(to: point)
+                 firstPoint = false
+             } else {
+                 path.addLine(to: point)
+             }
+             
+             // Точка
+             let pointView = UIView()
+             pointView.translatesAutoresizingMaskIntoConstraints = false
+             pointView.backgroundColor = .systemGreen
+             pointView.layer.cornerRadius = 9
+             graphContentView.addSubview(pointView)
+             
+             NSLayoutConstraint.activate([
+                 pointView.centerXAnchor.constraint(equalTo: graphContentView.leadingAnchor, constant: x + yAxisWidth),
+                 pointView.centerYAnchor.constraint(equalTo: graphContentView.topAnchor, constant: normalizedY),
+                 pointView.widthAnchor.constraint(equalToConstant: 18),
+                 pointView.heightAnchor.constraint(equalToConstant: 18)
+             ])
+         }
         
         // Рисуем линию графика
         let shapeLayer = CAShapeLayer()
