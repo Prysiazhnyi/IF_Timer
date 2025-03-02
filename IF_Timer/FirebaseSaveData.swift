@@ -91,6 +91,37 @@ class FirebaseSaveData {
         }
     }
     
+    //MARK:
+    
+    // ✅ Сохранение данных
+    // Функция для сохранения данных
+    func saveDataProfileViewControllerToCloud(from profileViewController: ProfileViewController) {
+        let userData: [String: Any] = [
+           
+            "startWeightValue": profileViewController.startWeightValue,
+            "targetWeightValue": profileViewController.targetWeightValue,
+            "lastWeightValue": profileViewController.lastWeightValue,
+            "height": profileViewController.height,
+            "weightDataArray": profileViewController.weightDataProfile.map { entry in
+                        [
+                            "date": ISO8601DateFormatter().string(from: entry.date),
+                            "weight": entry.weight
+                        ]
+                    }
+        ]
+
+        getUserDocument().setData(userData, merge: true) { error in
+            if let error = error {
+                print("Ошибка сохранения в Firebase: \(error.localizedDescription)")
+            } else {
+                print("✅ Данные -- ProfileViewController --  успешно сохранены в Firebase!")
+               // print("✅ Данные успешно сохранены в Firebase! - saveDataToCloud userData - \(userData)")
+               
+            }
+        }
+    
+    }
+    
 
 //MARK:    // ✅ Загрузка данных
     
@@ -186,6 +217,32 @@ class FirebaseSaveData {
                 if let firstDateUseApp = data["firstDateUseApp"] as? TimeInterval {
                     UserDefaults.standard.set(Date(timeIntervalSince1970: firstDateUseApp), forKey: "firstDateUseApp")
                 }
+                
+                // Данный для ProfileViewController
+                
+                if let weightDataArray = data["weightDataArray"] as? [[String: Any]] {
+                    // Сохраняем данные напрямую в UserDefaults без дополнительных преобразований
+                    UserDefaults.standard.set(weightDataArray, forKey: "weightDataArray")
+                    print("✅ Данные weightDataArray успешно сохранены в UserDefaults.")
+                }
+                
+                if let tempStartWeightValue = data["startWeightValue"] as? Double {
+                    UserDefaults.standard.set(tempStartWeightValue, forKey: "startWeightValue")
+                }
+                if let tempTargetWeightValue = data["targetWeightValue"] as? Double {
+                    UserDefaults.standard.set(tempTargetWeightValue, forKey: "targetWeightValue")
+                }
+                
+                if let tempLastWeightValue = data["lastWeightValue"] as? Double {
+                    UserDefaults.standard.set(tempLastWeightValue, forKey: "lastWeightValue")
+                }
+                
+                if let tempHeight = data["height"] as? Double {
+                    UserDefaults.standard.set(tempHeight, forKey: "height")
+                }
+               
+                
+                // Other
                 
                 print("Данные успешно загружены и сохранены в UserDefaults")
                 

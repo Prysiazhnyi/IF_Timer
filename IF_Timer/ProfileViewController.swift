@@ -91,9 +91,11 @@ class ProfileViewController: UIViewController {
         loadWeightData()
         weightInputManager = WeightInputManager(parentViewController: self)
         
-        if lastWeightValue == 0.0 {
-            lastWeightValue = startWeightValue
-        }
+//        if lastWeightValue == 0.0 {
+//            lastWeightValue = startWeightValue
+//        }
+        
+        print("lastWeightValue  -   lastWeightValue \(lastWeightValue)")
         
         self.overrideUserInterfaceStyle = .light  // не змінювати тему на чорну
         viewTab.backgroundColor = .clear
@@ -428,9 +430,9 @@ class ProfileViewController: UIViewController {
             if let latestEntry = self.weightDataProfile.max(by: { $0.date < $1.date }) {
                 self.lastWeightValue = latestEntry.weight
             }
-            self.saveWeightData()
             self.setupWeightAccountingView()
             self.setupImtView()
+            self.saveWeightData()
             
             // Убедимся, что график обновляется в WeightChartView
             //        if let weightChartView = self.weightView as? WeightChartView {
@@ -456,6 +458,8 @@ class ProfileViewController: UIViewController {
         UserDefaults.standard.set(targetWeightValue, forKey: "targetWeightValue")
         UserDefaults.standard.set(lastWeightValue, forKey: "lastWeightValue")
         UserDefaults.standard.set(height, forKey: "height")
+        
+        FirebaseSaveData.shared.saveDataProfileViewControllerToCloud(from: self)
     }
     
     // Восстановление данных из UserDefaults
@@ -479,6 +483,8 @@ class ProfileViewController: UIViewController {
         }
         if let tempLastWeightValue = UserDefaults.standard.object(forKey: "lastWeightValue") as? Double {
             lastWeightValue = tempLastWeightValue
+            
+            print("Print load lastWeightValue - \(lastWeightValue)")
         }
         if let tempHeight = UserDefaults.standard.object(forKey: "height") as? Double {
             height = tempHeight

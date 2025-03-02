@@ -103,6 +103,16 @@ class ViewController: UIViewController, CustomAlertDelegate {
         super.viewDidLoad()
         print("isFirstStartApp - \(isFirstStartApp)")
         //if isFirstStartApp {FirebaseSaveData.shared.loadAndSaveDataFromFirebase()}
+        FirebaseSaveData.shared.loadAndSaveDataFromFirebase { success in
+            if success {
+                print("Данные успешно загружены и сохранены! lastWeightValue FirebaseSaveData из ViewControlle ")
+                // Дополнительные действия, которые нужно выполнить после загрузки данных
+            } else {
+                print("Не удалось загрузить данные.lastWeightValue FirebaseSaveData из ViewControlle ")
+                // Обработка ошибки загрузки
+            }
+        }
+
         // Устанавливаем viewController перед загрузкой данных
         SaveData.shared.viewController = self
         
