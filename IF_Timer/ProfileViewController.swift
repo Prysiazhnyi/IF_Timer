@@ -401,7 +401,7 @@ class ProfileViewController: UIViewController {
         differentSymbolWeightLabel.font = .systemFont(ofSize: 21, weight: .regular) // Шрифт
         differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
         
-        if differentValue < 0 {
+        if differentValue <= 0 {
             differentWeightLabel.textColor = .systemGreen
             differentSymbolWeightLabel.backgroundColor = .systemGreen
             differentSymbolWeightLabel.clipsToBounds = true
@@ -416,10 +416,10 @@ class ProfileViewController: UIViewController {
     
     @IBAction func changeWeightButtonTapped(_ sender: Any) {
             
-    weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight in
-                print("Выбранный вес: \(weight) кг")
+    weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight, date in
+                print("Выбранный вес и дата: \(weight) кг , \(date)")
         self.lastWeightValue = weight
-        self.weightDataProfile.append((date: Date(), weight: weight))
+        self.weightDataProfile.append((date: date, weight: weight))
         self.saveWeightData()
         self.setupWeightAccountingView()
         
