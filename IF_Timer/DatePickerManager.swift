@@ -47,11 +47,13 @@ class DatePickerManager: NSObject {
         let cancelButton = UIButton(type: .system)
         cancelButton.setTitle("Скасувати", for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        cancelButton.setTitleColor(.darkGray, for: .normal)
         cancelButton.addTarget(self, action: #selector(dismissPicker), for: .touchUpInside)
 
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Готово", for: .normal)
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        doneButton.setTitleColor(.darkGray, for: .normal)
         doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
 
         toolbar.addSubview(cancelButton)

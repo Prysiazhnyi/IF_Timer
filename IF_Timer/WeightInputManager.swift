@@ -47,16 +47,19 @@ class WeightInputManager: NSObject {
         let cancelButton = UIButton(type: .system)
         cancelButton.setTitle("Скасувати", for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        cancelButton.setTitleColor(.darkGray, for: .normal)
         cancelButton.addTarget(self, action: #selector(dismissPicker), for: .touchUpInside)
 
         let changeDateButton = UIButton(type: .system)
         changeDateButton.setTitle("Змінити дату", for: .normal)
         changeDateButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        changeDateButton.setTitleColor(.darkGray, for: .normal)
         changeDateButton.addTarget(self, action: #selector(showDatePicker), for: .touchUpInside)
 
         let doneButton = UIButton(type: .system)
         doneButton.setTitle("Готово", for: .normal)
         doneButton.titleLabel?.font = UIFont.systemFont(ofSize: 19, weight: .medium)
+        doneButton.setTitleColor(.darkGray, for: .normal)
         doneButton.addTarget(self, action: #selector(donePressed), for: .touchUpInside)
 
         toolbar.addSubview(cancelButton)
@@ -141,11 +144,11 @@ class WeightInputManager: NSObject {
         dateToolbar.isTranslucent = true
 
         let cancelDateButton = UIBarButtonItem(title: "Скасувати", style: .plain, target: self, action: #selector(dismissDatePicker))
-        cancelDateButton.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 19)], for: .normal) // Устанавливаем размер шрифта 19
+        cancelDateButton.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 19), .foregroundColor: UIColor.darkGray], for: .normal)
         let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         let doneDateButton = UIBarButtonItem(title: "Готово", style: .done, target: self, action: #selector(saveDate))
-        doneDateButton.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 19)], for: .normal) // Устанавливаем размер шрифта 19
-
+        doneDateButton.setTitleTextAttributes([.font: UIFont.systemFont(ofSize: 19), .foregroundColor: UIColor.darkGray], for: .normal)
+        
         dateToolbar.items = [cancelDateButton, flexibleSpace, doneDateButton]
 
         // Создаем и настраиваем datePicker
