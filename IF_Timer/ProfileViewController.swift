@@ -359,22 +359,30 @@ class ProfileViewController: UIViewController {
     
     func setupWeightAccountingView() {
         //imageWhenViewIsEmpty(weightView)
-        // Настройка weightView
-        if let weightChartView = weightView as? WeightChartView {
-            weightChartView.backgroundColor = backgroundView
-        } else {
+        // Очищаем существующий weightChartView, если он есть
+            if let weightChartView = weightView.subviews.first(where: { $0 is WeightChartView }) as? WeightChartView {
+                weightChartView.removeFromSuperview()
+            }
+            
+            // Создаем новый экземпляр WeightChartView
             let weightChartView = WeightChartView()
             weightChartView.translatesAutoresizingMaskIntoConstraints = false
             //weightChartView.weightData = weightDataProfile // Передаем данные
+            weightChartView.updateChart() // Отрисовываем график с переданными данными
+            
+            // Добавляем новый weightChartView в weightView
             weightView.addSubview(weightChartView)
             
+            // Устанавливаем констрейнты
             NSLayoutConstraint.activate([
                 weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 90), // Отступ сверху для меток
                 weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
                 weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
                 weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
             ])
-        }
+            
+            // Устанавливаем цвет фона
+            //weightChartView.backgroundColor = backgroundView
         
         lineWeightView.layer.cornerRadius = 5
         lineWeightView.backgroundColor = backgroundTab
