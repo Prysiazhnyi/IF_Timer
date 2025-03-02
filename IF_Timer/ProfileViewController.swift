@@ -440,6 +440,8 @@ class ProfileViewController: UIViewController {
         }
     }
     
+    //MARK: Load AND Save
+    
     func saveWeightData() {
         let savedData = weightDataProfile.map { entry in
             [
@@ -449,6 +451,11 @@ class ProfileViewController: UIViewController {
         }
         print("weightData - \(savedData)")
         UserDefaults.standard.set(savedData, forKey: "weightDataArray")
+        
+        UserDefaults.standard.set(startWeightValue, forKey: "startWeightValue")
+        UserDefaults.standard.set(targetWeightValue, forKey: "targetWeightValue")
+        UserDefaults.standard.set(lastWeightValue, forKey: "lastWeightValue")
+        UserDefaults.standard.set(height, forKey: "height")
     }
     
     // Восстановление данных из UserDefaults
@@ -462,6 +469,19 @@ class ProfileViewController: UIViewController {
                 }
                 return (date: date, weight: weight)
             }
+        }
+        
+        if let tempStartWeightValue = UserDefaults.standard.object(forKey: "startWeightValue") as? Double {
+            startWeightValue = tempStartWeightValue
+        }
+        if let tempStartWeightValuet = UserDefaults.standard.object(forKey: "startWeightValue") as? Double {
+            startWeightValue = tempStartWeightValuet
+        }
+        if let tempLastWeightValue = UserDefaults.standard.object(forKey: "lastWeightValue") as? Double {
+            lastWeightValue = tempLastWeightValue
+        }
+        if let tempHeight = UserDefaults.standard.object(forKey: "height") as? Double {
+            height = tempHeight
         }
     }
     
