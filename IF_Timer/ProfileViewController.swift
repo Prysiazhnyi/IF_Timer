@@ -360,29 +360,29 @@ class ProfileViewController: UIViewController {
     func setupWeightAccountingView() {
         //imageWhenViewIsEmpty(weightView)
         // Очищаем существующий weightChartView, если он есть
-            if let weightChartView = weightView.subviews.first(where: { $0 is WeightChartView }) as? WeightChartView {
-                weightChartView.removeFromSuperview()
-            }
-            
-            // Создаем новый экземпляр WeightChartView
-            let weightChartView = WeightChartView()
-            weightChartView.translatesAutoresizingMaskIntoConstraints = false
-            //weightChartView.weightData = weightDataProfile // Передаем данные
-            weightChartView.updateChart() // Отрисовываем график с переданными данными
-            
-            // Добавляем новый weightChartView в weightView
-            weightView.addSubview(weightChartView)
-            
-            // Устанавливаем констрейнты
-            NSLayoutConstraint.activate([
-                weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 90), // Отступ сверху для меток
-                weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
-                weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
-                weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
-            ])
-            
-            // Устанавливаем цвет фона
-            //weightChartView.backgroundColor = backgroundView
+        if let weightChartView = weightView.subviews.first(where: { $0 is WeightChartView }) as? WeightChartView {
+            weightChartView.removeFromSuperview()
+        }
+        
+        // Создаем новый экземпляр WeightChartView
+        let weightChartView = WeightChartView()
+        weightChartView.translatesAutoresizingMaskIntoConstraints = false
+        //weightChartView.weightData = weightDataProfile // Передаем данные
+        weightChartView.updateChart() // Отрисовываем график с переданными данными
+        
+        // Добавляем новый weightChartView в weightView
+        weightView.addSubview(weightChartView)
+        
+        // Устанавливаем констрейнты
+        NSLayoutConstraint.activate([
+            weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 90), // Отступ сверху для меток
+            weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
+            weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
+            weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
+        ])
+        
+        // Устанавливаем цвет фона
+        //weightChartView.backgroundColor = backgroundView
         
         lineWeightView.layer.cornerRadius = 5
         lineWeightView.backgroundColor = backgroundTab
@@ -415,20 +415,23 @@ class ProfileViewController: UIViewController {
     }
     
     @IBAction func changeWeightButtonTapped(_ sender: Any) {
-            
-    weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight, date in
-                print("Выбранный вес и дата: \(weight) кг , \(date)")
-        self.lastWeightValue = weight
-        self.weightDataProfile.append((date: date, weight: weight))
-        self.saveWeightData()
-        self.setupWeightAccountingView()
         
-        // Убедимся, что график обновляется в WeightChartView
-//        if let weightChartView = self.weightView as? WeightChartView {
-//            weightChartView.weightData = self.weightDataProfile
-//                    weightChartView.updateChart()
-//                }
+        weightInputManager.showWeightPicker(startWeight: lastWeightValue) { weight, date in
+            print("Выбранный вес и дата: \(weight) кг , \(date)")
+            self.weightDataProfile.append((date: date, weight: weight))
+            // Достаем самую свежую запись по дате из weightDataProfile и присваиваем вес
+            if let latestEntry = self.weightDataProfile.max(by: { $0.date < $1.date }) {
+                self.lastWeightValue = latestEntry.weight
             }
+            self.saveWeightData()
+            self.setupWeightAccountingView()
+            
+            // Убедимся, что график обновляется в WeightChartView
+            //        if let weightChartView = self.weightView as? WeightChartView {
+            //            weightChartView.weightData = self.weightDataProfile
+            //                    weightChartView.updateChart()
+            //                }
+        }
     }
     
     func saveWeightData() {
@@ -441,7 +444,7 @@ class ProfileViewController: UIViewController {
         print("weightData - \(savedData)")
         UserDefaults.standard.set(savedData, forKey: "weightDataArray")
     }
-
+    
     // Восстановление данных из UserDefaults
     func loadWeightData() {
         if let savedData = UserDefaults.standard.array(forKey: "weightDataArray") as? [[String: Any]] {
