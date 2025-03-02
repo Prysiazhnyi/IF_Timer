@@ -159,9 +159,10 @@ class WeightChartView: UIView {
              minY = centerValue - 3
              maxY = centerValue + 2
          } else {
-             minY = floor(minWeight) - 1 // Расширяем диапазон вниз
-             maxY = ceil(maxWeight) + 1  // Расширяем диапазон вверх
+             minY = floor(minWeight) - 1 // Сохраняем вашу логику
+             maxY = ceil(maxWeight) + 1  // Расширяем максимум до +2, чтобы охватить 75
          }
+         
          
         // Фиксированные размеры графика
         let graphHeight = fixedHeight - 40 // Учитываем отступы сверху и снизу (20 + 20)
@@ -205,34 +206,27 @@ class WeightChartView: UIView {
         }
         
          // Рисуем фиксированную ось Y (значения веса) вне scrollView с уникальными целыми значениями
+         // Корректный расчет значений для шкалы Y
          var yValues: [Double] = []
-         var currentValue = floor(minY)
-         while currentValue <= ceil(maxY) {
+
+         // Определяем шаг шкалы (делаем его кратным 1, 2, 5, 10 для удобочитаемости)
+         let stepBase = (maxY - minY) / 5.0
+         let stepPower = pow(10.0, floor(log10(stepBase))) // Получаем степень 10 (например, 10, 100, 0.1)
+         let possibleSteps: [Double] = [1, 2, 5, 10] // Возможные шаги для округления
+         let step = possibleSteps.map { $0 * stepPower }.min { abs($0 - stepBase) < abs($1 - stepBase) } ?? 1.0
+
+         // Строим значения шкалы
+         var currentValue = (floor(minY / step) * step)
+         while currentValue <= maxY + step {
              yValues.append(currentValue)
-             currentValue += 1
+             currentValue += step
          }
 
-         // Корректируем до 6 уникальных значений
-         while yValues.count < 6 {
-             if yValues.count < 3 {
-                 let newValue = yValues.first! - 1
-                 if newValue >= floor(minY) - 3 && !yValues.contains(newValue) {
-                     yValues.insert(newValue, at: 0)
-                 }
-             } else {
-                 let newValue = yValues.last! + 1
-                 if newValue <= ceil(maxY) + 3 && !yValues.contains(newValue) {
-                     yValues.append(newValue)
-                 }
-             }
+         // Гарантируем, что последнее значение охватывает maxY
+         if yValues.last! < maxY {
+             yValues.append(yValues.last! + step)
          }
-         while yValues.count > 6 {
-             if yValues.count > 3 {
-                 yValues.removeLast()
-             } else {
-                 yValues.removeFirst()
-             }
-         }
+
 
          // Рисуем фиксированную ось Y (значения веса) вне scrollView с уникальными целыми значениями
          let ySteps = yValues.count - 1 // Устанавливаем количество шагов на основе уникальных значений
