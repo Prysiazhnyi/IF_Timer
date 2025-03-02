@@ -155,13 +155,12 @@ class WeightChartView: UIView {
 
          // Используем вашу логику для minY и maxY
          if weightRange <= 1 {
-             let centerValue = round((minWeight + maxWeight) / 2) // Округляем центральное значение до целого
-             minY = centerValue - 3 // Например, 72 для значения около 75
-             maxY = centerValue + 2 // Например, 77 для значения около 75
+             let centerValue = round((minWeight + maxWeight) / 2)
+             minY = centerValue - 3
+             maxY = centerValue + 2
          } else {
-             // Для большего диапазона, минимум -1, максимум +1, округляем до целых
-             minY = floor(minWeight) - 1 // Округляем вниз до целого и вычитаем 1
-             maxY = ceil(maxWeight) + 1  // Округляем вверх до целого и добавляем 1
+             minY = floor(minWeight) - 1 // Расширяем диапазон вниз
+             maxY = ceil(maxWeight) + 1  // Расширяем диапазон вверх
          }
          
         // Фиксированные размеры графика
@@ -207,24 +206,31 @@ class WeightChartView: UIView {
         
          // Рисуем фиксированную ось Y (значения веса) вне scrollView с уникальными целыми значениями
          var yValues: [Double] = []
-         var currentValue = ceil(minY) // Начинаем с округленного вверх minY
-         while currentValue <= floor(maxY) { // Продолжаем до округленного вниз maxY
+         var currentValue = floor(minY)
+         while currentValue <= ceil(maxY) {
              yValues.append(currentValue)
-             currentValue += 1 // Шаг 1 для уникальных целых значений
+             currentValue += 1
          }
 
-         // Если диапазон меньше 6 значений, добавляем значения вверх или вниз, сохраняя уникальность
+         // Корректируем до 6 уникальных значений
          while yValues.count < 6 {
              if yValues.count < 3 {
                  let newValue = yValues.first! - 1
-                 if newValue >= floor(minY) - 3 && !yValues.contains(newValue) { // Проверяем уникальность и предел
+                 if newValue >= floor(minY) - 3 && !yValues.contains(newValue) {
                      yValues.insert(newValue, at: 0)
                  }
              } else {
                  let newValue = yValues.last! + 1
-                 if newValue <= ceil(maxY) + 3 && !yValues.contains(newValue) { // Проверяем уникальность и предел
+                 if newValue <= ceil(maxY) + 3 && !yValues.contains(newValue) {
                      yValues.append(newValue)
                  }
+             }
+         }
+         while yValues.count > 6 {
+             if yValues.count > 3 {
+                 yValues.removeLast()
+             } else {
+                 yValues.removeFirst()
              }
          }
 
@@ -276,7 +282,7 @@ class WeightChartView: UIView {
          for (index, entry) in sortedData.enumerated() {
              let x = totalPoints == 1 ? (graphWidth - padding * 7) / 2 : CGFloat(index) * xSpacing + padding
              let yRange = maxY - minY == 0 ? 1 : maxY - minY
-             let normalizedY = ((maxY - entry.weight) / yRange) * graphHeight + 15 // Упрощаем нормализацию для целых значений
+             let normalizedY = ((yValues.max()! - entry.weight) / (yValues.max()! - yValues.min()!)) * graphHeight + 15 // Упрощаем нормализацию для целых значений
              
              let point = CGPoint(x: x + yAxisWidth, y: normalizedY) // Сдвиг для избежания наложения на шкалу Y
              
