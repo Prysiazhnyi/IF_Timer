@@ -136,13 +136,12 @@ class WeightChartView: UIView {
         }
         
 //        // Сортируем данные по дате
-        let sortedData = weightData.sorted { $0.date < $1.date }
-//        
-//        // Ограничиваем до 5 точек для отображения, если больше
-//        //let displayData = Array(sortedData.prefix(5))
-//         let minY = sortedData.map { $0.weight }.min()!  - 1
-//        let maxY = sortedData.map { $0.weight }.max()! + 1
-        
+        //let sortedData = weightData.sorted { $0.date < $1.date }
+         
+         // Сортируем данные по дате и оставляем только последнюю запись за каждый день
+         let groupedByDay = Dictionary(grouping: weightData, by: { Calendar.current.startOfDay(for: $0.date) })
+         let latestPerDay = groupedByDay.map { $0.value.max { $0.date < $1.date }! }
+         let sortedData = latestPerDay.sorted { $0.date < $1.date }
          
          // Получаем веса для анализа
          let weights = sortedData.map { $0.weight }
