@@ -47,8 +47,7 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var dot2Label: UILabel!
     @IBOutlet weak var dot3Label: UILabel!
     @IBOutlet weak var dropMarketView: UIView!
-    var dot2LabelText = "7"
-    var dot3LabelText = "14"
+  
     // для четвертого View weightView
     @IBOutlet weak var titleWeightLabel: UILabel!
     @IBOutlet weak var differentWeightLabel: UILabel!
@@ -292,8 +291,8 @@ class ProfileViewController: UIViewController {
         moveDropMarketView()
         
         dot1Label.text = "0"
-        dot2Label.text = "7"
-        dot3Label.text = "14"
+       // dot2Label.text = "7"
+        //dot3Label.text = "14"
         
         progressDidChange()
     }
@@ -336,9 +335,11 @@ class ProfileViewController: UIViewController {
     }
     
     func setupProgressStatics() {
-        let constFactor = tottalDaysFasting % 7
-        dot2LabelText  = "\(constFactor * 7)"
-        dot3LabelText = "\(constFactor * 14)"
+        let constFactor = max(1, Int(floor(Double(tottalDaysFasting) / 7.0)))// Целое число периодов
+        dot2Label.text  = "\(constFactor * 7)"
+        dot3Label.text = "\((constFactor + 1) * 7)"
+        
+       // print("constFactor - \(constFactor), tottalDaysFasting - \(tottalDaysFasting), dot2LabelText - \(dot2Label.text), dot3LabelText - \(dot3Label.text)")
         
         if tottalDaysFasting < 15 {
             progressStatisticView.progress = 0.06181 * Float(tottalDaysFasting)
