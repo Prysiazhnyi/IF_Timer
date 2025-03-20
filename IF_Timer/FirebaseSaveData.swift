@@ -214,8 +214,10 @@ class FirebaseSaveData {
                     }
                 }
                 
-                if let firstDateUseApp = data["firstDateUseApp"] as? TimeInterval {
-                    UserDefaults.standard.set(Date(timeIntervalSince1970: firstDateUseApp), forKey: "firstDateUseApp")
+                if let firstDateUseApp = data["firstDateUseApp"] as? Timestamp {
+                    let date = firstDateUseApp.dateValue()
+                    UserDefaults.standard.set(date, forKey: "firstDateUseApp")
+                    print("firstDateUseApp из Firebase - \(date)")
                 }
                 
                 // Данный для ProfileViewController
