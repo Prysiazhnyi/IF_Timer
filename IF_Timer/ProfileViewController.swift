@@ -365,59 +365,60 @@ class ProfileViewController: UIViewController {
     //MARK: Code block - weightView
     
     func setupWeightAccountingView() {
-        //imageWhenViewIsEmpty(weightView)
-        // Очищаем существующий weightChartView, если он есть
-        if let weightChartView = weightView.subviews.first(where: { $0 is WeightChartView }) as? WeightChartView {
-            weightChartView.removeFromSuperview()
-        }
-        
-        // Создаем новый экземпляр WeightChartView
-        let weightChartView = WeightChartView()
-        weightChartView.translatesAutoresizingMaskIntoConstraints = false
-        //weightChartView.weightData = weightDataProfile // Передаем данные
-        weightChartView.updateChart() // Отрисовываем график с переданными данными
-        
-        // Добавляем новый weightChartView в weightView
-        weightView.addSubview(weightChartView)
-        
-        // Устанавливаем констрейнты
-        NSLayoutConstraint.activate([
-            weightChartView.topAnchor.constraint(equalTo: weightView.topAnchor, constant: 90), // Отступ сверху для меток
-            weightChartView.leadingAnchor.constraint(equalTo: weightView.leadingAnchor),
-            weightChartView.trailingAnchor.constraint(equalTo: weightView.trailingAnchor),
-            weightChartView.bottomAnchor.constraint(equalTo: weightView.bottomAnchor)
-        ])
-        
-        // Устанавливаем цвет фона
-        //weightChartView.backgroundColor = backgroundView
-        
-        lineWeightView.layer.cornerRadius = 5
-        lineWeightView.backgroundColor = backgroundTab
-        titleWeightLabel.text = "Вага: \(lastWeightValue.toOneDecimalString()) kg"
-        titleWeightLabel.font = .systemFont(ofSize: 21, weight: .bold) // Шрифт
-        let differentValue: Double = (lastWeightValue - startWeightValue)
-        differentWeightLabel.text = "\(abs(differentValue).toOneDecimalString()) kg"
-        differentWeightLabel.font = .systemFont(ofSize: 19, weight: .regular) // Шрифт
-        startWeightLabel.text = "Початковий: \(startWeightValue.toOneDecimalString()) kg"
-        targetWeightLabel.text = "Ціль: \(targetWeightValue.toOneDecimalString()) kg"
-        addIconToButton(changeWeightButton)
-        
-        differentSymbolWeightLabel.layer.cornerRadius = 12
-        differentSymbolWeightLabel.clipsToBounds = true
-        differentSymbolWeightLabel.textColor = .white // Цвет текста
-        differentSymbolWeightLabel.font = .systemFont(ofSize: 21, weight: .regular) // Шрифт
-        differentSymbolWeightLabel.textAlignment = .center // Выравнивание текста по центр
-        
-        if differentValue <= 0 {
-            differentWeightLabel.textColor = .systemGreen
-            differentSymbolWeightLabel.backgroundColor = .systemGreen
-            differentSymbolWeightLabel.clipsToBounds = true
-            differentSymbolWeightLabel.text = "-"
-        } else {
-            differentWeightLabel.textColor = .systemRed
-            differentSymbolWeightLabel.backgroundColor = .systemRed
-            differentSymbolWeightLabel.clipsToBounds = true
-            differentSymbolWeightLabel.text = "+"
+        // Убедимся, что работаем в главном потоке
+        DispatchQueue.main.async {
+            // Удаляем старый WeightChartView
+            if let weightChartView = self.weightView.subviews.first(where: { $0 is WeightChartView }) as? WeightChartView {
+                weightChartView.removeFromSuperview()
+            }
+            
+            // Создаем новый экземпляр WeightChartView
+            let weightChartView = WeightChartView()
+            weightChartView.translatesAutoresizingMaskIntoConstraints = false
+            weightChartView.weightData = self.weightDataProfile // Передаем данные
+            weightChartView.updateChart() // Отрисовываем график
+            
+            // Добавляем в weightView
+            self.weightView.addSubview(weightChartView)
+            
+            // Устанавливаем констрейнты
+            NSLayoutConstraint.activate([
+                weightChartView.topAnchor.constraint(equalTo: self.weightView.topAnchor, constant: 90),
+                weightChartView.leadingAnchor.constraint(equalTo: self.weightView.leadingAnchor),
+                weightChartView.trailingAnchor.constraint(equalTo: self.weightView.trailingAnchor),
+                weightChartView.bottomAnchor.constraint(equalTo: self.weightView.bottomAnchor)
+            ])
+            
+            // Обновляем layout
+            self.weightView.layoutIfNeeded()
+            
+            // Настраиваем остальные элементы
+            self.lineWeightView.layer.cornerRadius = 5
+            self.lineWeightView.backgroundColor = self.backgroundTab
+            self.titleWeightLabel.text = "Вага: \(self.lastWeightValue.toOneDecimalString()) kg"
+            self.titleWeightLabel.font = .systemFont(ofSize: 21, weight: .bold)
+            let differentValue: Double = (self.lastWeightValue - self.startWeightValue)
+            self.differentWeightLabel.text = "\(abs(differentValue).toOneDecimalString()) kg"
+            self.differentWeightLabel.font = .systemFont(ofSize: 19, weight: .regular)
+            self.startWeightLabel.text = "Початковий: \(self.startWeightValue.toOneDecimalString()) kg"
+            self.targetWeightLabel.text = "Ціль: \(self.targetWeightValue.toOneDecimalString()) kg"
+            self.addIconToButton(self.changeWeightButton)
+            
+            self.differentSymbolWeightLabel.layer.cornerRadius = 12
+            self.differentSymbolWeightLabel.clipsToBounds = true
+            self.differentSymbolWeightLabel.textColor = .white
+            self.differentSymbolWeightLabel.font = .systemFont(ofSize: 21, weight: .regular)
+            self.differentSymbolWeightLabel.textAlignment = .center
+            
+            if differentValue <= 0 {
+                self.differentWeightLabel.textColor = .systemGreen
+                self.differentSymbolWeightLabel.backgroundColor = .systemGreen
+                self.differentSymbolWeightLabel.text = "-"
+            } else {
+                self.differentWeightLabel.textColor = .systemRed
+                self.differentSymbolWeightLabel.backgroundColor = .systemRed
+                self.differentSymbolWeightLabel.text = "+"
+            }
         }
     }
     
